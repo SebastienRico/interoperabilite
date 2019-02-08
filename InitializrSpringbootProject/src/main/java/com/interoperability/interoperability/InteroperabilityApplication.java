@@ -10,9 +10,10 @@ public class InteroperabilityApplication {
 
     public static final String DIRECTORY_PATH = "";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         SpringApplication.run(InteroperabilityApplication.class, args);
         try {
+            
             DirectoryWatch.StartFileWatcherThread(DIRECTORY_PATH);
         } catch (Exception ex) {
             Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.SEVERE, null, ex);
