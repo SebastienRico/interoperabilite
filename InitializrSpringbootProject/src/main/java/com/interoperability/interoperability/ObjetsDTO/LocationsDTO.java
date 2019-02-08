@@ -5,17 +5,17 @@ import java.sql.Date;
 import lombok.Data;
 
 @Data
-public class LocauxALouerDTO {
+public class LocationsDTO {
     private String descriptionLocation;
     private AdresseDTO adresseLocation;
     private int capaciteLocation;
-    private Date dateDebutLocation; //Le type a definir
-    private Date dateFinLocation;
+    private String dateDebutLocation; //Le type a definir
+    private String dateFinLocation;
     private float tarifLocation;
     private String disponibiliteLocation; //Type a changer, a voir avec les autres groupes ?
     private OrganisateurDTO organisateurLocation;
     
-    public LocauxALouerDTO() {
+    public LocationsDTO() {
     }
     
     
