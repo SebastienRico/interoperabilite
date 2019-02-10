@@ -20,7 +20,9 @@ import java.util.logging.Logger;
  * @author qbiss
  */
 public class GetterInternetPage extends TimerTask {
-
+    
+    private ParserHTML parser;
+    
     @Override
     public void run() {
         HttpURLConnection conn;
@@ -39,7 +41,8 @@ public class GetterInternetPage extends TimerTask {
 
                 fichier.write(chaine);
             }
-
+            parser = new ParserHTML();
+            parser.parserEvenementOfficeTourisme("maPage.html");
             conn.disconnect();
 
         } catch (MalformedURLException ex) {

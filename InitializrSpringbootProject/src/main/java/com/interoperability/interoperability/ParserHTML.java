@@ -13,7 +13,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.SAXException;
 
 //marche encore : div id = marche2937 > p > b (date) < b > (lieu) https://www.jours-de-marche.fr/43400-le-chambon-sur-lignon/
@@ -40,6 +39,7 @@ public class ParserHTML {
         try {
             constructeur = fabrique.newDocumentBuilder();
             Document document = (Document) constructeur.parse(fichier);
+            document.normalize();
             for (int j = 0; j < document.getElementsByTagName("div").getLength(); j++) {
                 e = (Element) document.getElementsByTagName("div").item(j);
                 if (e.getAttribute("class").equals("wpetItem resultsListItem wrapper_wpet_offer agenda")) {
