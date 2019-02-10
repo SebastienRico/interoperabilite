@@ -36,7 +36,8 @@ public class DirectoryWatch {
                             //On créé le parser
                             ParserCSV parser = new ParserCSV();
                             //On appelle la méthode pour parser le fichier
-                            parser.parsingFichier(fullPath.toString());
+                            System.out.println("Fichier trouvé !!!!!!!!");
+                            //parser.parsingFichier(fullPath.toString());
                         }
                     }
                     key.reset();
