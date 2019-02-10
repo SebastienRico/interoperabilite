@@ -26,7 +26,7 @@ public class GetterInternetPage extends TimerTask {
         HttpURLConnection conn;
         try {
             conn = (HttpURLConnection) new URL(
-                    "http://www.office-tourisme-haut-lignon.com/").openConnection();
+                    "http://www.office-tourisme-haut-lignon.com/info_pratique/agenda/").openConnection();
             conn.connect();
             BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
 
