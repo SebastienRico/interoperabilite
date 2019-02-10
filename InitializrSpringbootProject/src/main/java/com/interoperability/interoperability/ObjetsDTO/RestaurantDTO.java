@@ -14,4 +14,12 @@ public class RestaurantDTO {
 
     public RestaurantDTO() {
     }
+    
+    @Override
+    public String toString(){
+        return "Restau " + typeRestaurant 
+                + " ouvert : " + horaireOuvertureRestaurant 
+                + " menu : " + menuRestaurant 
+                + " capacite : " + capaciteRestaurant;
+    }
 }

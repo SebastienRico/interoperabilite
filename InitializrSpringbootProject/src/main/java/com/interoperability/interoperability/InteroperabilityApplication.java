@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class InteroperabilityApplication {
 
-    public static final String DIRECTORY_PATH = "";
+    public static final String DIRECTORY_PATH = "import/";
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(InteroperabilityApplication.class, args);
