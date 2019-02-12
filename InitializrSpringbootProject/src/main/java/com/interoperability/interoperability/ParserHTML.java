@@ -6,6 +6,7 @@ import com.interoperability.interoperability.ObjetsDTO.AdresseDTO;
 import com.interoperability.interoperability.ObjetsDTO.EvenementsDTO;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -13,6 +14,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 //marche encore : div id = marche2937 > p > b (date) < b > (lieu) https://www.jours-de-marche.fr/43400-le-chambon-sur-lignon/
@@ -38,6 +41,17 @@ public class ParserHTML {
         AdresseDTO adresse = new AdresseDTO();
         try {
             constructeur = fabrique.newDocumentBuilder();
+            constructeur.setEntityResolver(new EntityResolver() {
+                @Override
+                public InputSource resolveEntity(String publicId, String systemId)
+                        throws SAXException, IOException {
+                    if (systemId.contains("loose.dtd")) {
+                        return new InputSource(new StringReader(""));
+                    } else {
+                        return null;
+                    }
+                }
+            });
             Document document = (Document) constructeur.parse(fichier);
             document.normalize();
             for (int j = 0; j < document.getElementsByTagName("div").getLength(); j++) {
