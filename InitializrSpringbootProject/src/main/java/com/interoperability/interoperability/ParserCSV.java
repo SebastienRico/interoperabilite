@@ -26,7 +26,6 @@ public class ParserCSV {
     public void parsingFichier(String filePath) {
         readFile(filePath);
         processParsing();
-        System.out.println(restaurant.toString());
     }
 
     private void readFile(String filePath) {
@@ -34,13 +33,11 @@ public class ParserCSV {
         try {
             File file = new File(filePath);
             fileReader = new FileReader(file);
-
             CSVReader csvReader = new CSVReader(fileReader, SEPARATOR);
-
             String[] nextLine = null;
+            
             while ((nextLine = csvReader.readNext()) != null) {
                 int size = nextLine.length;
-
                 // ligne vide
                 if (size == 0) {
                     continue;
@@ -49,7 +46,6 @@ public class ParserCSV {
                 if (debut.length() == 0 && size == 1) {
                     continue;
                 }
-
                 // ligne de commentaire
                 if (debut.startsWith("#")) {
                     continue;
@@ -58,19 +54,20 @@ public class ParserCSV {
             }
 
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "File not found", ex);
+            Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "File not found" + filePath, ex);
         } catch (IOException ex) {
-            Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "csvReader canot read", ex);
+            Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "csvReader canot read" + filePath, ex);
         } finally {
             try {
                 fileReader.close();
             } catch (IOException ex) {
-                Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "fileReader canot close", ex);
+                Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "fileReader canot close" + filePath, ex);
             }
         }
     }
 
     private void processParsing() {
+        restaurant = new RestaurantDTO();
         AdresseDTO adresse = new AdresseDTO();
         ContactDTO contact = new ContactDTO();
         for (String[] oneData : data) {
