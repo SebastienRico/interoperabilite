@@ -2,6 +2,7 @@ package com.interoperability.interoperability;
 //Cinema scoop : h3 class= tribe-events-month-event-title (plusieurs) https://www.cinema-scoop.fr/seances/categorie/seances/
 //marche : div class = contentstyle > p (je recup saison estivale aussi ? https://www.ville-lechambonsurlignon.fr/tourisme/les-marches-3.html#.XFlD
 
+import com.interoperability.interoperability.ObjetsDTO.ActivitesDTO;
 import com.interoperability.interoperability.ObjetsDTO.AdresseDTO;
 import com.interoperability.interoperability.ObjetsDTO.EvenementsDTO;
 import java.io.File;
@@ -18,14 +19,10 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-//marche encore : div id = marche2937 > p > b (date) < b > (lieu) https://www.jours-de-marche.fr/43400-le-chambon-sur-lignon/
-//marche toujours : div id = marcheNUMBER > p > strong (lieu) < (date) https://www.jours-de-marche.fr/43400-le-chambon-sur-lignon/
-//Locaux : div class = col-md-8 col-lg-8 col-xs-12 col-sm-8 inside > h2 (lieu)(plusieurs !!! dernier !=) <> p (plusieurs) < strong (nom) <> br (ville - telephone - Capacité capacite)
-//Locaux : dernier h2 : > p (plusieurs) > strong (- lieu) < (description)
-//Piscine : div id = content_size > div(2) > div (nom) < > div class = contentStyle > p > strong (adresse) <<>p > strong (adresse) << >p > strong (adresse) << > p > strong (telephone) <<> p > strong > em (description) <<<> p < >p > strong (horaires) <<>p (horaires again) <<<> table > tbody> tr (deuxieme) > td (2) > span (Entrée : prix) <>span (Carte 10 entrées : prix)
 public class ParserHTML {
 
     private EvenementsDTO evenement;
+    private ActivitesDTO activite;
 
     public ParserHTML() {
 
@@ -83,6 +80,37 @@ public class ParserHTML {
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(ParserHTML.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    //https://www.cinema-scoop.fr/seances/categorie/seances/
+    public void parserCinemaScoop(String path) {
+        this.activite = new ActivitesDTO();
+        File fichier = new File(path);
+        DocumentBuilderFactory fabrique = DocumentBuilderFactory.newInstance();
+        DocumentBuilder constructeur;
+        Element e;
+        AdresseDTO adresse = new AdresseDTO();
+        adresse.setNumeroRue(18);
+        adresse.setNomRue("rue de la poste");
+        adresse.setVille("Chambon-sur-Lignon");
+        this.activite.setAdresseActivite(adresse);
+        this.activite.setNomActivite("Séance de cinéma");
+        Document document;
+        try {
+            constructeur = fabrique.newDocumentBuilder();
+            document = (Document) constructeur.parse(fichier);
+            document.normalize();
+            for(int i = 0; i < document.getElementsByTagName("td").getLength(); i++){
+                e = (Element) document.getElementsByTagName("td").item(i);
+                if(e.getElementsByTagName("a").getLength() != 0){
+                    this.activite.setHoraireActivite(e.getElementsByTagName("a").item(0).getTextContent());
+                    this.activite.setDescriptionActivite(e.getElementsByTagName("a").item(1).getTextContent());
+                }
+            }
+        } catch (SAXException | IOException | ParserConfigurationException ex) {
+            Logger.getLogger(ParserHTML.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }
