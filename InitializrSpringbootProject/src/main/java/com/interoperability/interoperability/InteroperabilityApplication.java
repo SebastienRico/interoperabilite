@@ -8,13 +8,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class InteroperabilityApplication {
 
-    public static final String DIRECTORY_PATH = "import/";
+    public static final String DIRECTORY_PATH = ""/*"C:\\Users\\Sebastien\\Documents\\Fac\\S2\\Interoperabilite\\Projet\\InitializrSpringbootProject\\src\\main\\resources\\import"*/;
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(InteroperabilityApplication.class, args);
         try {
             
-            DirectoryWatch.StartFileWatcherThread(DIRECTORY_PATH);
+            DirectoryWatch.watchDirectoryPath(DIRECTORY_PATH);
         } catch (Exception ex) {
             Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
