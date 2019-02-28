@@ -1,10 +1,9 @@
 package com.interoperability.interoperability;
 
-import com.interoperability.interoperability.Model.Recherche;
 import java.util.ArrayList;
 import java.util.List;
 import com.interoperability.interoperability.ObjetsDTO.AdresseDTO;
-import com.interoperability.interoperability.ObjetsDTO.LocationForm;
+import com.interoperability.interoperability.ObjetsDTO.LocationFormDTO;
 import com.interoperability.interoperability.ObjetsDTO.LocationsDTO;
 import com.interoperability.interoperability.ObjetsDTO.OrganisateurDTO;
 import org.springframework.stereotype.Controller;
@@ -62,12 +61,12 @@ public class MainController {
     
     @RequestMapping("/addLocation")
     public String addLocation(Model m) {
-        m.addAttribute("location", new LocationForm());
+        m.addAttribute("location", new LocationFormDTO());
         return "formulaireLocation";
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/addLocation")
-    public String addNewLocation(@ModelAttribute("location") LocationForm location) {
+    public String addNewLocation(@ModelAttribute("location") LocationFormDTO location) {
         AdresseDTO adresseLocation = new AdresseDTO();
         adresseLocation.setNumeroRue(location.getNumeroRue());
         adresseLocation.setNomRue(location.getNomRue());

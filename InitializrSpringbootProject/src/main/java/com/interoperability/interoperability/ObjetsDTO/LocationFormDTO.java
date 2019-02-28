@@ -6,7 +6,7 @@ import lombok.Data;
  * Cette classe permet de récupérer les données du formulaire de Location.
  */
 @Data
-public class LocationForm {
+public class LocationFormDTO {
 
     private String descriptionLocation;
     private int capaciteLocation;
@@ -25,6 +25,6 @@ public class LocationForm {
     private String emailContact;
     private String siteWebContact;
 
-    public LocationForm() {
+    public LocationFormDTO() {
     }
 }
