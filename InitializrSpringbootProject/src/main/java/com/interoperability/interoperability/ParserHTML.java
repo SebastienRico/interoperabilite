@@ -2,9 +2,9 @@ package com.interoperability.interoperability;
 //Cinema scoop : h3 class= tribe-events-month-event-title (plusieurs) https://www.cinema-scoop.fr/seances/categorie/seances/
 //marche : div class = contentstyle > p (je recup saison estivale aussi ? https://www.ville-lechambonsurlignon.fr/tourisme/les-marches-3.html#.XFlD
 
-import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
-import com.interoperability.interoperability.objetsDTO.AdresseDTO;
-import com.interoperability.interoperability.objetsDTO.EvenementsDTO;
+import com.interoperability.interoperability.ObjetsDTO.ActivitesDTO;
+import com.interoperability.interoperability.ObjetsDTO.AdresseDTO;
+import com.interoperability.interoperability.ObjetsDTO.EvenementsDTO;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
