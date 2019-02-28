@@ -50,7 +50,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/addRecherche", method = RequestMethod.POST)
-    public String addVegetable(Model m, @ModelAttribute("rech") Recherche rec) {
+    public String addRecherche(Model m, @ModelAttribute("rech") Recherche rec) {
         rech = new ArrayList<Recherche>();
         String champs = rec.getChamps();
 
