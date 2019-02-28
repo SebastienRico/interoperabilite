@@ -2,10 +2,10 @@ package com.interoperability.interoperability;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.interoperability.interoperability.ObjetsDTO.AdresseDTO;
-import com.interoperability.interoperability.ObjetsDTO.LocationFormDTO;
-import com.interoperability.interoperability.ObjetsDTO.LocationsDTO;
-import com.interoperability.interoperability.ObjetsDTO.OrganisateurDTO;
+import com.interoperability.interoperability.objetsDTO.AdresseDTO;
+import com.interoperability.interoperability.objetsDTO.LocationFormDTO;
+import com.interoperability.interoperability.objetsDTO.LocationsDTO;
+import com.interoperability.interoperability.objetsDTO.OrganisateurDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;

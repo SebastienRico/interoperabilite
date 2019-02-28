@@ -1,9 +1,9 @@
 package com.interoperability.interoperability;
 
 import au.com.bytecode.opencsv.CSVReader;
-import com.interoperability.interoperability.ObjetsDTO.AdresseDTO;
-import com.interoperability.interoperability.ObjetsDTO.ContactDTO;
-import com.interoperability.interoperability.ObjetsDTO.RestaurantDTO;
+import com.interoperability.interoperability.objetsDTO.AdresseDTO;
+import com.interoperability.interoperability.objetsDTO.ContactDTO;
+import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
