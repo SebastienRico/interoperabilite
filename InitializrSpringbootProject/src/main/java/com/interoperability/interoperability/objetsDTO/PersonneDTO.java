@@ -1,5 +1,5 @@
 
-package com.interoperability.interoperability.objetsDTO;
+package com.interoperability.interoperability.ObjetsDTO;
 
 import lombok.Data;
 

@@ -1,5 +1,7 @@
 package com.interoperability.interoperability;
 
+import com.interoperability.interoperability.wikidata.WikidataLogger;
+import com.interoperability.interoperability.wikidata.WikidataReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.boot.SpringApplication;
@@ -13,7 +15,6 @@ public class InteroperabilityApplication {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(InteroperabilityApplication.class, args);
         try {
-            
             DirectoryWatch.watchDirectoryPath(DIRECTORY_PATH);
         } catch (Exception ex) {
             Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.SEVERE, null, ex);
