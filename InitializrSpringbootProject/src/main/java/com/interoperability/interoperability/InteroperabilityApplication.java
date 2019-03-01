@@ -1,7 +1,5 @@
 package com.interoperability.interoperability;
 
-import com.interoperability.interoperability.wikidata.WikidataLogger;
-import com.interoperability.interoperability.wikidata.WikidataReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.boot.SpringApplication;

@@ -16,7 +16,6 @@ public class WikidataReader {
         //For more examples give a look at: https://github.com/Wikidata/Wikidata-Toolkit-Examples/blob/master/src/examples/FetchOnlineDataExample.java
         
         WikibaseDataFetcher wbdf = new WikibaseDataFetcher(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
-        System.out.println("On est CO");
         ItemDocument item = null;
         try {
             item = (ItemDocument) wbdf.getEntityDocument("Q1342");

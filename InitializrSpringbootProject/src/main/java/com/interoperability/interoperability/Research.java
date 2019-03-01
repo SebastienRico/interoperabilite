@@ -9,21 +9,23 @@ import lombok.Data;
  * @author qbiss
  */
 @Data
-public class Recherche{
+public class Research{
     private String champs;
     
     @Id 
     @GeneratedValue
     private long id;
     
-    public Recherche(){
+    public Research(){
     }
     
-    public Recherche(String champs){
+    public Research(String champs){
         this.champs = champs;
     }
     
-    public void RequestQAnswer(){
-        
+    public String requestQAnswer(){
+        String qId = null;
+        // requêter avec le service QAnswer
+        return qId;
     }
 }
