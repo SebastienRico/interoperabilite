@@ -1,7 +1,7 @@
 package com.interoperability.interoperability;
 
 import au.com.bytecode.opencsv.CSVReader;
-import com.interoperability.interoperability.objetsDTO.AdresseDTO;
+import com.interoperability.interoperability.objetsDTO.AddressDTO;
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
 import java.io.File;
@@ -68,7 +68,7 @@ public class ParserCSV {
 
     private void processParsing() {
         restaurant = new RestaurantDTO();
-        AdresseDTO adresse = new AdresseDTO();
+        AddressDTO adresse = new AddressDTO();
         ContactDTO contact = new ContactDTO();
         for (String[] oneData : data) {
             if (oneData[0] != null && !oneData[0].isEmpty()) {

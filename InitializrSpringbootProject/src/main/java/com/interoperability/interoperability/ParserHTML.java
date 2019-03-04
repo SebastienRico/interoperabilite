@@ -3,8 +3,8 @@ package com.interoperability.interoperability;
 //marche : div class = contentstyle > p (je recup saison estivale aussi ? https://www.ville-lechambonsurlignon.fr/tourisme/les-marches-3.html#.XFlD
 
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
-import com.interoperability.interoperability.objetsDTO.AdresseDTO;
-import com.interoperability.interoperability.objetsDTO.EvenementsDTO;
+import com.interoperability.interoperability.objetsDTO.AddressDTO;
+import com.interoperability.interoperability.objetsDTO.EventDTO;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -21,7 +21,7 @@ import org.xml.sax.SAXException;
 
 public class ParserHTML {
 
-    private EvenementsDTO evenement;
+    private EventDTO evenement;
     private ActivitesDTO activite;
 
     public ParserHTML() {
@@ -30,12 +30,12 @@ public class ParserHTML {
     //Evenement : div class = wpetItem resultsListItem wrapper_wpet_offer agenda > a class = resultItemDetail (nom) < > p class = wpetItemContainerContentCity (lieu) < > p class = wpetItemContainerDate (date) < > li (ce que c'est) http://www.office-tourisme-haut-lignon.com/info_pratique/agenda/
 
     public void parserEvenementOfficeTourisme(String path) {
-        this.evenement = new EvenementsDTO();
+        this.evenement = new EventDTO();
         File fichier = new File(path);
         DocumentBuilderFactory fabrique = DocumentBuilderFactory.newInstance();
         DocumentBuilder constructeur;
         Element e, element;
-        AdresseDTO adresse = new AdresseDTO();
+        AddressDTO adresse = new AddressDTO();
         try {
             constructeur = fabrique.newDocumentBuilder();
             Document document = (Document) constructeur.parse(fichier);
@@ -78,7 +78,7 @@ public class ParserHTML {
         DocumentBuilderFactory fabrique = DocumentBuilderFactory.newInstance();
         DocumentBuilder constructeur;
         Element e;
-        AdresseDTO adresse = new AdresseDTO();
+        AddressDTO adresse = new AddressDTO();
         adresse.setNumeroRue(18);
         adresse.setNomRue("rue de la poste");
         adresse.setVille("Chambon-sur-Lignon");

@@ -1,13 +1,13 @@
-package com.interoperability.interoperability.objetsDTO;
+package com.interoperability.interoperability.ObjetsDTO;
 
 import lombok.Data;
 
 @Data
 public class RestaurantDTO {
 
-    private AddressDTO adresseRestaurant;
+    private AdresseDTO adresseRestaurant;
     private String typeRestaurant;
-    private Integer capaciteRestaurant;
+    private int capaciteRestaurant;
     private ContactDTO contactRestaurant;
     private String menuRestaurant;
     private String horaireOuvertureRestaurant; //Voir le format

@@ -1,9 +1,10 @@
-package com.interoperability.interoperability.objetsDTO;
+
+package com.interoperability.interoperability.ObjetsDTO;
 
 import lombok.Data;
 
 @Data
-public class ContactDTO extends PersonDTO{
+public class ContactDTO extends PersonneDTO{
     private String nomContact;
     private String faxContact;
     // max value 2.147.483.647 for an int (in theorie it's ok)

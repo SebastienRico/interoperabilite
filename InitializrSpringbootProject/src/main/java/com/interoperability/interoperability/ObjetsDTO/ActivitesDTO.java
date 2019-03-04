@@ -1,11 +1,10 @@
-package com.interoperability.interoperability.objetsDTO;
-
+package com.interoperability.interoperability.ObjetsDTO;
 import lombok.Data;
 
 @Data
 public class ActivitesDTO {
     
-    private AddressDTO adresseActivite;
+    private AdresseDTO adresseActivite;
     private String nomActivite;
     private String horaireActivite; //Voir format
     private int capaciteActivite;

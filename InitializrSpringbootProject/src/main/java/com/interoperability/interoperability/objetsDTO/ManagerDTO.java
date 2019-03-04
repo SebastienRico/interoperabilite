@@ -3,9 +3,9 @@ package com.interoperability.interoperability.objetsDTO;
 import lombok.Data;
 
 @Data
-public class GerantDTO extends PersonneDTO {
+public class ManagerDTO extends PersonDTO {
 
-    public GerantDTO() {
+    public ManagerDTO() {
 
     }
 }
