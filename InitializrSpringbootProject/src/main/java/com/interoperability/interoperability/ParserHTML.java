@@ -1,7 +1,5 @@
 package com.interoperability.interoperability;
 //Cinema scoop : h3 class= tribe-events-month-event-title (plusieurs) https://www.cinema-scoop.fr/seances/categorie/seances/
-//marche : div class = contentstyle > p (je recup saison estivale aussi ? https://www.ville-lechambonsurlignon.fr/tourisme/les-marches-3.html#.XFlD
-
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
 import com.interoperability.interoperability.objetsDTO.AddressDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
@@ -31,7 +29,7 @@ public class ParserHTML {
 
     public void parserEvenementOfficeTourisme(String path) {
         this.evenement = new EventDTO();
-        File fichier = new File(path);
+        File fichier = new File("agenda.html");
         DocumentBuilderFactory fabrique = DocumentBuilderFactory.newInstance();
         DocumentBuilder constructeur;
         Element e, element;
@@ -74,7 +72,7 @@ public class ParserHTML {
     //https://www.cinema-scoop.fr/seances/categorie/seances/
     public void parserCinemaScoop(String path) {
         this.activite = new ActivitesDTO();
-        File fichier = new File(path);
+        File fichier = new File("cinemaScoop.html");
         DocumentBuilderFactory fabrique = DocumentBuilderFactory.newInstance();
         DocumentBuilder constructeur;
         Element e;
