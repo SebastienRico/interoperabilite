@@ -38,22 +38,11 @@ public class ParserHTML {
         AdresseDTO adresse = new AdresseDTO();
         try {
             constructeur = fabrique.newDocumentBuilder();
-            constructeur.setEntityResolver(new EntityResolver() {
-                @Override
-                public InputSource resolveEntity(String publicId, String systemId)
-                        throws SAXException, IOException {
-                    if (systemId.contains("loose.dtd")) {
-                        return new InputSource(new StringReader(""));
-                    } else {
-                        return null;
-                    }
-                }
-            });
             Document document = (Document) constructeur.parse(fichier);
             document.normalize();
             for (int j = 0; j < document.getElementsByTagName("div").getLength(); j++) {
                 e = (Element) document.getElementsByTagName("div").item(j);
-                if (e.getAttribute("class").equals("wpetItem resultsListItem wrapper_wpet_offer agenda")) {
+                if (e.getAttribute("class").equals("wpetItemContainerContent")) {
                     this.evenement.setNomEvenement(e.getElementsByTagName("a").item(0).getTextContent());
                     for (int i = 0; i < e.getElementsByTagName("p").getLength(); i++) {
                         element = (Element) e.getElementsByTagName("p").item(i);
@@ -67,15 +56,15 @@ public class ParserHTML {
                         }
                     }
                     this.evenement.setTypeEvenement(e.getElementsByTagName("li").item(0).getTextContent());
+                    System.out.println("Evenement " + j);
+                    System.out.println("----------");
+                    System.out.println("Nom : " + this.evenement.getNomEvenement());
+                    System.out.println("Ville : " + this.evenement.getAdresseEvenement().getVille());
+                    System.out.println("Date : " + this.evenement.getDateDebutEvenement());
+                    System.out.println("Type : " + this.evenement.getTypeEvenement());
+                    System.out.println("----------");
+                    //TODO enregistrer evenement
                 }
-                System.out.println("Evenement " + j);
-                System.out.println("----------");
-                System.out.println("Nom : " + this.evenement.getNomEvenement());
-                System.out.println("Ville : " + this.evenement.getAdresseEvenement().getVille());
-                System.out.println("Date : " + this.evenement.getDateDebutEvenement());
-                System.out.println("Type : " + this.evenement.getTypeEvenement());
-                System.out.println("----------");
-                //TODO enregistrer evenement
             }
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(ParserHTML.class.getName()).log(Level.SEVERE, null, ex);
@@ -100,9 +89,9 @@ public class ParserHTML {
             constructeur = fabrique.newDocumentBuilder();
             document = (Document) constructeur.parse(fichier);
             document.normalize();
-            for(int i = 0; i < document.getElementsByTagName("td").getLength(); i++){
+            for (int i = 0; i < document.getElementsByTagName("td").getLength(); i++) {
                 e = (Element) document.getElementsByTagName("td").item(i);
-                if(e.getElementsByTagName("a").getLength() != 0){
+                if (e.getElementsByTagName("a").getLength() != 0) {
                     this.activite.setHoraireActivite(e.getElementsByTagName("a").item(0).getTextContent());
                     this.activite.setDescriptionActivite(e.getElementsByTagName("a").item(1).getTextContent());
                 }
