@@ -9,22 +9,22 @@ import lombok.Data;
 @Data
 public class RentalFormDTO extends ObjectDTO{
 
-    private String descriptionLocation;
-    private int capaciteLocation;
-    private String dateDebutLocation;
-    private String dateFinLocation;
-    private float tarifLocation;
-    private String disponibiliteLocation;
+    private String descriptionRent;
+    private int capacityRent;
+    private String dateStartRent;
+    private String dateEndRent;
+    private float priceRent;
+    private String disponibilityRent;
     
-    private int numeroRue;
-    private String nomRue;
-    private String ville;
+    private int numberStreet;
+    private String nameStreet;
+    private String city;
 
-    private String nomPersonne;
-    private String prenomPersonne;
-    private int telephoneContact;
-    private String emailContact;
-    private String siteWebContact;
+    private String namePerson;
+    private String firstnamePerson;
+    private int phoneContact;
+    private String mailContact;
+    private String websiteContact;
 
     public RentalFormDTO() {
     }

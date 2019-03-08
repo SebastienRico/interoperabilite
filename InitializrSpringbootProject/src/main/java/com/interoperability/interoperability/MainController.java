@@ -7,7 +7,7 @@ import com.interoperability.interoperability.objetsDTO.AddressDTO;
 import com.interoperability.interoperability.objetsDTO.RentalFormDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
 import com.interoperability.interoperability.objetsDTO.OrganizerDTO;
-import com.interoperability.interoperability.wikidata.WikidataRestaurantReader;
+import com.interoperability.interoperability.wikidata.wikidataReader.WikidataRestaurantReader;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +28,7 @@ public class MainController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String gotToIndex(Model m) {
         m.addAttribute("rech", new Research());
-        WikidataReader.readWikidataPage();
+        WikidataRestaurantReader.readRestaurantPage();
         return "index.html";
     }
 
@@ -83,28 +83,28 @@ public class MainController {
     @RequestMapping(method = RequestMethod.POST, path = "/addLocation")
     public String addNewLocation(@ModelAttribute("location") RentalFormDTO location) {
         AddressDTO adresseLocation = new AddressDTO();
-        adresseLocation.setNumeroRue(location.getNumeroRue());
-        adresseLocation.setNomRue(location.getNomRue());
-        adresseLocation.setVille(location.getVille());
+        adresseLocation.setNumberStreet(location.getNumberStreet());
+        adresseLocation.setNameStreet(location.getNameStreet());
+        adresseLocation.setCity(location.getCity());
         
         OrganizerDTO organisateurLocation = new OrganizerDTO();
-        organisateurLocation.setNomPersonne(location.getNomPersonne());
-        organisateurLocation.setPrenomPersonne(location.getPrenomPersonne());
-        organisateurLocation.setNomContact(location.getNomPersonne() + " " + location.getPrenomPersonne());
-        organisateurLocation.setTelephoneContact(location.getTelephoneContact());
-        organisateurLocation.setEmailContact(location.getEmailContact());
-        organisateurLocation.setSiteWebContact(location.getSiteWebContact());
+        organisateurLocation.setNamePerson(location.getNamePerson());
+        organisateurLocation.setFirstnamePerson(location.getFirstnamePerson());
+        organisateurLocation.setNameContact(location.getNamePerson()+ " " + location.getFirstnamePerson());
+        organisateurLocation.setPhoneContact(location.getPhoneContact());
+        organisateurLocation.setMailContact(location.getMailContact());
+        organisateurLocation.setWebsiteContact(location.getWebsiteContact());
         
         
         RentDTO locationDTO = new RentDTO();
-        locationDTO.setAdresseLocation(adresseLocation);
-        locationDTO.setOrganisateurLocation(organisateurLocation);
-        locationDTO.setDateDebutLocation(location.getDateDebutLocation());
-        locationDTO.setDateFinLocation(location.getDateFinLocation());
-        locationDTO.setCapaciteLocation(location.getCapaciteLocation());
-        locationDTO.setDisponibiliteLocation(location.getDisponibiliteLocation());
-        locationDTO.setTarifLocation(location.getTarifLocation());
-        locationDTO.setDescriptionLocation(location.getDescriptionLocation());
+        locationDTO.setAddressRent(adresseLocation);
+        locationDTO.setOrganizerRent(organisateurLocation);
+        locationDTO.setDateStartRent(location.getDateStartRent());
+        locationDTO.setDateEndRent(location.getDateEndRent());
+        locationDTO.setCapacityRent(location.getCapacityRent());
+        locationDTO.setDisponibilityRent(location.getDisponibilityRent());
+        locationDTO.setPriceRent(location.getPriceRent());
+        locationDTO.setDescriptionRent(location.getDescriptionRent());
         
        //Envoyer locationDTO au BOT qui écrit dans la WikiBase
        

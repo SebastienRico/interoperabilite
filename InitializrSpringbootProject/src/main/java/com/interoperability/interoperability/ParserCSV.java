@@ -73,7 +73,7 @@ public class ParserCSV {
         ContactDTO contact = new ContactDTO();
         for (String[] oneData : data) {
             if (oneData[0] != null && !oneData[0].isEmpty()) {
-                restaurant.setHoraireOuvertureRestaurant(oneData[0]);
+                restaurant.setScheduleRestaurant(oneData[0]);
             }
             if (oneData[1] != null && !oneData[1].isEmpty()) {
                 restaurant.setMenuRestaurant(oneData[1]);
@@ -81,7 +81,7 @@ public class ParserCSV {
             if (oneData[2] != null && !oneData[2].isEmpty()) {
                 try {
                     int capacite = Integer.parseInt(oneData[2]);
-                    restaurant.setCapaciteRestaurant(capacite);
+                    restaurant.setCapacityRestaurant(capacite);
                 } catch (Exception ex) {
                     Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "Capacity is not number", ex);
                 }
@@ -89,39 +89,39 @@ public class ParserCSV {
             if (oneData[3] != null && !oneData[3].isEmpty()) {
                 try {
                     int numeroRue = Integer.parseInt(oneData[3]);
-                    adresse.setNumeroRue(numeroRue);
+                    adresse.setNumberStreet(numeroRue);
                 } catch (Exception ex) {
                     Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "Address number is not number", ex);
                 }
             }
             if (oneData[4] != null && !oneData[4].isEmpty()) {
-                adresse.setNomRue(oneData[4]);
+                adresse.setNameStreet(oneData[4]);
             }
             if (oneData[5] != null && !oneData[5].isEmpty()) {
-                adresse.setVille(oneData[5]);
+                adresse.setCity(oneData[5]);
             }
             if (oneData[6] != null && !oneData[6].isEmpty()) {
                 restaurant.setTypeRestaurant(oneData[6]);
             }
             if (oneData[7] != null && !oneData[7].isEmpty()) {
-                contact.setNomPersonne(oneData[7]);
+                contact.setNamePerson(oneData[7]);
             }
             if (oneData[8] != null && !oneData[8].isEmpty()) {
                 try {
                     int tel = Integer.parseInt(oneData[8]);
-                    contact.setTelephoneContact(tel);
+                    contact.setPhoneContact(tel);
                 } catch (Exception ex) {
                     Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "Tel number is not number", ex);
                 }
             }
             if (oneData[9] != null && !oneData[9].isEmpty()) {
-                contact.setEmailContact(oneData[9]);
+                contact.setMailContact(oneData[9]);
             }
             if (oneData[10] != null && !oneData[10].isEmpty()) {
                 contact.setFaxContact(oneData[10]);
             }
             if (oneData[11] != null && !oneData[11].isEmpty()) {
-                contact.setSiteWebContact(oneData[11]);
+                contact.setWebsiteContact(oneData[11]);
             }
             if (oneData[12] != null && !oneData[12].isEmpty()) {
                 restaurant.setNameRestaurant(oneData[12]);
@@ -130,7 +130,7 @@ public class ParserCSV {
             Sexe sexe = (sexeStr.equalsIgnoreCase("F")) ? FEMME : HOMME;
             Date dateNaissance = dateFormat.parse(dateNaissanceStr);*/
         }
-        restaurant.setAdresseRestaurant(adresse);
+        restaurant.setAddressRestaurant(adresse);
         restaurant.setContactRestaurant(contact);
         WikidataFacade.writePage(restaurant);
     }

@@ -6,8 +6,8 @@ import lombok.Data;
 
 @Data
 public class PersonDTO extends ObjectDTO{
-    private String nomPersonne;
-    private String prenomPersonne;
+    private String namePerson;
+    private String firstnamePerson;
 
     public PersonDTO() {
     }

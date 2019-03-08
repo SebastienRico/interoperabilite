@@ -6,7 +6,6 @@ import com.interoperability.interoperability.objetsDTO.AddressDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -14,8 +13,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class ParserHTML {
@@ -42,26 +39,26 @@ public class ParserHTML {
             for (int j = 0; j < document.getElementsByTagName("div").getLength(); j++) {
                 e = (Element) document.getElementsByTagName("div").item(j);
                 if (e.getAttribute("class").equals("wpetItemContainerContent")) {
-                    this.evenement.setNomEvenement(e.getElementsByTagName("a").item(0).getTextContent().trim());
+                    this.evenement.setNameEvent(e.getElementsByTagName("a").item(0).getTextContent().trim());
                     for (int i = 0; i < e.getElementsByTagName("p").getLength(); i++) {
                         element = (Element) e.getElementsByTagName("p").item(i);
                         if (element.getAttribute("class").equals("wpetItemContainerContentCity")) {
-                            adresse.setVille(element.getTextContent().trim());
-                            this.evenement.setAdresseEvenement(adresse);
+                            adresse.setCity(element.getTextContent().trim());
+                            this.evenement.setAddressEvent(adresse);
                         }
                         if (element.getAttribute("class").equals("wpetItemContainerContentDate")) {
-                            this.evenement.setDateDebutEvenement(element.getTextContent().trim());
-                            this.evenement.setDateFinEvenement(element.getTextContent().trim());
+                            this.evenement.setDateStartEvent(element.getTextContent().trim());
+                            this.evenement.setDateEndEvent(element.getTextContent().trim());
                         }
                     }
                     Element type = (Element) e.getElementsByTagName("div").item(0);
-                    this.evenement.setTypeEvenement(type.getTextContent().trim());
+                    this.evenement.setTypeEvent(type.getTextContent().trim());
                     System.out.println("Evenement " + j);
                     System.out.println("----------");
-                    System.out.println("Nom : " + this.evenement.getNomEvenement());
-                    System.out.println("Ville : " + this.evenement.getAdresseEvenement().getVille());
-                    System.out.println("Date : " + this.evenement.getDateDebutEvenement());
-                    System.out.println("Type : " + this.evenement.getTypeEvenement());
+                    System.out.println("Nom : " + this.evenement.getNameEvent());
+                    System.out.println("Ville : " + this.evenement.getAddressEvent().getCity());
+                    System.out.println("Date : " + this.evenement.getDateStartEvent());
+                    System.out.println("Type : " + this.evenement.getTypeEvent());
                     System.out.println("----------");
                     //TODO enregistrer evenement
                 }
@@ -79,11 +76,11 @@ public class ParserHTML {
         DocumentBuilder constructeur;
         Element e;
         AddressDTO adresse = new AddressDTO();
-        adresse.setNumeroRue(18);
-        adresse.setNomRue("rue de la poste");
-        adresse.setVille("Chambon-sur-Lignon");
-        this.activite.setAdresseActivite(adresse);
-        this.activite.setNomActivite("Séance de cinéma");
+        adresse.setNumberStreet(18);
+        adresse.setNameStreet("rue de la poste");
+        adresse.setCity("Chambon-sur-Lignon");
+        this.activite.setAddressActivity(adresse);
+        this.activite.setNameActivity("Séance de cinéma");
         Document document;
         try {
             constructeur = fabrique.newDocumentBuilder();
@@ -92,12 +89,12 @@ public class ParserHTML {
             for (int i = 0; i < document.getElementsByTagName("td").getLength(); i++) {
                 e = (Element) document.getElementsByTagName("td").item(i);
                 if (e.getElementsByTagName("a").getLength() != 0) {
-                    this.activite.setHoraireActivite(e.getAttribute("data-day"));
-                    this.activite.setDescriptionActivite(e.getElementsByTagName("a").item(1).getTextContent());
+                    this.activite.setScheduleActivity(e.getAttribute("data-day"));
+                    this.activite.setDescriptionActivity(e.getElementsByTagName("a").item(1).getTextContent());
                 }
                 System.out.println("Seance de Cinema :");
-                System.out.println("Horaire : " + this.activite.getHoraireActivite());
-                System.out.println("Description : " + this.activite.getDescriptionActivite());
+                System.out.println("Horaire : " + this.activite.getScheduleActivity());
+                System.out.println("Description : " + this.activite.getDescriptionActivity());
                 System.out.println("-------------------------");
             }
         } catch (SAXException | IOException | ParserConfigurationException ex) {

@@ -6,13 +6,13 @@ import lombok.Data;
 @Data
 public class RestaurantDTO extends ObjectDTO{
 
+    private AddressDTO addressRestaurant;
     private String nameRestaurant;
-    private AddressDTO adresseRestaurant;
     private String typeRestaurant;
-    private Integer capaciteRestaurant;
+    private Integer capacityRestaurant;
     private ContactDTO contactRestaurant;
     private String menuRestaurant;
-    private String horaireOuvertureRestaurant; //Voir le format
+    private String scheduleRestaurant; //Voir le format
 
     public RestaurantDTO() {
     }
@@ -20,8 +20,8 @@ public class RestaurantDTO extends ObjectDTO{
     @Override
     public String toString(){
         return "Restau " + typeRestaurant 
-                + " ouvert : " + horaireOuvertureRestaurant 
+                + " ouvert : " + scheduleRestaurant 
                 + " menu : " + menuRestaurant 
-                + " capacite : " + capaciteRestaurant;
+                + " capacite : " + capacityRestaurant;
     }
 }
