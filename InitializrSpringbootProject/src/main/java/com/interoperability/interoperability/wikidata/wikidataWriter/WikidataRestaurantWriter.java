@@ -59,7 +59,7 @@ public class WikidataRestaurantWriter {
         
         try {
             // Add the property address
-            if(restaurant.getAdresseRestaurant() != null){
+            if(restaurant.getAddressRestaurant() != null){
                 propertyAddress = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_ADDRESS);
             }
             // Add the property type
