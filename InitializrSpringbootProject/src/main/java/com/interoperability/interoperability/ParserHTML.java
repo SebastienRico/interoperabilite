@@ -1,5 +1,6 @@
 package com.interoperability.interoperability;
 //Cinema scoop : h3 class= tribe-events-month-event-title (plusieurs) https://www.cinema-scoop.fr/seances/categorie/seances/
+
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
 import com.interoperability.interoperability.objetsDTO.AddressDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
@@ -41,19 +42,20 @@ public class ParserHTML {
             for (int j = 0; j < document.getElementsByTagName("div").getLength(); j++) {
                 e = (Element) document.getElementsByTagName("div").item(j);
                 if (e.getAttribute("class").equals("wpetItemContainerContent")) {
-                    this.evenement.setNomEvenement(e.getElementsByTagName("a").item(0).getTextContent());
+                    this.evenement.setNomEvenement(e.getElementsByTagName("a").item(0).getTextContent().trim());
                     for (int i = 0; i < e.getElementsByTagName("p").getLength(); i++) {
                         element = (Element) e.getElementsByTagName("p").item(i);
                         if (element.getAttribute("class").equals("wpetItemContainerContentCity")) {
-                            adresse.setVille(element.getTextContent());
+                            adresse.setVille(element.getTextContent().trim());
                             this.evenement.setAdresseEvenement(adresse);
                         }
                         if (element.getAttribute("class").equals("wpetItemContainerContentDate")) {
-                            this.evenement.setDateDebutEvenement(element.getTextContent());
-                            this.evenement.setDateFinEvenement(element.getTextContent());
+                            this.evenement.setDateDebutEvenement(element.getTextContent().trim());
+                            this.evenement.setDateFinEvenement(element.getTextContent().trim());
                         }
                     }
-                    this.evenement.setTypeEvenement(e.getElementsByTagName("li").item(0).getTextContent());
+                    Element type = (Element) e.getElementsByTagName("div").item(0);
+                    this.evenement.setTypeEvenement(type.getTextContent().trim());
                     System.out.println("Evenement " + j);
                     System.out.println("----------");
                     System.out.println("Nom : " + this.evenement.getNomEvenement());
@@ -90,9 +92,13 @@ public class ParserHTML {
             for (int i = 0; i < document.getElementsByTagName("td").getLength(); i++) {
                 e = (Element) document.getElementsByTagName("td").item(i);
                 if (e.getElementsByTagName("a").getLength() != 0) {
-                    this.activite.setHoraireActivite(e.getElementsByTagName("a").item(0).getTextContent());
+                    this.activite.setHoraireActivite(e.getAttribute("data-day"));
                     this.activite.setDescriptionActivite(e.getElementsByTagName("a").item(1).getTextContent());
                 }
+                System.out.println("Seance de Cinema :");
+                System.out.println("Horaire : " + this.activite.getHoraireActivite());
+                System.out.println("Description : " + this.activite.getDescriptionActivite());
+                System.out.println("-------------------------");
             }
         } catch (SAXException | IOException | ParserConfigurationException ex) {
             Logger.getLogger(ParserHTML.class.getName()).log(Level.SEVERE, null, ex);
