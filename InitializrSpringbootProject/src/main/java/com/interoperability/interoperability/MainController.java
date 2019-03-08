@@ -6,6 +6,9 @@ import com.interoperability.interoperability.ObjetsDTO.AdresseDTO;
 import com.interoperability.interoperability.ObjetsDTO.LocationFormDTO;
 import com.interoperability.interoperability.ObjetsDTO.LocationsDTO;
 import com.interoperability.interoperability.ObjetsDTO.OrganisateurDTO;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,10 +53,18 @@ public class MainController {
     }
 
     @RequestMapping(value = "/addRecherche", method = RequestMethod.POST)
-    public String addVegetable(Model m, @ModelAttribute("rech") Recherche rec) {
-        rech = new ArrayList<Recherche>();
+    public String addRecherche(Model m, @ModelAttribute("rech") Recherche rec){
+        rech = new ArrayList<>();
         String champs = rec.getChamps();
-
+        
+        String command = "curl --data \"query="+champs+" http://qanswer-core1.univ-st-etienne.fr/gerbil --kb \"http://qanswer-svc1.univ-st-etienne.fr/wiki/Main_Page\"";
+        System.out.println(command);
+        /*
+        try {
+            Process process = Runtime.getRuntime().exec(command);
+        } catch (IOException ex) {
+        }*/
+        
         Recherche r = new Recherche(champs);
         rech.add(r);
         return "redirect:/Recherche";
