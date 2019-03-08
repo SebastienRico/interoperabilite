@@ -7,6 +7,7 @@ import com.interoperability.interoperability.objetsDTO.AddressDTO;
 import com.interoperability.interoperability.objetsDTO.RentalFormDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
 import com.interoperability.interoperability.objetsDTO.OrganizerDTO;
+import com.interoperability.interoperability.wikidata.WikidataReader;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ public class MainController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String gotToIndex(Model m) {
         m.addAttribute("rech", new Research());
+        WikidataReader.readWikidataPage();
         return "index.html";
     }
 
@@ -52,11 +54,11 @@ public class MainController {
     }
 
     @RequestMapping(value = "/addRecherche", method = RequestMethod.POST)
-    public String addRecherche(Model m, @ModelAttribute("rech") Recherche rec){
+    public String addRecherche(Model m, @ModelAttribute("rech") Research rec){
         rech = new ArrayList<>();
         String champs = rec.getChamps();
         
-        String command = "curl --data \"query="+champs+" http://qanswer-core1.univ-st-etienne.fr/gerbil --kb \"http://qanswer-svc1.univ-st-etienne.fr/wiki/Main_Page\"";
+        String command = "curl --data \"query="+champs+" kb=http://qanswer-svc1.univ-st-etienne.fr/wiki/Main_Page http://qanswer-core1.univ-st-etienne.fr/gerbil";
         System.out.println(command);
         /*
         try {
@@ -64,7 +66,7 @@ public class MainController {
         } catch (IOException ex) {
         }*/
         
-        Recherche r = new Recherche(champs);
+        Research r = new Research(champs);
         rech.add(r);
         return "redirect:/Recherche";
     }
