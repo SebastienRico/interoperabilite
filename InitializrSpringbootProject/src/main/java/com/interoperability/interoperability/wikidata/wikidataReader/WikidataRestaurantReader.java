@@ -1,5 +1,7 @@
-package com.interoperability.interoperability.wikidata;
+package com.interoperability.interoperability.wikidata.wikidataReader;
 
+import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
+import com.interoperability.interoperability.wikidata.WikidataLogger;
 import static com.interoperability.interoperability.wikidata.WikidataLogger.WikibaseConnexion;
 import java.util.List;
 import java.util.logging.Level;
@@ -10,9 +12,10 @@ import org.wikidata.wdtk.wikibaseapi.WbSearchEntitiesResult;
 import org.wikidata.wdtk.wikibaseapi.WikibaseDataFetcher;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
-public class WikidataReader {
+public class WikidataRestaurantReader {
     
-    public static void readWikidataPage(){
+
+    public static void readRestaurantPage(RestaurantDTO restaurant){
         //Example for getting information about an entity, here the example of The Laboratoire Huber Curien, Q900
         //For more examples give a look at: https://github.com/Wikidata/Wikidata-Toolkit-Examples/blob/master/src/examples/FetchOnlineDataExample.java
         /*
@@ -26,7 +29,7 @@ public class WikidataReader {
         try {
             item = (ItemDocument) wbdf.getEntityDocument("Q50");
         } catch (MediaWikiApiErrorException ex) {
-            Logger.getLogger(WikidataReader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println("Entity ID " + item.getEntityId());
         System.out.println("Labels " + item.getLabels());
@@ -39,7 +42,7 @@ public class WikidataReader {
         try {
             entities = wbdf.searchEntities("Pierre Maret");
         } catch (MediaWikiApiErrorException ex) {
-            Logger.getLogger(WikidataReader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
         for (WbSearchEntitiesResult entity : entities){
             System.out.println(entity.getEntityId());

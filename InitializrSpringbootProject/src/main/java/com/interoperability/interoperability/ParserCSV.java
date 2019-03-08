@@ -4,6 +4,7 @@ import au.com.bytecode.opencsv.CSVReader;
 import com.interoperability.interoperability.objetsDTO.AddressDTO;
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
+import com.interoperability.interoperability.wikidata.WikidataFacade;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -122,11 +123,15 @@ public class ParserCSV {
             if (oneData[11] != null && !oneData[11].isEmpty()) {
                 contact.setSiteWebContact(oneData[11]);
             }
+            if (oneData[12] != null && !oneData[12].isEmpty()) {
+                restaurant.setNameRestaurant(oneData[12]);
+            }
             /*Integer classe = Integer.parseInt(classeStr);
             Sexe sexe = (sexeStr.equalsIgnoreCase("F")) ? FEMME : HOMME;
             Date dateNaissance = dateFormat.parse(dateNaissanceStr);*/
         }
         restaurant.setAdresseRestaurant(adresse);
         restaurant.setContactRestaurant(contact);
+        WikidataFacade.writePage(restaurant);
     }
 }

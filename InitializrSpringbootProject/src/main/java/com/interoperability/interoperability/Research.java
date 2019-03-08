@@ -9,23 +9,27 @@ import lombok.Data;
  * @author qbiss
  */
 @Data
-public class Research{
+public class Research {
+
     private String champs;
-    
-    @Id 
+
+    @Id
     @GeneratedValue
     private long id;
-    
-    public Research(){
+
+    public Research() {
     }
-    
-    public Research(String champs){
+
+    public Research(String champs) {
         this.champs = champs;
     }
-    
-    public String requestQAnswer(){
+
+    public String requestQAnswer(String request) {
         String qId = null;
-        // requêter avec le service QAnswer
+        // request the QAnswer service with the good one curl function
+        String command = "curl -X GET https://postman-echo.com/get?foo1=bar1&foo2=bar2";
+        ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
+        // get the qId
         return qId;
     }
 }
