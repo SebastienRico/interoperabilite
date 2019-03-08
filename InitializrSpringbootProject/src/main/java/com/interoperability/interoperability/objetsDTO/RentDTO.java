@@ -1,11 +1,12 @@
 
 package com.interoperability.interoperability.objetsDTO;
+import com.interoperability.interoperability.ObjectDTO;
 
 import java.sql.Date;
 import lombok.Data;
 
 @Data
-public class RentDTO {
+public class RentDTO extends ObjectDTO{
     private String descriptionLocation;
     private AddressDTO adresseLocation;
     private int capaciteLocation;

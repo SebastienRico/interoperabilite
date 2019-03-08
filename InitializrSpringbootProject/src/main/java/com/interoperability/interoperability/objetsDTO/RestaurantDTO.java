@@ -1,9 +1,10 @@
 package com.interoperability.interoperability.objetsDTO;
+import com.interoperability.interoperability.ObjectDTO;
 
 import lombok.Data;
 
 @Data
-public class RestaurantDTO {
+public class RestaurantDTO extends ObjectDTO{
 
     private AddressDTO adresseRestaurant;
     private String typeRestaurant;

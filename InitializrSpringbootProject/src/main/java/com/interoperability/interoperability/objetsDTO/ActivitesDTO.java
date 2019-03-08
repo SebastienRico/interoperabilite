@@ -1,9 +1,10 @@
 package com.interoperability.interoperability.objetsDTO;
+import com.interoperability.interoperability.ObjectDTO;
 
 import lombok.Data;
 
 @Data
-public class ActivitesDTO {
+public class ActivitesDTO extends ObjectDTO{
     
     private AddressDTO adresseActivite;
     private String nomActivite;

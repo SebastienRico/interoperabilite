@@ -1,10 +1,11 @@
 
 package com.interoperability.interoperability.objetsDTO;
+import com.interoperability.interoperability.ObjectDTO;
 
 import lombok.Data;
 
 @Data
-public class EventDTO {
+public class EventDTO extends ObjectDTO{
     private String typeEvenement;
     private AddressDTO adresseEvenement;
     private int capaciteEvenement;
