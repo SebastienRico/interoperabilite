@@ -15,7 +15,7 @@ import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 public class WikidataRestaurantReader {
     
 
-    public static void readRestaurantPage(RestaurantDTO restaurant){
+    public static void readRestaurantPage(){
         //Example for getting information about an entity, here the example of The Laboratoire Huber Curien, Q900
         //For more examples give a look at: https://github.com/Wikidata/Wikidata-Toolkit-Examples/blob/master/src/examples/FetchOnlineDataExample.java
         /*
