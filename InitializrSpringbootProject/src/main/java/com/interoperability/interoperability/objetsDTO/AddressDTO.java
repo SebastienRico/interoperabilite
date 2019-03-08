@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 public class AddressDTO extends ObjectDTO{
-    private Integer numeroRue;
-    private String nomRue;
-    private String ville;
+    private Integer numberStreet;
+    private String nameStreet;
+    private String city;
     
     public AddressDTO(){
         
@@ -16,10 +16,10 @@ public class AddressDTO extends ObjectDTO{
     @Override
     public String toString(){
         String result = "";
-        if(nomRue == null || nomRue.isEmpty() || ville == null || ville.isEmpty()){
+        if(nameStreet == null || nameStreet.isEmpty() || city == null || city.isEmpty()){
             return result;
         } else {
-            result = numeroRue.toString() + " " + nomRue + "\n" + ville;
+            result = numberStreet.toString() + " " + nameStreet + "\n" + city;
         }
         return result;
     }

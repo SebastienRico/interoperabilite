@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 public class TouristOfficeDTO extends ObjectDTO{
-    private AddressDTO adresseOffice;
-    private String periodeOuvertureOffice; //Voir format
-    private String horaireOuvertureOffice; //Voir format
+    private AddressDTO addressOffice;
+    private String openingPeriodOffice; //Voir format
+    private String openingHoursOffice; //Voir format
     
     public TouristOfficeDTO(){
         
