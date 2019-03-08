@@ -1,5 +1,5 @@
 package com.interoperability.interoperability;
 
-public class ObjetDTO {
+public class ObjectDTO {
     
 }

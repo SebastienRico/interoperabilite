@@ -2,13 +2,12 @@ package com.interoperability.interoperability;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.interoperability.interoperability.ObjetsDTO.AdresseDTO;
-import com.interoperability.interoperability.ObjetsDTO.LocationFormDTO;
-import com.interoperability.interoperability.ObjetsDTO.LocationsDTO;
-import com.interoperability.interoperability.ObjetsDTO.OrganisateurDTO;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import com.interoperability.interoperability.objetsDTO.AddressDTO;
+import com.interoperability.interoperability.objetsDTO.RentalFormDTO;
+import com.interoperability.interoperability.objetsDTO.RentDTO;
+import com.interoperability.interoperability.objetsDTO.OrganizerDTO;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class MainController {
 
-    private static List<Recherche> rech;
+    private static List<Research> rech;
 
     /*@RequestMapping(value = "/...")
     public String goTo...(){
@@ -27,13 +26,13 @@ public class MainController {
     
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String gotToIndex(Model m) {
-        m.addAttribute("rech", new Recherche());
+        m.addAttribute("rech", new Research());
         return "index.html";
     }
 
     @RequestMapping(value = "/Recherche", method = RequestMethod.GET)
     public String goToRecherche(Model m) {
-        m.addAttribute("rech", new Recherche());
+        m.addAttribute("rech", new Research());
         m.addAttribute("rec",rech);
 
         return "recherche.html";
@@ -41,14 +40,14 @@ public class MainController {
 
     @RequestMapping(value = "/addRecherche", method = RequestMethod.GET)
     public String showRecherche(Model m) {
-        m.addAttribute("rech", new Recherche());
+        m.addAttribute("rech", new Research());
 
         return "addRecherche";
     }
     @RequestMapping(value="/pageWikidata")
     public String goToPageWikidata(Model m){
         m.addAttribute("rec",rech);
-        m.addAttribute("rech", new Recherche());
+        m.addAttribute("rech", new Research());
         return "pageWikidata";
     }
 
@@ -72,18 +71,18 @@ public class MainController {
     
     @RequestMapping("/addLocation")
     public String addLocation(Model m) {
-        m.addAttribute("location", new LocationFormDTO());
+        m.addAttribute("location", new RentalFormDTO());
         return "formulaireLocation";
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/addLocation")
-    public String addNewLocation(@ModelAttribute("location") LocationFormDTO location) {
-        AdresseDTO adresseLocation = new AdresseDTO();
+    public String addNewLocation(@ModelAttribute("location") RentalFormDTO location) {
+        AddressDTO adresseLocation = new AddressDTO();
         adresseLocation.setNumeroRue(location.getNumeroRue());
         adresseLocation.setNomRue(location.getNomRue());
         adresseLocation.setVille(location.getVille());
         
-        OrganisateurDTO organisateurLocation = new OrganisateurDTO();
+        OrganizerDTO organisateurLocation = new OrganizerDTO();
         organisateurLocation.setNomPersonne(location.getNomPersonne());
         organisateurLocation.setPrenomPersonne(location.getPrenomPersonne());
         organisateurLocation.setNomContact(location.getNomPersonne() + " " + location.getPrenomPersonne());
@@ -92,7 +91,7 @@ public class MainController {
         organisateurLocation.setSiteWebContact(location.getSiteWebContact());
         
         
-        LocationsDTO locationDTO = new LocationsDTO();
+        RentDTO locationDTO = new RentDTO();
         locationDTO.setAdresseLocation(adresseLocation);
         locationDTO.setOrganisateurLocation(organisateurLocation);
         locationDTO.setDateDebutLocation(location.getDateDebutLocation());

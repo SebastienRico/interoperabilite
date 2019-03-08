@@ -1,4 +1,5 @@
-package com.interoperability.interoperability.ObjetsDTO;
+package com.interoperability.interoperability.objetsDTO;
+import com.interoperability.interoperability.ObjectDTO;
 
 import lombok.Data;
 
@@ -6,7 +7,7 @@ import lombok.Data;
  * Cette classe permet de récupérer les données du formulaire de Location.
  */
 @Data
-public class LocationFormDTO {
+public class RentalFormDTO extends ObjectDTO{
 
     private String descriptionLocation;
     private int capaciteLocation;
@@ -25,6 +26,6 @@ public class LocationFormDTO {
     private String emailContact;
     private String siteWebContact;
 
-    public LocationFormDTO() {
+    public RentalFormDTO() {
     }
 }

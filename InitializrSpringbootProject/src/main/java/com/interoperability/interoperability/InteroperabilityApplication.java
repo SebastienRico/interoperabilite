@@ -13,7 +13,6 @@ public class InteroperabilityApplication {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(InteroperabilityApplication.class, args);
         try {
-            
             DirectoryWatch.watchDirectoryPath(DIRECTORY_PATH);
         } catch (Exception ex) {
             Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.SEVERE, null, ex);

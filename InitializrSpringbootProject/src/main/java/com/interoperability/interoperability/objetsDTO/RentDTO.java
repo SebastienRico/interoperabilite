@@ -1,21 +1,22 @@
 
-package com.interoperability.interoperability.ObjetsDTO;
+package com.interoperability.interoperability.objetsDTO;
+import com.interoperability.interoperability.ObjectDTO;
 
 import java.sql.Date;
 import lombok.Data;
 
 @Data
-public class LocationsDTO {
+public class RentDTO extends ObjectDTO{
     private String descriptionLocation;
-    private AdresseDTO adresseLocation;
+    private AddressDTO adresseLocation;
     private int capaciteLocation;
     private String dateDebutLocation; //Le type a definir
     private String dateFinLocation;
     private float tarifLocation;
     private String disponibiliteLocation; //Type a changer, a voir avec les autres groupes ?
-    private OrganisateurDTO organisateurLocation;
+    private OrganizerDTO organisateurLocation;
     
-    public LocationsDTO() {
+    public RentDTO() {
     }
     
     
