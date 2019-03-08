@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class MainController {
 
-    private static List<Research> rech;
+    private static List<Research> research;
 
     /*@RequestMapping(value = "/...")
     public String goTo...(){
@@ -30,30 +30,30 @@ public class MainController {
         return "index.html";
     }
 
-    @RequestMapping(value = "/Recherche", method = RequestMethod.GET)
-    public String goToRecherche(Model m) {
+    @RequestMapping(value = "/Research", method = RequestMethod.GET)
+    public String goToResearch(Model m) {
         m.addAttribute("rech", new Research());
-        m.addAttribute("rec",rech);
+        m.addAttribute("rec",research);
 
         return "recherche.html";
     }
 
-    @RequestMapping(value = "/addRecherche", method = RequestMethod.GET)
-    public String showRecherche(Model m) {
+    @RequestMapping(value = "/addResearch", method = RequestMethod.GET)
+    public String showResearch(Model m) {
         m.addAttribute("rech", new Research());
 
-        return "addRecherche";
+        return "addResearch";
     }
     @RequestMapping(value="/pageWikidata")
     public String goToPageWikidata(Model m){
-        m.addAttribute("rec",rech);
+        m.addAttribute("rec",research);
         m.addAttribute("rech", new Research());
         return "pageWikidata";
     }
 
-    @RequestMapping(value = "/addRecherche", method = RequestMethod.POST)
-    public String addRecherche(Model m, @ModelAttribute("rech") Recherche rec){
-        rech = new ArrayList<>();
+    @RequestMapping(value = "/addResearch", method = RequestMethod.POST)
+    public String addResearch(Model m, @ModelAttribute("rech") Research rec){
+        research = new ArrayList<>();
         String champs = rec.getChamps();
         
         String command = "curl --data \"query="+champs+" http://qanswer-core1.univ-st-etienne.fr/gerbil --kb \"http://qanswer-svc1.univ-st-etienne.fr/wiki/Main_Page\"";
@@ -64,9 +64,9 @@ public class MainController {
         } catch (IOException ex) {
         }*/
         
-        Recherche r = new Recherche(champs);
-        rech.add(r);
-        return "redirect:/Recherche";
+        Research r = new Research(champs);
+        research.add(r);
+        return "redirect:/Research";
     }
     
     @RequestMapping("/addLocation")
