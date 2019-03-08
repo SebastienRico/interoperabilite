@@ -1,5 +1,6 @@
-package com.interoperability.interoperability.wikidata;
+package com.interoperability.interoperability.wikidata.wikidataWriter;
 
+import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,9 +13,9 @@ import org.wikidata.wdtk.datamodel.interfaces.Statement;
 import org.wikidata.wdtk.wikibaseapi.WikibaseDataEditor;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
-public class WikidataWritter {
+public class WikidataRestaurantWriter {
 
-    public void writeWikidataPage() {
+    public static void writeRestaurantPage(RestaurantDTO restaurant) {
         //Example for writing information about an entity, here the example of creating Florance Garrelie working at Laboratoire Huber Curien
         //For more examples give a look at: https://github.com/Wikidata/Wikidata-Toolkit-Examples/blob/master/src/examples/EditOnlineDataExample.java
         /**WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
