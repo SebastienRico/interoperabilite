@@ -1,9 +1,8 @@
 package com.interoperability.interoperability.dataAccess;
 
-import java.io.File;
+import com.interoperability.interoperability.utilities.Util;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -11,72 +10,47 @@ import java.util.logging.Logger;
 
 public class DatabaseController {
     
-    public static Connection connection;
+    private static final String DATABASE_URL = Util.getProperty("spring.datasource.url");
+    private static final String DATABASE_USERNAME = Util.getProperty("usn_database");
+    private static final String DATABASE_PASSWORD = Util.getProperty("pwd_database");
     
-    public void instanciateDatabase() {
-        getConnection();
+    private Connection connexion;
+    
+    public void setDatabase(){
         try {
-            createDatabaseIfNotExiste();
+            connexion = DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
+            insertItemDocuments();
+            insertPropertyDocuments();
+            Logger.getLogger(DatabaseController.class.getName()).log(Level.INFO, "Inserting data ok");
+            connexion.close();
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    private void getConnection(){
-        try {
-            Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(DatabaseController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DatabaseController.class.getName()).log(Level.SEVERE, "The SQL scripts don't work", ex);
         }
     }
 
-    private void createDatabaseIfNotExiste() throws SQLException {
-        if(!databaseExiste()){
-            File file = new File("./././database.db");
-            createTables();
-            insertData();
-        } else {
-            Logger.getLogger(DatabaseController.class.getName()).log(Level.INFO, "La BDD existe deja");
-        }
-    }
-
-    private boolean databaseExiste() throws SQLException {
-        boolean result = false;
-        Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("SELECT name from sqlite_master WHERE type='table'");
-        if(rs.next()){
-            result = true;
-        }
-        return result;
-    }
-
-    private void createTables() {
-        createTable();
-    }
-    
-    private void createTable() {
+    private void insertItemDocuments() throws SQLException {
         Statement statement;
         try {
-            statement = connection.createStatement();
-            statement.execute("create table wikibase (" +
-            "    id INT, " +
-            "    type VARCHAR" +
-            "    designation VARCHAR, " +
-            "    PRIMARY KEY (id, ), " +
-            ");");
+            statement = connexion.createStatement();
+            statement.execute("insert into item(id, label) values ('50', 'restaurant');");
+            // put here all items to insert
+            Logger.getLogger(DatabaseController.class.getName()).log(Level.INFO, "Inserting itemDocuments ok");
+            statement.close();
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseController.class.getName()).log(Level.SEVERE, null, "Impossible de creer la table liste_demande_objet :" + ex);
+            Logger.getLogger(DatabaseController.class.getName()).log(Level.SEVERE, "Impossible to insert ItemDocuments", ex);
         }
     }
 
-    private void insertData() {
+    private void insertPropertyDocuments() throws SQLException {
         Statement statement;
         try {
-            statement = connection.createStatement();
-            statement.execute("insert into wikibase values (50, 'Q', 'restaurant'); ");
+            statement = connexion.createStatement();
+            // put here all properties to insert
+            //statement.execute("insert into property(id, label) values ('50', 'restaurant');");
+            Logger.getLogger(DatabaseController.class.getName()).log(Level.INFO, "Inserting propertyDocuments ok");
+            statement.close();
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseController.class.getName()).log(Level.SEVERE, "Impossible to insert element or properties", ex);
+            Logger.getLogger(DatabaseController.class.getName()).log(Level.SEVERE, "Impossible to insert PropertyDocuments", ex);
         }
     }
 }

@@ -28,7 +28,7 @@ public class InteroperabilityApplication {
             // If the database does not exist, we create it and we instanciate datas
             Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.INFO, "Set database");
             DatabaseController databaseController = new DatabaseController();
-            databaseController.instanciateDatabase();
+            databaseController.setDatabase();
             Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.INFO, "Database set");
         } catch (Exception ex) {
             Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.SEVERE, null, ex);
