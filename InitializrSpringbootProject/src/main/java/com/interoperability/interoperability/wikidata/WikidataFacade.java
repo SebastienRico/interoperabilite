@@ -11,7 +11,8 @@ public class WikidataFacade {
     
     public static void writePage(ObjectDTO objectDTO){
         if(objectDTO instanceof RestaurantDTO){
-                WikidataRestaurantWriter.writeRestaurantPage((RestaurantDTO) objectDTO);
+                WikidataRestaurantWriter wikidataRestaurantWriter = new WikidataRestaurantWriter();
+                wikidataRestaurantWriter.writeRestaurantPage((RestaurantDTO) objectDTO);
         } else {
             Logger.getLogger(WikidataFacade.class.getName()).log(Level.SEVERE, "The objectDTO has no instanceof");
         }

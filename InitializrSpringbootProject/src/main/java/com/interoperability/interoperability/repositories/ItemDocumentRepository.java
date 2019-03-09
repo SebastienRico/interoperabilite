@@ -11,5 +11,5 @@ public interface ItemDocumentRepository extends CrudRepository<ItemDocument, Lon
     public ItemDocument findItemDocumentById(@Param("id")Long id);
     
     @Query(value="SELECT DISTINCT * FROM item i WHERE i.label=:label", nativeQuery = true)
-    public ItemDocument findItemDocumentByLabel(@Param("label")Long label);
+    public ItemDocument findItemDocumentByLabel(@Param("label")String label);
 }

@@ -1,6 +1,8 @@
 package com.interoperability.interoperability;
 
 import com.interoperability.interoperability.dataAccess.DatabaseController;
+import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
+import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataRestaurantWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.boot.SpringApplication;
@@ -30,6 +32,11 @@ public class InteroperabilityApplication {
             DatabaseController databaseController = new DatabaseController();
             databaseController.setDatabase();
             Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.INFO, "Database set");
+            RestaurantDTO r = new RestaurantDTO();
+            r.setNameRestaurant("Serge");
+            r.setCapacityRestaurant(1000);
+            WikidataRestaurantWriter w = new WikidataRestaurantWriter();
+            w.writeRestaurantPage(r);
         } catch (Exception ex) {
             Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.SEVERE, null, ex);
         }

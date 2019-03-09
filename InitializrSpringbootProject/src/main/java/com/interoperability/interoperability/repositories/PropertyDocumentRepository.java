@@ -11,5 +11,5 @@ public interface PropertyDocumentRepository extends CrudRepository<PropertyDocum
     public PropertyDocument findPropertyDocumentById(@Param("id")Long id);
     
     @Query(value="SELECT DISTINCT * FROM property p WHERE p.label=:label", nativeQuery = true)
-    public PropertyDocument findPropertyDocumentByLabel(@Param("label")Long label);
+    public PropertyDocument findPropertyDocumentByLabel(@Param("label")String label);
 }
