@@ -1,5 +1,6 @@
 package com.interoperability.interoperability;
 
+import com.interoperability.interoperability.utilities.Util;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
@@ -15,9 +16,14 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.concurrent.TimeUnit;
 
-public class DirectoryWatch {
+public class DirectoryWatch extends Thread{
     
-    public static void watchDirectoryPath(String pathDirectory) {
+    @Override
+    public void run(){
+        watchDirectoryPath(Util.getProperty("path_to_watch"));
+    }
+    
+    public void watchDirectoryPath(String pathDirectory) {
         
         Path path = Paths.get(pathDirectory);
         System.out.println("Watching path: " + path);

@@ -34,6 +34,7 @@ public class ParserCSV {
         try {
             File file = new File(filePath);
             fileReader = new FileReader(file);
+            restaurant.setNameRestaurant(file.getName().split("\\.")[0]);
             CSVReader csvReader = new CSVReader(fileReader, SEPARATOR);
             String[] nextLine = null;
             
@@ -122,9 +123,6 @@ public class ParserCSV {
             }
             if (oneData[11] != null && !oneData[11].isEmpty()) {
                 contact.setWebsiteContact(oneData[11]);
-            }
-            if (oneData[12] != null && !oneData[12].isEmpty()) {
-                restaurant.setNameRestaurant(oneData[12]);
             }
             /*Integer classe = Integer.parseInt(classeStr);
             Sexe sexe = (sexeStr.equalsIgnoreCase("F")) ? FEMME : HOMME;
