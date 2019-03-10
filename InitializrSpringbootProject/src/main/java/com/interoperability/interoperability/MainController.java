@@ -90,7 +90,7 @@ public class MainController {
         OrganizerDTO organisateurLocation = new OrganizerDTO();
         organisateurLocation.setNamePerson(location.getNamePerson());
         organisateurLocation.setFirstnamePerson(location.getFirstnamePerson());
-        organisateurLocation.setNameContact(location.getNamePerson()+ " " + location.getFirstnamePerson());
+        organisateurLocation.setNamePerson(location.getNamePerson()+ " " + location.getFirstnamePerson());
         organisateurLocation.setPhoneContact(location.getPhoneContact());
         organisateurLocation.setMailContact(location.getMailContact());
         organisateurLocation.setWebsiteContact(location.getWebsiteContact());

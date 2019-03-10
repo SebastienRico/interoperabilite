@@ -29,14 +29,13 @@ public class WikidataRestaurantWriter {
     PropertyDocumentRepository propertyDocumentRepository;
 
     private static final String ITEM_RESTAURANT = "Q50";
-    private static final String INSTANCE_OF = "P16";
-
-    /**private static final String PROPERTY_ADDRESS = "P706";
-    private static final String PROPERTY_TYPE = "P50";
-    private static final String PROPERTY_SEATING_CAPACITY = "P580";
-    private static final String PROPERTY_CONTACT = "P50";
-    private static final String PROPERTY_MENU = "P50";
-    private static final String PROPERTY_HORAIRE = "P50";**/
+    private static final String PROPERTY_INSTANCE_OF = "P16";
+    private static final String PROPERTY_ADDRESS = "P706";
+    private static final String PROPERTY_TYPE = "";
+    private static final String PROPERTY_SEATING_CAPACITY = "";
+    private static final String PROPERTY_CONTACT = "";
+    private static final String PROPERTY_MENU = "";
+    private static final String PROPERTY_HORAIRE = "";
 
     private PropertyDocument propertyInstanceOf;
     private PropertyDocument propertyCapacity;
@@ -50,13 +49,13 @@ public class WikidataRestaurantWriter {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
         
         try {
-            propertyInstanceOf = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(INSTANCE_OF);
-            /**propertyAddress = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_ADDRESS);
+            propertyInstanceOf = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_INSTANCE_OF);
+            propertyAddress = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_ADDRESS);
             propertyType = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_TYPE);
-            propertyCapacity = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(INSTANCE_OF);
+            propertyCapacity = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_SEATING_CAPACITY);
             propertyContact = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_CONTACT);
             propertyMenu = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_MENU);
-            propertySchedule = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_HORAIRE);**/
+            propertySchedule = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_HORAIRE);
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,8 +66,8 @@ public class WikidataRestaurantWriter {
                 .withValue(Datamodel.makeItemIdValue(ITEM_RESTAURANT, WikidataLogger.WIKIBASE_SITE_IRI))
                 /**.forSubjectAndProperty(noid, propertyAddress.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(restaurant.getAddressRestaurant().toString(), WikidataLogger.WIKIBASE_SITE_IRI))
-                //.forSubjectAndProperty(noid, propertyType.getPropertyId())
-                //.withValue(Datamodel.makeItemIdValue(restaurant.getAddressRestaurant().toString(), WikidataLogger.WIKIBASE_SITE_IRI))
+                .forSubjectAndProperty(noid, propertyType.getPropertyId())
+                .withValue(Datamodel.makeItemIdValue(restaurant.getAddressRestaurant().toString(), WikidataLogger.WIKIBASE_SITE_IRI))
                 .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(restaurant.getCapacityRestaurant().toString(), WikidataLogger.WIKIBASE_SITE_IRI))
                 .forSubjectAndProperty(noid, propertyContact.getPropertyId())
@@ -81,7 +80,7 @@ public class WikidataRestaurantWriter {
         ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
                 .withLabel("La mandarine", "en")
                 .withLabel("La mandarine", "fr")
-                .withDescription(restaurant.getDescription(), "UTF_8")
+                .withDescription(restaurant.getDescriptionRestaurant(), "UTF_8")
                 .withStatement(statement)
                 .build();
         try {

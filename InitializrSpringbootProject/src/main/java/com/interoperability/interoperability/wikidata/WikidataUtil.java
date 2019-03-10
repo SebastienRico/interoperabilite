@@ -1,6 +1,7 @@
 package com.interoperability.interoperability.wikidata;
 
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
+import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataContactWriter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,8 +20,9 @@ public class WikidataUtil {
                 if(entity.getEntityId() != null){
                     owner = entity.getEntityId();
                 } else {
-                    // create a specific page for this person and recall this methode
-                    owner = contact.toString();
+                    WikidataContactWriter wikidataContactWriter = new WikidataContactWriter();
+                    wikidataContactWriter.writeContactPage(contact);
+                    owner = getOwner(contact);
                 }
             }
         } catch (MediaWikiApiErrorException ex) {

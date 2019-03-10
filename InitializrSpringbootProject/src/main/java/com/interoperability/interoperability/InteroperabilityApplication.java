@@ -36,7 +36,6 @@ public class InteroperabilityApplication {
             RestaurantDTO r = new RestaurantDTO();
             r.setNameRestaurant("Serge");
             r.setCapacityRestaurant(1000);
-            WikidataLogger.connectToWikibase();
             WikidataRestaurantWriter w = new WikidataRestaurantWriter();
             w.writeRestaurantPage(r);
         } catch (Exception ex) {
