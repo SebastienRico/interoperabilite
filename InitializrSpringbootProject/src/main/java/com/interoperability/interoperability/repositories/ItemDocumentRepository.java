@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface ItemDocumentRepository extends CrudRepository<ItemDocument, Long> {
+public interface ItemDocumentRepository extends CrudRepository<ItemDocument, String> {
     
     @Query(value="SELECT DISTINCT * FROM item i WHERE i.id=:id", nativeQuery = true)
     public ItemDocument findItemDocumentById(@Param("id")Long id);

@@ -12,6 +12,7 @@ public class RestaurantDTO extends ObjectDTO{
     private ContactDTO contactRestaurant;
     private String menuRestaurant;
     private String scheduleRestaurant; //Voir le format
+    private String description;
 
     public RestaurantDTO() {
     }
@@ -19,6 +20,7 @@ public class RestaurantDTO extends ObjectDTO{
     @Override
     public String toString(){
         return "Restau " + typeRestaurant 
+                + " : " + description
                 + " ouvert : " + scheduleRestaurant 
                 + " menu : " + menuRestaurant 
                 + " capacite : " + capacityRestaurant;

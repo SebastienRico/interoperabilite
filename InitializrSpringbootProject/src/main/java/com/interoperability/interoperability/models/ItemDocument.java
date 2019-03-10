@@ -13,7 +13,7 @@ public class ItemDocument {
     
     @Id
     @Column(name = "id", nullable = false)
-    private Long id;
+    private String id;
     
     @Column(name = "label", nullable = false)
     private String label;

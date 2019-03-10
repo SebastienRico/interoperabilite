@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface PropertyDocumentRepository extends CrudRepository<PropertyDocument, Long> {
+public interface PropertyDocumentRepository extends CrudRepository<PropertyDocument, String> {
     
     @Query(value="SELECT DISTINCT * FROM property p WHERE p.id=:id", nativeQuery = true)
     public PropertyDocument findPropertyDocumentById(@Param("id")Long id);

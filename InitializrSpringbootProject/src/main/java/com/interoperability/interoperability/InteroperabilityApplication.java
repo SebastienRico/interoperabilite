@@ -2,6 +2,7 @@ package com.interoperability.interoperability;
 
 import com.interoperability.interoperability.dataAccess.DatabaseController;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
+import com.interoperability.interoperability.wikidata.WikidataLogger;
 import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataRestaurantWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,7 @@ public class InteroperabilityApplication {
             RestaurantDTO r = new RestaurantDTO();
             r.setNameRestaurant("Serge");
             r.setCapacityRestaurant(1000);
+            WikidataLogger.connectToWikibase();
             WikidataRestaurantWriter w = new WikidataRestaurantWriter();
             w.writeRestaurantPage(r);
         } catch (Exception ex) {
