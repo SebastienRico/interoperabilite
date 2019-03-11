@@ -5,7 +5,6 @@ import com.interoperability.interoperability.repositories.ItemDocumentRepository
 import com.interoperability.interoperability.repositories.PropertyDocumentRepository;
 import com.interoperability.interoperability.utilities.Util;
 import com.interoperability.interoperability.wikidata.WikidataLogger;
-import com.interoperability.interoperability.wikidata.WikidataUtil;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,14 +27,14 @@ public class WikidataContactWriter {
     @Autowired
     PropertyDocumentRepository propertyDocumentRepository;
 
-    private static String ITEM_PERSON = "";
+    private static final String ITEM_PERSON = "Q1298";
     private static final String PROPERTY_INSTANCE_OF = "P16";
-    private static final String PROPERTY_NAME = "";
-    private static final String PROPERTY_FIRSTNAME = "";
-    private static final String PROPERTY_FAX = "";
-    private static final String PROPERTY_PHONE = "";
-    private static final String PROPERTY_MAIL = "";
-    private static final String PROPERTY_WEBSITE = "";
+    private static final String PROPERTY_NAME = "P1078";
+    private static final String PROPERTY_FIRSTNAME = "P1068";
+    private static final String PROPERTY_FAX = "P1069";
+    private static final String PROPERTY_PHONE = "P981";
+    private static final String PROPERTY_MAIL = "P1079";
+    private static final String PROPERTY_WEBSITE = "P172";
     
     private PropertyDocument propertyInstanceOf;
     private PropertyDocument propertyName;
@@ -48,8 +47,6 @@ public class WikidataContactWriter {
     public void writeContactPage(ContactDTO contact) {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
 
-        ITEM_PERSON = WikidataUtil.getOwner(contact);
-        
         try {
             propertyInstanceOf = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_INSTANCE_OF);
             propertyName = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_NAME);
@@ -63,30 +60,47 @@ public class WikidataContactWriter {
         }
 
         ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
-        Statement statement = StatementBuilder
+        Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(ITEM_PERSON, WikidataLogger.WIKIBASE_SITE_IRI))
+                .build();
+        Statement statementName = StatementBuilder
                 .forSubjectAndProperty(noid, propertyName.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(contact.getNamePerson(), WikidataLogger.WIKIBASE_SITE_IRI))
+                .withValue(Datamodel.makeStringValue(contact.getNamePerson()))
+                .build();
+        Statement statementFirstname = StatementBuilder
                 .forSubjectAndProperty(noid, propertyFirstName.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(contact.getFirstnamePerson(), WikidataLogger.WIKIBASE_SITE_IRI))
+                .withValue(Datamodel.makeStringValue(contact.getFirstnamePerson()))
+                .build();
+        Statement statementFax = StatementBuilder
                 .forSubjectAndProperty(noid, propertyFax.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(contact.getFaxContact(), WikidataLogger.WIKIBASE_SITE_IRI))
+                .withValue(Datamodel.makeStringValue(contact.getFaxContact()))
+                .build();
+        Statement statementPhone = StatementBuilder
                 .forSubjectAndProperty(noid, propertyPhone.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(contact.getPhoneContact().toString(), WikidataLogger.WIKIBASE_SITE_IRI))
+                .withValue(Datamodel.makeStringValue(contact.getPhoneContact()))
+                .build();
+        Statement statementMail = StatementBuilder
                 .forSubjectAndProperty(noid, propertyMail.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(contact.getMailContact(), WikidataLogger.WIKIBASE_SITE_IRI))
+                .withValue(Datamodel.makeStringValue(contact.getMailContact()))
+                .build();
+        Statement statementWebsite = StatementBuilder
                 .forSubjectAndProperty(noid, propertyWebsite.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(contact.getWebsiteContact(), WikidataLogger.WIKIBASE_SITE_IRI))
+                .withValue(Datamodel.makeStringValue(contact.getWebsiteContact()))
                 .build();
         ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
-                .withLabel("La mandarine", "en")
-                .withLabel("La mandarine", "fr")
-                .withStatement(statement)
+                .withLabel(contact.getFirstnamePerson() + " " + contact.getNamePerson(), "en")
+                .withLabel(contact.getFirstnamePerson() + " " + contact.getNamePerson(), "fr")
+                .withStatement(statementInstanceOf)
+                .withStatement(statementName)
+                .withStatement(statementFirstname)
+                .withStatement(statementFax)
+                .withStatement(statementPhone)
+                .withStatement(statementMail)
+                .withStatement(statementWebsite)
                 .build();
         try {
-            ItemDocument newItemDocument = wbde.createItemDocument(itemDocument,
-                    "Statement created by the bot " + Util.getProperty("usn_wikibase"));
+            ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
         } catch (IOException | MediaWikiApiErrorException e) {
             e.printStackTrace();
         }
@@ -94,6 +108,6 @@ public class WikidataContactWriter {
         com.interoperability.interoperability.models.ItemDocument databaseItemDocument = new com.interoperability.interoperability.models.ItemDocument();
         databaseItemDocument.setId(itemDocument.getItemId().getId());
         databaseItemDocument.setLabel(contact.getFirstnamePerson() + " " + contact.getNamePerson());
-        itemDocumentRepository.save(databaseItemDocument);//System.out.println(itemDocument.getItemId().getId());
+        //itemDocumentRepository.save(databaseItemDocument);//System.out.println(itemDocument.getItemId().getId());
     }
 }

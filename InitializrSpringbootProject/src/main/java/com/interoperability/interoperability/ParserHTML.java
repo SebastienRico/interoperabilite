@@ -34,7 +34,7 @@ public class ParserHTML {
         Element e, element;
         AddressDTO address = new AddressDTO();
         ContactDTO contact = new ContactDTO();
-        contact.setNameContact("Office du Tourisme");
+        contact.setNamePerson("Office du Tourisme");
         contact.setWebsiteContact("http://www.office-tourisme-haut-lignon.com/");
         try {
             constructor = fabric.newDocumentBuilder();
@@ -81,7 +81,7 @@ public class ParserHTML {
         DocumentBuilder constructor;
         Element e;
         ContactDTO contact = new ContactDTO();
-        contact.setNameContact("Cinema Scoop");
+        contact.setNamePerson("Cinema Scoop");
         contact.setWebsiteContact("https://www.cinema-scoop.fr/");
         contact.setPhoneContact("0471597937");
         this.activity.setContactActivity(contact);

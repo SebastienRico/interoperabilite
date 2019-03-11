@@ -18,7 +18,7 @@ public class ParserCSV {
 
     private final static char SEPARATOR = ';';
 
-    private RestaurantDTO restaurant;
+    private RestaurantDTO restaurant = new RestaurantDTO();
     private List<String[]> data = new ArrayList<String[]>();
 
     public ParserCSV() {
@@ -69,23 +69,23 @@ public class ParserCSV {
     }
 
     private void processParsing() {
-        restaurant = new RestaurantDTO();
         AddressDTO adresse = new AddressDTO();
         ContactDTO contact = new ContactDTO();
         for (String[] oneData : data) {
             if(dataAreRightFormatted(oneData)){
                 restaurant.setScheduleRestaurant(oneData[0]);
                 restaurant.setMenuRestaurant(oneData[1]);
-                int capacite = Integer.parseInt(oneData[2]);
+                Integer capacite = Integer.parseInt(oneData[2]);
                 restaurant.setCapacityRestaurant(capacite);
-                int numeroRue = Integer.parseInt(oneData[3]);
+                Integer numeroRue = Integer.parseInt(oneData[3]);
                 adresse.setNumberStreet(numeroRue);
                 adresse.setNameStreet(oneData[4]);
                 adresse.setCity(oneData[5]);
                 restaurant.setTypeRestaurant(oneData[6]);
-                contact.setNamePerson(oneData[7]);
-                int tel = Integer.parseInt(oneData[8]);
-                contact.setPhoneContact(tel);
+                String[] nameSplited = oneData[7].split(" ");
+                contact.setFirstnamePerson(nameSplited[0]);
+                contact.setNamePerson(nameSplited[1]);
+                contact.setPhoneContact(oneData[8]);
                 contact.setMailContact(oneData[9]);
                 contact.setFaxContact(oneData[10]);
                 contact.setWebsiteContact(oneData[11]);
@@ -116,9 +116,8 @@ public class ParserCSV {
                 && oneData[12] != null && !oneData[12].isEmpty()) {
             try {
                 Integer.parseInt(oneData[3]);
-                Integer.parseInt(oneData[8]);
             } catch (NumberFormatException ex) {
-                Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "Address or phone number is not number", ex);
+                Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "Address is not number", ex);
                 return false;
             }
             return true;

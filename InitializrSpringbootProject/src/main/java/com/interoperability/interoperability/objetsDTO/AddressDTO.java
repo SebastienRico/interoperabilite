@@ -19,7 +19,8 @@ public class AddressDTO extends ObjectDTO{
         if(nameStreet == null || nameStreet.isEmpty() || city == null || city.isEmpty()){
             return result;
         } else {
-            result = numberStreet.toString() + " " + nameStreet + "\n" + city;
+            StringBuilder sb = new StringBuilder();
+            result = numberStreet.toString() + " " + nameStreet + " " + city;
         }
         return result;
     }

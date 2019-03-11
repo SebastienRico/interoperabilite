@@ -20,7 +20,7 @@ public class WikidataFacade {
             WikidataContactWriter wikidataContactWriter = new WikidataContactWriter();
             wikidataContactWriter.writeContactPage((ContactDTO) objectDTO);
         }else {
-            Logger.getLogger(WikidataFacade.class.getName()).log(Level.SEVERE, "The objectDTO has no instanceof");
+            Logger.getLogger(WikidataFacade.class.getName()).log(Level.SEVERE, "[writePage] The objectDTO has no instanceof");
         }
     }
     
@@ -29,7 +29,7 @@ public class WikidataFacade {
         if(objectDTO instanceof RestaurantDTO){
             WikidataRestaurantReader.readRestaurantPage();
         } else {
-            Logger.getLogger(WikidataFacade.class.getName()).log(Level.SEVERE, "The objectDTO has no instanceof");
+            Logger.getLogger(WikidataFacade.class.getName()).log(Level.SEVERE, "[readPage] The objectDTO has no instanceof");
         }
     }
 }
