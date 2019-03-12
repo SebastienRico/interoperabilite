@@ -2,7 +2,6 @@ package com.interoperability.interoperability;
 //Cinema scoop : h3 class= tribe-events-month-event-title (plusieurs) https://www.cinema-scoop.fr/seances/categorie/seances/
 
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
-import com.interoperability.interoperability.objetsDTO.AddressDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import java.io.File;
@@ -32,7 +31,7 @@ public class ParserHTML {
         DocumentBuilderFactory fabric = DocumentBuilderFactory.newInstance();
         DocumentBuilder constructor;
         Element e, element;
-        AddressDTO address = new AddressDTO();
+        String address = "";
         ContactDTO contact = new ContactDTO();
         contact.setNamePerson("Office du Tourisme");
         contact.setWebsiteContact("http://www.office-tourisme-haut-lignon.com/");
@@ -47,7 +46,7 @@ public class ParserHTML {
                     for (int i = 0; i < e.getElementsByTagName("p").getLength(); i++) {
                         element = (Element) e.getElementsByTagName("p").item(i);
                         if (element.getAttribute("class").equals("wpetItemContainerContentCity")) {
-                            address.setCity(element.getTextContent().trim());
+                            address += element.getTextContent().trim();
                             this.event.setAddressEvent(address);
                         }
                         if (element.getAttribute("class").equals("wpetItemContainerContentDate")) {
@@ -61,7 +60,7 @@ public class ParserHTML {
                     System.out.println("Evenement " + j);
                     System.out.println("----------");
                     System.out.println("Nom : " + this.event.getNameEvent());
-                    System.out.println("Ville : " + this.event.getAddressEvent().getCity());
+                    System.out.println("Ville : " + this.event.getAddressEvent());
                     System.out.println("Date : " + this.event.getDateStartEvent());
                     System.out.println("Type : " + this.event.getTypeEvent());
                     System.out.println("----------");
@@ -85,10 +84,10 @@ public class ParserHTML {
         contact.setWebsiteContact("https://www.cinema-scoop.fr/");
         contact.setPhoneContact("0471597937");
         this.activity.setContactActivity(contact);
-        AddressDTO address = new AddressDTO();
-        address.setNumberStreet(18);
-        address.setNameStreet("rue de la poste");
-        address.setCity("Chambon-sur-Lignon");
+        String address = "";
+        address += "18";
+        address += "rue de la poste";
+        address += "Chambon-sur-Lignon";
         this.activity.setAddressActivity(address);
         this.activity.setNameActivity("Séance de cinéma");
         Document document;
@@ -105,6 +104,7 @@ public class ParserHTML {
                 System.out.println("Seance de Cinema :");
                 System.out.println("Horaire : " + this.activity.getScheduleActivity());
                 System.out.println("Description : " + this.activity.getDescriptionActivity());
+                System.out.println("Adresse : " + this.activity.getAddressActivity());
                 System.out.println("-------------------------");
             }
         } catch (SAXException | IOException | ParserConfigurationException ex) {
