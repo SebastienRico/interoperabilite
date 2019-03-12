@@ -18,7 +18,7 @@ public class ParserCSV {
 
     private final static char SEPARATOR = ';';
 
-    private RestaurantDTO restaurant;
+    private RestaurantDTO restaurant = new RestaurantDTO();
     private List<String[]> data = new ArrayList<String[]>();
 
     public ParserCSV() {
@@ -69,60 +69,27 @@ public class ParserCSV {
     }
 
     private void processParsing() {
-        restaurant = new RestaurantDTO();
         AddressDTO adresse = new AddressDTO();
         ContactDTO contact = new ContactDTO();
         for (String[] oneData : data) {
-            if (oneData[0] != null && !oneData[0].isEmpty()) {
+            if(dataAreRightFormatted(oneData)){
                 restaurant.setScheduleRestaurant(oneData[0]);
-            }
-            if (oneData[1] != null && !oneData[1].isEmpty()) {
                 restaurant.setMenuRestaurant(oneData[1]);
-            }
-            if (oneData[2] != null && !oneData[2].isEmpty()) {
-                try {
-                    int capacite = Integer.parseInt(oneData[2]);
-                    restaurant.setCapacityRestaurant(capacite);
-                } catch (Exception ex) {
-                    Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "Capacity is not number", ex);
-                }
-            }
-            if (oneData[3] != null && !oneData[3].isEmpty()) {
-                try {
-                    int numeroRue = Integer.parseInt(oneData[3]);
-                    adresse.setNumberStreet(numeroRue);
-                } catch (Exception ex) {
-                    Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "Address number is not number", ex);
-                }
-            }
-            if (oneData[4] != null && !oneData[4].isEmpty()) {
+                Integer capacite = Integer.parseInt(oneData[2]);
+                restaurant.setCapacityRestaurant(capacite);
+                Integer numeroRue = Integer.parseInt(oneData[3]);
+                adresse.setNumberStreet(numeroRue);
                 adresse.setNameStreet(oneData[4]);
-            }
-            if (oneData[5] != null && !oneData[5].isEmpty()) {
                 adresse.setCity(oneData[5]);
-            }
-            if (oneData[6] != null && !oneData[6].isEmpty()) {
                 restaurant.setTypeRestaurant(oneData[6]);
-            }
-            if (oneData[7] != null && !oneData[7].isEmpty()) {
-                contact.setNamePerson(oneData[7]);
-            }
-            if (oneData[8] != null && !oneData[8].isEmpty()) {
-                try {
-                    int tel = Integer.parseInt(oneData[8]);
-                    contact.setPhoneContact(tel);
-                } catch (Exception ex) {
-                    Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "Tel number is not number", ex);
-                }
-            }
-            if (oneData[9] != null && !oneData[9].isEmpty()) {
+                String[] nameSplited = oneData[7].split(" ");
+                contact.setFirstnamePerson(nameSplited[0]);
+                contact.setNamePerson(nameSplited[1]);
+                contact.setPhoneContact(oneData[8]);
                 contact.setMailContact(oneData[9]);
-            }
-            if (oneData[10] != null && !oneData[10].isEmpty()) {
                 contact.setFaxContact(oneData[10]);
-            }
-            if (oneData[11] != null && !oneData[11].isEmpty()) {
                 contact.setWebsiteContact(oneData[11]);
+                restaurant.setDescriptionRestaurant(oneData[12]);
             }
             /*Integer classe = Integer.parseInt(classeStr);
             Sexe sexe = (sexeStr.equalsIgnoreCase("F")) ? FEMME : HOMME;
@@ -131,5 +98,30 @@ public class ParserCSV {
         restaurant.setAddressRestaurant(adresse);
         restaurant.setContactRestaurant(contact);
         WikidataFacade.writePage(restaurant);
+    }
+
+    private boolean dataAreRightFormatted(String[] oneData) {
+        if (oneData[0] != null && !oneData[0].isEmpty()
+                && oneData[1] != null && !oneData[1].isEmpty()
+                && oneData[2] != null && !oneData[2].isEmpty()
+                && oneData[3] != null && !oneData[3].isEmpty()
+                && oneData[4] != null && !oneData[4].isEmpty()
+                && oneData[5] != null && !oneData[5].isEmpty()
+                && oneData[6] != null && !oneData[6].isEmpty()
+                && oneData[7] != null && !oneData[7].isEmpty()
+                && oneData[8] != null && !oneData[8].isEmpty()
+                && oneData[9] != null && !oneData[9].isEmpty()
+                && oneData[10] != null && !oneData[10].isEmpty()
+                && oneData[11] != null && !oneData[11].isEmpty()
+                && oneData[12] != null && !oneData[12].isEmpty()) {
+            try {
+                Integer.parseInt(oneData[3]);
+            } catch (NumberFormatException ex) {
+                Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "Address is not number", ex);
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 }

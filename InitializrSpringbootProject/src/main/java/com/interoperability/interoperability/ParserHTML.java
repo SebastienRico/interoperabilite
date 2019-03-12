@@ -4,6 +4,7 @@ package com.interoperability.interoperability;
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
 import com.interoperability.interoperability.objetsDTO.AddressDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
+import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -17,50 +18,54 @@ import org.xml.sax.SAXException;
 
 public class ParserHTML {
 
-    private EventDTO evenement;
-    private ActivitesDTO activite;
-
+    private EventDTO event;
+    private ActivitesDTO activity;
+    
     public ParserHTML() {
 
     }
     //Evenement : div class = wpetItem resultsListItem wrapper_wpet_offer agenda > a class = resultItemDetail (nom) < > p class = wpetItemContainerContentCity (lieu) < > p class = wpetItemContainerDate (date) < > li (ce que c'est) http://www.office-tourisme-haut-lignon.com/info_pratique/agenda/
 
     public void parserEvenementOfficeTourisme(String path) {
-        this.evenement = new EventDTO();
-        File fichier = new File("agenda.html");
-        DocumentBuilderFactory fabrique = DocumentBuilderFactory.newInstance();
-        DocumentBuilder constructeur;
+        this.event = new EventDTO();
+        File file = new File("agenda.html");
+        DocumentBuilderFactory fabric = DocumentBuilderFactory.newInstance();
+        DocumentBuilder constructor;
         Element e, element;
-        AddressDTO adresse = new AddressDTO();
+        AddressDTO address = new AddressDTO();
+        ContactDTO contact = new ContactDTO();
+        contact.setNamePerson("Office du Tourisme");
+        contact.setWebsiteContact("http://www.office-tourisme-haut-lignon.com/");
         try {
-            constructeur = fabrique.newDocumentBuilder();
-            Document document = (Document) constructeur.parse(fichier);
+            constructor = fabric.newDocumentBuilder();
+            Document document = (Document) constructor.parse(file);
             document.normalize();
             for (int j = 0; j < document.getElementsByTagName("div").getLength(); j++) {
                 e = (Element) document.getElementsByTagName("div").item(j);
                 if (e.getAttribute("class").equals("wpetItemContainerContent")) {
-                    this.evenement.setNameEvent(e.getElementsByTagName("a").item(0).getTextContent().trim());
+                    this.event.setNameEvent(e.getElementsByTagName("a").item(0).getTextContent().trim());
                     for (int i = 0; i < e.getElementsByTagName("p").getLength(); i++) {
                         element = (Element) e.getElementsByTagName("p").item(i);
                         if (element.getAttribute("class").equals("wpetItemContainerContentCity")) {
-                            adresse.setCity(element.getTextContent().trim());
-                            this.evenement.setAddressEvent(adresse);
+                            address.setCity(element.getTextContent().trim());
+                            this.event.setAddressEvent(address);
                         }
                         if (element.getAttribute("class").equals("wpetItemContainerContentDate")) {
-                            this.evenement.setDateStartEvent(element.getTextContent().trim());
-                            this.evenement.setDateEndEvent(element.getTextContent().trim());
+                            this.event.setDateStartEvent(element.getTextContent().trim());
+                            this.event.setDateEndEvent(element.getTextContent().trim());
                         }
                     }
                     Element type = (Element) e.getElementsByTagName("div").item(0);
-                    this.evenement.setTypeEvent(type.getTextContent().trim());
+                    this.event.setTypeEvent(type.getTextContent().trim());
+                    this.event.setContactEvent(contact);
                     System.out.println("Evenement " + j);
                     System.out.println("----------");
-                    System.out.println("Nom : " + this.evenement.getNameEvent());
-                    System.out.println("Ville : " + this.evenement.getAddressEvent().getCity());
-                    System.out.println("Date : " + this.evenement.getDateStartEvent());
-                    System.out.println("Type : " + this.evenement.getTypeEvent());
+                    System.out.println("Nom : " + this.event.getNameEvent());
+                    System.out.println("Ville : " + this.event.getAddressEvent().getCity());
+                    System.out.println("Date : " + this.event.getDateStartEvent());
+                    System.out.println("Type : " + this.event.getTypeEvent());
                     System.out.println("----------");
-                    //TODO enregistrer evenement
+                    //TODO enregistrer event
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException ex) {
@@ -70,31 +75,36 @@ public class ParserHTML {
 
     //https://www.cinema-scoop.fr/seances/categorie/seances/
     public void parserCinemaScoop(String path) {
-        this.activite = new ActivitesDTO();
+        this.activity = new ActivitesDTO();
         File fichier = new File("cinemaScoop.html");
-        DocumentBuilderFactory fabrique = DocumentBuilderFactory.newInstance();
-        DocumentBuilder constructeur;
+        DocumentBuilderFactory fabric = DocumentBuilderFactory.newInstance();
+        DocumentBuilder constructor;
         Element e;
-        AddressDTO adresse = new AddressDTO();
-        adresse.setNumberStreet(18);
-        adresse.setNameStreet("rue de la poste");
-        adresse.setCity("Chambon-sur-Lignon");
-        this.activite.setAddressActivity(adresse);
-        this.activite.setNameActivity("Séance de cinéma");
+        ContactDTO contact = new ContactDTO();
+        contact.setNamePerson("Cinema Scoop");
+        contact.setWebsiteContact("https://www.cinema-scoop.fr/");
+        contact.setPhoneContact("0471597937");
+        this.activity.setContactActivity(contact);
+        AddressDTO address = new AddressDTO();
+        address.setNumberStreet(18);
+        address.setNameStreet("rue de la poste");
+        address.setCity("Chambon-sur-Lignon");
+        this.activity.setAddressActivity(address);
+        this.activity.setNameActivity("Séance de cinéma");
         Document document;
         try {
-            constructeur = fabrique.newDocumentBuilder();
-            document = (Document) constructeur.parse(fichier);
+            constructor = fabric.newDocumentBuilder();
+            document = (Document) constructor.parse(fichier);
             document.normalize();
             for (int i = 0; i < document.getElementsByTagName("td").getLength(); i++) {
                 e = (Element) document.getElementsByTagName("td").item(i);
                 if (e.getElementsByTagName("a").getLength() != 0) {
-                    this.activite.setScheduleActivity(e.getAttribute("data-day"));
-                    this.activite.setDescriptionActivity(e.getElementsByTagName("a").item(1).getTextContent());
+                    this.activity.setScheduleActivity(e.getAttribute("data-day"));
+                    this.activity.setDescriptionActivity(e.getElementsByTagName("a").item(1).getTextContent());
                 }
                 System.out.println("Seance de Cinema :");
-                System.out.println("Horaire : " + this.activite.getScheduleActivity());
-                System.out.println("Description : " + this.activite.getDescriptionActivity());
+                System.out.println("Horaire : " + this.activity.getScheduleActivity());
+                System.out.println("Description : " + this.activity.getDescriptionActivity());
                 System.out.println("-------------------------");
             }
         } catch (SAXException | IOException | ParserConfigurationException ex) {

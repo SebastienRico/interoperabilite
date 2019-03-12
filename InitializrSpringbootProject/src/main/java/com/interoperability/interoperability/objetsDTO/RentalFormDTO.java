@@ -22,7 +22,7 @@ public class RentalFormDTO extends ObjectDTO{
 
     private String namePerson;
     private String firstnamePerson;
-    private int phoneContact;
+    private String phoneContact;
     private String mailContact;
     private String websiteContact;
 
