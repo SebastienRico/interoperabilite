@@ -3,7 +3,6 @@ package com.interoperability.interoperability;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.interoperability.interoperability.objetsDTO.AddressDTO;
 import com.interoperability.interoperability.objetsDTO.RentalFormDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
 import com.interoperability.interoperability.objetsDTO.OrganizerDTO;
@@ -82,11 +81,7 @@ public class MainController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/addLocation")
     public String addNewLocation(@ModelAttribute("location") RentalFormDTO location) {
-        AddressDTO adresseLocation = new AddressDTO();
-        adresseLocation.setNumberStreet(location.getNumberStreet());
-        adresseLocation.setNameStreet(location.getNameStreet());
-        adresseLocation.setCity(location.getCity());
-        
+        String adresse = location.getNumberStreet() + " " + location.getNameStreet() + " " + location.getCity();
         OrganizerDTO organisateurLocation = new OrganizerDTO();
         organisateurLocation.setNamePerson(location.getNamePerson());
         organisateurLocation.setFirstnamePerson(location.getFirstnamePerson());
@@ -97,7 +92,7 @@ public class MainController {
         
         
         RentDTO locationDTO = new RentDTO();
-        locationDTO.setAddressRent(adresseLocation);
+        locationDTO.setAddressRent(adresse);
         locationDTO.setOrganizerRent(organisateurLocation);
         locationDTO.setDateStartRent(location.getDateStartRent());
         locationDTO.setDateEndRent(location.getDateEndRent());

@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class RentDTO extends ObjectDTO{
     private String descriptionRent;
-    private AddressDTO addressRent;
+    private String addressRent;
     private int capacityRent;
     private String dateStartRent; //Type to define yet
     private String dateEndRent;

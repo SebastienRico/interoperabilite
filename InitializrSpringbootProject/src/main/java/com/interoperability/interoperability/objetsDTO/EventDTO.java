@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class EventDTO extends ObjectDTO{
     private String typeEvent;
-    private AddressDTO addressEvent;
+    private String addressEvent;
     private int capacityEvent;
     private String dateStartEvent; //Type to define yet
     private String dateEndEvent;
@@ -17,7 +17,6 @@ public class EventDTO extends ObjectDTO{
     private String nameEvent;
     
     public EventDTO() {
-        this.addressEvent = new AddressDTO();
         this.contactEvent = new ContactDTO();
         this.organizerEvent = new OrganizerDTO();
     }

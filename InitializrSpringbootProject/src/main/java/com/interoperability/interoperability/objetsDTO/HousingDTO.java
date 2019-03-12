@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class HousingDTO extends ObjectDTO{
 
-    private AddressDTO addressHousing;
+    private String addressHousing;
     private int capacityHousing;
     private float priceHousing; //Perhaps String for multiple prices ? Or prices list ?
     private ContactDTO contactHousing;
