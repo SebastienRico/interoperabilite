@@ -66,29 +66,29 @@ public class WikidataRestaurantWriter {
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(ITEM_RESTAURANT, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
-        Statement statatementAddress = StatementBuilder
+        Statement statementAddress = StatementBuilder
                 .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
-                .withValue(Datamodel.makeStringValue(restaurant.getAddressRestaurant().toString()))
+                .withValue(Datamodel.makeStringValue(restaurant.getAddressRestaurant()))
                 .build();
-        Statement statatementType = StatementBuilder
+        Statement statementType = StatementBuilder
                 .forSubjectAndProperty(noid, propertyType.getPropertyId())
                 .withValue(Datamodel.makeStringValue(restaurant.getTypeRestaurant()))
                 .build();
-        Statement statatementCapacity = StatementBuilder
+        Statement statementCapacity = StatementBuilder
                 .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
                 .withValue(Datamodel.makeQuantityValue(new BigDecimal(restaurant.getCapacityRestaurant())))
                 .build();
         String contactQid = WikidataUtil.getOwner(restaurant.getContactRestaurant());
         System.out.println("contactQid : " + contactQid);
-        Statement statatementContact = StatementBuilder
+        Statement statementContact = StatementBuilder
                 .forSubjectAndProperty(noid, propertyContact.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
-        Statement statatementMenu = StatementBuilder
+        Statement statementMenu = StatementBuilder
                 .forSubjectAndProperty(noid, propertyMenu.getPropertyId())
                 .withValue(Datamodel.makeStringValue(restaurant.getMenuRestaurant()))
                 .build();
-        Statement statatementSchedule = StatementBuilder
+        Statement statementSchedule = StatementBuilder
                 .forSubjectAndProperty(noid, propertySchedule.getPropertyId())
                 .withValue(Datamodel.makeStringValue(restaurant.getScheduleRestaurant()))
                 .build();
@@ -97,12 +97,12 @@ public class WikidataRestaurantWriter {
                 .withLabel("La mandarine", "fr")
                 .withDescription(restaurant.getDescriptionRestaurant(), "fr")
                 .withStatement(statementInstanceOf)
-                .withStatement(statatementAddress)
-                .withStatement(statatementType)
-                .withStatement(statatementCapacity)
-                .withStatement(statatementContact)
-                .withStatement(statatementMenu)
-                .withStatement(statatementSchedule)
+                .withStatement(statementAddress)
+                .withStatement(statementType)
+                .withStatement(statementCapacity)
+                .withStatement(statementContact)
+                .withStatement(statementMenu)
+                .withStatement(statementSchedule)
                 .build();
         try {
             ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
