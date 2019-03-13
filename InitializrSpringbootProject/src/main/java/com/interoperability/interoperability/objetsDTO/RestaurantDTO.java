@@ -20,7 +20,7 @@ public class RestaurantDTO extends ObjectDTO{
     @Override
     public String toString(){
         return "Restau " + typeRestaurant 
-                + " : " + descriptionRestaurant
+                + " desc: " + descriptionRestaurant
                 + " ouvert : " + scheduleRestaurant 
                 + " menu : " + menuRestaurant 
                 + " capacite : " + capacityRestaurant;
