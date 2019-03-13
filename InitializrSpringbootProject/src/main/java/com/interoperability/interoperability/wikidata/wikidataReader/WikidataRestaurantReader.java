@@ -36,7 +36,7 @@ public class WikidataRestaurantReader {
         restaurant.setDescriptionRestaurant(item.getDescriptions().get("fr").getText());
         
         //System.out.println("1er statement " + item.getStatementGroups().get(0).getStatements().get(0).getValue().toString());        
-        restaurant.setAddressRestaurant(item.getStatementGroups().get(0).getStatements().get(0).getValue().toString());
+        restaurant.setAdressRestaurant(item.getStatementGroups().get(0).getStatements().get(0).getValue().toString());
         
         //System.out.println("2eme statement " + item.getStatementGroups().get(1).getStatements().get(0).getValue().toString());
         restaurant.setTypeRestaurant(item.getStatementGroups().get(1).getStatements().get(0).getValue().toString());

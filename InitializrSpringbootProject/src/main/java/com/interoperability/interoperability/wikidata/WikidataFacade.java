@@ -43,6 +43,7 @@ public class WikidataFacade {
             case "event":
                 break;
         }
+        System.out.println(objectToShow);
         return objectToShow;
     }
 }

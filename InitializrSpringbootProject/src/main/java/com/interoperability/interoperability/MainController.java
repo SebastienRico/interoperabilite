@@ -61,11 +61,20 @@ public class MainController {
         return "research.html";
     }
 
-    @RequestMapping(value = "/addResearch", method = RequestMethod.GET)
+   /* @RequestMapping(value = "/addResearch", method = RequestMethod.GET)
     public String showResearch(Model m) {
         m.addAttribute("rech", new Research());
 
         return "addResearch";
+    }
+    */
+    
+    @RequestMapping(value = "/restaurant", method = RequestMethod.GET)
+    public String goToRestaurant(Model m){
+        m.addAttribute("restaurant",restaurantDTO);
+        m.addAttribute("rech", new Research());
+        System.out.println("salut");
+        return "restaurant";
     }
 
     @RequestMapping(value = "/wikidataPage")
@@ -85,6 +94,7 @@ public class MainController {
     @RequestMapping(value = "/addResearch", method = RequestMethod.POST)
     public String addResearch(Model m, @ModelAttribute("rech") Research rec) {
         research = new ArrayList<>();
+        restaurantDTO = new ArrayList<>();
 
         String champs = rec.getChamps();
 
@@ -95,8 +105,15 @@ public class MainController {
             Process process = Runtime.getRuntime().exec(command);
         } catch (IOException ex) {
         }*/
-
+        ObjectDTO object =  WikidataFacade.readPage("Q1580");
         Research r = new Research(champs);
+        
+        if (object instanceof RestaurantDTO){
+            System.out.println("restaurant" + object);
+            
+            restaurantDTO.add((RestaurantDTO) object);
+            return "redirect:/restaurant";
+        }
 
         research.add(r);
         return "redirect:/Research";
@@ -134,6 +151,7 @@ public class MainController {
 
     @RequestMapping(value = "redirectResearch", method = RequestMethod.GET)
     public String redirectResearch() {
+        return null;
 
     }
 

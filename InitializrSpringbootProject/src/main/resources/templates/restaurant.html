@@ -26,6 +26,25 @@
                     </nav>
                 </div>
             </div>
+            <div class="container" th:each="v : ${restaurant}"> 
+                <h1 style="font-size: 50px"   th:text="${v.nameRestaurant}"></h1>
+                <div class="container">
+                    <p style="font-size: 20px" th:text="${'Adresse du restaurant : ' + v.adressRestaurant}"></p>
+                    <p style="font-size: 20px" th:text="${'Type de restaurant : ' + v.typeRestaurant}"></p>
+                    <p style="font-size: 20px" th:text="${'Descritpion du restaurant : ' + v.descriptionRestaurant}"></p>
+                    <p style="font-size: 20px" th:text="${'Menu du restaurant : ' + v.menuRestaurant}"></p>
+                    <p style="font-size: 20px" th:text="${'Capacité du restaurant : ' + v.capacityRestaurant}"></p>
+                    <p style="font-size: 20px" th:text="${'Horaire d''ouverture : ' + v.scheduleRestaurant}"></p>
+                    <div th:each = "w : ${v.contactRestaurant}">
+                        <p style="font-size: 20px" >Contact du restaurant :</p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Nom : ' + w.namePerson}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Prénom : ' + w.firstnamePerson}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Téléphone : ' + w.phoneContact}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Mail : ' + w.mailContact}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Site Web : ' + w.websiteContact}"></p>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>
