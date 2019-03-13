@@ -96,13 +96,13 @@ public class WikidataRestaurantWriter {
                 .withLabel("La mandarine", "en")
                 .withLabel("La mandarine", "fr")
                 .withDescription(restaurant.getDescriptionRestaurant(), "fr")
-                .withStatement(statementInstanceOf)
                 .withStatement(statatementAddress)
                 .withStatement(statatementType)
                 .withStatement(statatementCapacity)
                 .withStatement(statatementContact)
                 .withStatement(statatementMenu)
                 .withStatement(statatementSchedule)
+                .withStatement(statementInstanceOf)
                 .build();
         try {
             ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));

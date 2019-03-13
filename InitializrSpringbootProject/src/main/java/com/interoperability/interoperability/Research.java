@@ -4,10 +4,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import lombok.Data;
 
-/**
- *
- * @author qbiss
- */
 @Data
 public class Research {
 
@@ -27,7 +23,7 @@ public class Research {
     public String requestQAnswer(String request) {
         String qId = null;
         // request the QAnswer service with the good one curl function
-        String command = "curl -X GET https://postman-echo.com/get?foo1=bar1&foo2=bar2";
+        String command = "curl --data \"query=activite kb=http://qanswer-svc1.univ-st-etienne.fr/wiki\" http://qanswer-core1.univ-st-etienne.fr/gerbsil";
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
         // get the qId
         return qId;
