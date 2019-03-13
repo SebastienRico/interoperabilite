@@ -1,6 +1,6 @@
 package com.interoperability.interoperability.wikidata.wikidataReader;
 
-import com.interoperability.interoperability.objetsDTO.HousingDTO;
+import com.interoperability.interoperability.objetsDTO.HostelDTO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.wikidata.wdtk.datamodel.interfaces.ItemDocument;
@@ -10,8 +10,8 @@ import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 public class WikidataHousingReader {
 
-    public static HousingDTO readHousingPage(String QID) {
-        HousingDTO housing = new HousingDTO();
+    public static HostelDTO readHousingPage(String QID) {
+        HostelDTO housing = new HostelDTO();
 
         String siteIri = "http://qanswer-svc1.univ-st-etienne.fr/index.php";
         ApiConnection con = new ApiConnection("http://qanswer-svc1.univ-st-etienne.fr/api.php");

@@ -3,7 +3,7 @@ package com.interoperability.interoperability;
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
-import com.interoperability.interoperability.objetsDTO.HousingDTO;
+import com.interoperability.interoperability.objetsDTO.HostelDTO;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,24 +11,18 @@ import org.json.*;
 
 import com.interoperability.interoperability.objetsDTO.RentalFormDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
-import com.interoperability.interoperability.objetsDTO.OrganizerDTO;
 import com.interoperability.interoperability.objetsDTO.PersonDTO;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
 import com.interoperability.interoperability.wikidata.WikidataFacade;
-import com.interoperability.interoperability.wikidata.WikidataUtil;
-import com.interoperability.interoperability.wikidata.wikidataReader.WikidataRestaurantReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringReader;
-import jdk.nashorn.internal.parser.JSONParser;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.wikidata.wdtk.datamodel.json.jackson.JacksonObjectFactory;
 
 @Controller
 public class MainController {
@@ -37,8 +31,7 @@ public class MainController {
     private static List<ActivitesDTO> activitesDTO;
     private static List<ContactDTO> contactDTO;
     private static List<EventDTO> eventDTO;
-    private static List<HousingDTO> housingDTO;
-    private static List<OrganizerDTO> organizerDTO;
+    private static List<HostelDTO> housingDTO;
     private static List<PersonDTO> personDTO;
     private static List<RestaurantDTO> restaurantDTO;
 
@@ -62,7 +55,6 @@ public class MainController {
         m.addAttribute("contactDTO",contactDTO);
         m.addAttribute("eventDTO",eventDTO);
         m.addAttribute("housingDTO",housingDTO);
-        m.addAttribute("organizerDTO",organizerDTO);
         m.addAttribute("personDTO",personDTO);
         m.addAttribute("restaurantDTO",restaurantDTO);
 
@@ -153,24 +145,24 @@ public class MainController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/addLocation")
-    public String addNewLocation(@ModelAttribute("location") RentalFormDTO location) {
-        OrganizerDTO organisateurLocation = new OrganizerDTO();
-        organisateurLocation.setNamePerson(location.getNamePerson());
-        organisateurLocation.setFirstnamePerson(location.getFirstnamePerson());
-        organisateurLocation.setNamePerson(location.getNamePerson() + " " + location.getFirstnamePerson());
-        organisateurLocation.setPhoneContact(location.getPhoneContact());
-        organisateurLocation.setMailContact(location.getMailContact());
-        organisateurLocation.setWebsiteContact(location.getWebsiteContact());
+    public String addNewLocation(@ModelAttribute("location") RentalFormDTO rentalForm) {
+        ContactDTO contactRent = new ContactDTO();
+        contactRent.setNamePerson(rentalForm.getNamePerson());
+        contactRent.setFirstnamePerson(rentalForm.getFirstnamePerson());
+        contactRent.setNamePerson(rentalForm.getNamePerson() + " " + rentalForm.getFirstnamePerson());
+        contactRent.setPhoneContact(rentalForm.getPhoneContact());
+        contactRent.setMailContact(rentalForm.getMailContact());
+        contactRent.setWebsiteContact(rentalForm.getWebsiteContact());
 
         RentDTO locationDTO = new RentDTO();
-        locationDTO.setAddressRent(location.getAdressRent());
-        locationDTO.setOrganizerRent(organisateurLocation);
-        locationDTO.setDateStartRent(location.getDateStartRent());
-        locationDTO.setDateEndRent(location.getDateEndRent());
-        locationDTO.setCapacityRent(location.getCapacityRent());
-        locationDTO.setDisponibilityRent(location.getDisponibilityRent());
-        locationDTO.setPriceRent(location.getPriceRent());
-        locationDTO.setDescriptionRent(location.getDescriptionRent());
+        locationDTO.setAddressRent(rentalForm.getAdressRent());
+        locationDTO.setContactRent(contactRent);
+        locationDTO.setDateStartRent(rentalForm.getDateStartRent());
+        locationDTO.setDateEndRent(rentalForm.getDateEndRent());
+        locationDTO.setCapacityRent(rentalForm.getCapacityRent());
+        locationDTO.setDisponibilityRent(rentalForm.getDisponibilityRent());
+        locationDTO.setPriceRent(rentalForm.getPriceRent());
+        locationDTO.setDescriptionRent(rentalForm.getDescriptionRent());
 
         //Envoyer locationDTO au BOT qui écrit dans la WikiBase
         return "redirect:/";
