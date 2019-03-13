@@ -7,14 +7,14 @@ import lombok.Data;
 
 @Data
 public class RentDTO extends ObjectDTO{
-    private String descriptionLocation;
-    private AddressDTO adresseLocation;
-    private int capaciteLocation;
-    private String dateDebutLocation; //Le type a definir
-    private String dateFinLocation;
-    private float tarifLocation;
-    private String disponibiliteLocation; //Type a changer, a voir avec les autres groupes ?
-    private OrganizerDTO organisateurLocation;
+    private String descriptionRent;
+    private String addressRent;
+    private int capacityRent;
+    private String dateStartRent; //Type to define yet
+    private String dateEndRent;
+    private float priceRent;
+    private String disponibilityRent; //Type to change, see with other groups ?
+    private OrganizerDTO organizerRent;
     
     public RentDTO() {
     }

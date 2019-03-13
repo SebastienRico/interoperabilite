@@ -3,8 +3,14 @@ package com.interoperability.interoperability;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
-public class Scheduler {
-    public static void main (String[] args) {
+public class Scheduler extends Thread {
+    
+    @Override
+    public void run(){
+        startScheduler();
+    }
+    
+    public static void startScheduler () {
         GetterInternetPage getPage = new GetterInternetPage();
         
         Timer t = new Timer();

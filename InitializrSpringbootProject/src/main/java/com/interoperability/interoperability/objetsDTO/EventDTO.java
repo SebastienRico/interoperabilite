@@ -6,20 +6,19 @@ import lombok.Data;
 
 @Data
 public class EventDTO extends ObjectDTO{
-    private String typeEvenement;
-    private AddressDTO adresseEvenement;
-    private int capaciteEvenement;
-    private String dateDebutEvenement; //Le type a definir
-    private String dateFinEvenement;
-    private float tarifEvenement; //Peut-etre String pour plusieurs tarifs ? Ou liste de tarifs ?
-    private ContactDTO contactEvenement;
-    private OrganizerDTO organisateurEvenement;
-    private String nomEvenement;
+    private String typeEvent;
+    private String addressEvent;
+    private int capacityEvent;
+    private String dateStartEvent; //Type to define yet
+    private String dateEndEvent;
+    private float priceEvent; //Perhaps String for multiple prices ? Or prices list ?
+    private ContactDTO contactEvent;
+    private OrganizerDTO organizerEvent;
+    private String nameEvent;
     
     public EventDTO() {
-        this.adresseEvenement = new AddressDTO();
-        this.contactEvenement = new ContactDTO();
-        this.organisateurEvenement = new OrganizerDTO();
+        this.contactEvent = new ContactDTO();
+        this.organizerEvent = new OrganizerDTO();
     }
     
     

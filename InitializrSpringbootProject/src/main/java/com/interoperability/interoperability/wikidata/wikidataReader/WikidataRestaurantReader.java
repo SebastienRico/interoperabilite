@@ -1,43 +1,61 @@
 package com.interoperability.interoperability.wikidata.wikidataReader;
 
+import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
-import com.interoperability.interoperability.wikidata.WikidataLogger;
-import static com.interoperability.interoperability.wikidata.WikidataLogger.WikibaseConnexion;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.wikidata.wdtk.datamodel.interfaces.ItemDocument;
-import org.wikidata.wdtk.wikibaseapi.WbSearchEntitiesResult;
+import org.wikidata.wdtk.wikibaseapi.ApiConnection;
 import org.wikidata.wdtk.wikibaseapi.WikibaseDataFetcher;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 public class WikidataRestaurantReader {
-    
-    public void readRestaurantPage(RestaurantDTO restaurant){
-        //Example for getting information about an entity, here the example of The Laboratoire Huber Curien, Q900
-        //For more examples give a look at: https://github.com/Wikidata/Wikidata-Toolkit-Examples/blob/master/src/examples/FetchOnlineDataExample.java
-        
-        WikibaseDataFetcher wbdf = new WikibaseDataFetcher(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
+
+    public static RestaurantDTO readRestaurantPage() {
+        RestaurantDTO restaurant = new RestaurantDTO();
+        ContactDTO contactResto = new ContactDTO();
+        String[] arrayRestaurant = null;
+        String[] arrayRestaurant2 = null;
+
+        String siteIri = "http://qanswer-svc1.univ-st-etienne.fr/index.php";
+        ApiConnection con = new ApiConnection("http://qanswer-svc1.univ-st-etienne.fr/api.php");
+
+        WikibaseDataFetcher wbdf = new WikibaseDataFetcher(con, siteIri);
         ItemDocument item = null;
         try {
-            item = (ItemDocument) wbdf.getEntityDocument("Q1342");
+            //Pour l'instant on met le QID en dur mais il faudra le passer en paramètre
+            item = (ItemDocument) wbdf.getEntityDocument("Q1570");
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(item.getEntityId());
-        System.out.println(item.getLabels());
-        System.out.println(item.getStatementGroups());
-        System.out.println(item.getDescriptions());
 
-        //Example to search for an ID given the label
-        List<WbSearchEntitiesResult> entities = null;
-        try {
-            entities = wbdf.searchEntities("Pierre Maret");
-        } catch (MediaWikiApiErrorException ex) {
-            Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        for (WbSearchEntitiesResult entity : entities){
-            System.out.println(entity.getEntityId());
-        }
+        System.out.println("1er statement " + item.getStatementGroups().get(0).getStatements().get(0).getValue().toString());        
+        restaurant.setAddressRestaurant(item.getStatementGroups().get(0).getStatements().get(0).getValue().toString());
+        
+        System.out.println("2eme statement " + item.getStatementGroups().get(1).getStatements().get(0).getValue().toString());
+        restaurant.setDescriptionRestaurant(item.getStatementGroups().get(1).getStatements().get(0).getValue().toString());
+        
+        System.out.println("3eme statement " + item.getStatementGroups().get(2).getStatements().get(0).getValue().toString());
+        restaurant.setCapacityRestaurant(Integer.parseInt(item.getStatementGroups().get(2).getStatements().get(0).getValue().toString()));
+        
+        System.out.println("4eme statement is the instance of for now");
+        
+        System.out.println("5eme statement " + item.getStatementGroups().get(4).getStatements().get(0).getValue().toString());
+        restaurant.setMenuRestaurant(item.getStatementGroups().get(4).getStatements().get(0).getValue().toString());
+        
+        System.out.println("6eme statement " + item.getStatementGroups().get(5).getStatements().get(0).getValue().toString());
+        restaurant.setScheduleRestaurant(item.getStatementGroups().get(5).getStatements().get(0).getValue().toString());
+        
+        //Get The contact Qid
+        String contactsplit = item.getStatementGroups().get(6).getStatements().get(0).getValue().toString();
+        arrayRestaurant = contactsplit.split("php");
+        arrayRestaurant2 = arrayRestaurant[1].split(" ");
+        
+        contactResto = WikidataContactReader.readContactPage(arrayRestaurant2[0]);
+        System.out.println(contactResto);
+        restaurant.setContactRestaurant(contactResto);
+        System.out.println(restaurant);
+
+        return restaurant;
     }
 }
