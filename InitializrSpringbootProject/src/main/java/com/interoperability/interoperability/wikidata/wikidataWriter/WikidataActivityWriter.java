@@ -1,6 +1,6 @@
 package com.interoperability.interoperability.wikidata.wikidataWriter;
 
-import com.interoperability.interoperability.objetsDTO.EventDTO;
+import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
 import com.interoperability.interoperability.repositories.ItemDocumentRepository;
 import com.interoperability.interoperability.repositories.PropertyDocumentRepository;
 import com.interoperability.interoperability.utilities.Util;
@@ -21,7 +21,7 @@ import org.wikidata.wdtk.datamodel.interfaces.Statement;
 import org.wikidata.wdtk.wikibaseapi.WikibaseDataEditor;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
-public class WikidataEventWriter {
+public class WikidataActivityWriter {
 
     @Autowired
     ItemDocumentRepository itemDocumentRepository;
@@ -29,78 +29,69 @@ public class WikidataEventWriter {
     @Autowired
     PropertyDocumentRepository propertyDocumentRepository;
 
-    private static final String ITEM_EVENT = "Q99";
+    private static final String ITEM_ACTIVITY = "Q101";
     private static final String PROPERTY_INSTANCE_OF = "P16";
     private static final String PROPERTY_ADDRESS = "P1076";
+    private static final String PROPERTY_SEATING_CAPACITY = "P1064";
     private static final String PROPERTY_CONTACT = "P61";
-    private static final String PROPERTY_TYPE = "P1077";
-    private static final String PROPERTY_DATE_START = "P34";
-    private static final String PROPERTY_DATE_END = "P43";
+    private static final String PROPERTY_SCHEDULE = "P1073";
 
     private PropertyDocument propertyInstanceOf;
+    private PropertyDocument propertyCapacity;
     private PropertyDocument propertyAddress;
-    private PropertyDocument propertyType;
     private PropertyDocument propertyContact;
-    private PropertyDocument propertyDateStart;
-    private PropertyDocument propertyDateEnd;
+    private PropertyDocument propertySchedule;
 
-    public void writeEventPage(EventDTO event) {
+    public void writeActivityPage(ActivitesDTO activity) {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
         try {
             propertyInstanceOf = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_INSTANCE_OF);
             propertyAddress = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_ADDRESS);
-            propertyType = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_TYPE);
             propertyContact = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_CONTACT);
-            propertyDateStart = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_DATE_START);
-            propertyDateEnd = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_DATE_END);
+            propertyCapacity = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_SEATING_CAPACITY);
+            propertySchedule = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_SCHEDULE);
         } catch (MediaWikiApiErrorException ex) {
-            Logger.getLogger(WikidataEventWriter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
         ItemIdValue noid = ItemIdValue.NULL;
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(ITEM_EVENT, WikidataLogger.WIKIBASE_SITE_IRI))
+                .withValue(Datamodel.makeItemIdValue(ITEM_ACTIVITY, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
         Statement statementAddress = StatementBuilder
                 .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
-                .withValue(Datamodel.makeStringValue(event.getAddressEvent()))
+                .withValue(Datamodel.makeStringValue(activity.getAddressActivity()))
                 .build();
-        Statement statementType = StatementBuilder
-                .forSubjectAndProperty(noid, propertyType.getPropertyId())
-                .withValue(Datamodel.makeStringValue(event.getTypeEvent()))
-                .build();
-        String contactQid = WikidataUtil.getOwner(event.getContactEvent());
+        String contactQid = WikidataUtil.getOwner(activity.getContactActivity());
         Statement statementContact = StatementBuilder
                 .forSubjectAndProperty(noid, propertyContact.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
-        Statement statementDateStart = StatementBuilder
-                .forSubjectAndProperty(noid, propertyDateStart.getPropertyId())
-                .withValue(Datamodel.makeStringValue(event.getDateStartEvent()))
+        Statement statementCapacity = StatementBuilder
+                .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
+                .withValue(Datamodel.makeQuantityValue(new BigDecimal(activity.getCapacityActivity())))
                 .build();
-        Statement statementDateEnd = StatementBuilder
-                .forSubjectAndProperty(noid, propertyDateEnd.getPropertyId())
-                .withValue(Datamodel.makeStringValue(event.getDateEndEvent()))
+        Statement statementSchedule = StatementBuilder
+                .forSubjectAndProperty(noid, propertySchedule.getPropertyId())
+                .withValue(Datamodel.makeStringValue(activity.getScheduleActivity()))
                 .build();
         ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
-                .withLabel(event.getNameEvent(), "en")
-                .withLabel(event.getNameEvent(), "fr")
+                .withLabel(activity.getNameActivity(), "en")
+                .withLabel(activity.getNameActivity(), "fr")
                 .withStatement(statementInstanceOf)
                 .withStatement(statementAddress)
-                .withStatement(statementType)
                 .withStatement(statementContact)
-                .withStatement(statementDateStart)
-                .withStatement(statementDateEnd)
+                .withStatement(statementCapacity)
+                .withStatement(statementSchedule)
                 .build();
-
         try {
             ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
         } catch (IOException | MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataEventWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Logger.getLogger(WikidataEventWriter.class.getName()).log(Level.INFO, "Created or updating {0}", event.getNameEvent());
+        Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.INFO, "Created or updating {0}", activity.getNameActivity());
         com.interoperability.interoperability.models.ItemDocument databaseItemDocument = new com.interoperability.interoperability.models.ItemDocument();
         databaseItemDocument.setId(itemDocument.getItemId().getId());
-        databaseItemDocument.setLabel(event.getNameEvent());
+        databaseItemDocument.setLabel(activity.getNameActivity());
     }
 }

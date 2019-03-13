@@ -36,7 +36,7 @@ public class MainController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String gotToIndex(Model m) {
         m.addAttribute("rech", new Research());
-        WikidataFacade.readPage("Q1569");
+        WikidataFacade.readPage("Q1580");
         return "index.html";
     }
 

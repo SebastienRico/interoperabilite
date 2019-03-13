@@ -35,6 +35,8 @@ public class ParserHTML {
         ContactDTO contact = new ContactDTO();
         contact.setNamePerson("Office du Tourisme");
         contact.setWebsiteContact("http://www.office-tourisme-haut-lignon.com/");
+        contact.setFaxContact(" ");
+        contact.setPhoneContact(" ");
         try {
             constructor = fabric.newDocumentBuilder();
             Document document = (Document) constructor.parse(file);
@@ -83,6 +85,7 @@ public class ParserHTML {
         contact.setNamePerson("Cinema Scoop");
         contact.setWebsiteContact("https://www.cinema-scoop.fr/");
         contact.setPhoneContact("0471597937");
+        contact.setFaxContact(" ");
         this.activity.setContactActivity(contact);
         String address = "";
         address += "18";
@@ -90,6 +93,7 @@ public class ParserHTML {
         address += "Chambon-sur-Lignon";
         this.activity.setAddressActivity(address);
         this.activity.setNameActivity("Séance de cinéma");
+        this.activity.setCapacityActivity(125);
         Document document;
         try {
             constructor = fabric.newDocumentBuilder();
