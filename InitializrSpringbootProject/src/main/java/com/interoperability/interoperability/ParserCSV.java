@@ -1,7 +1,6 @@
 package com.interoperability.interoperability;
 
 import au.com.bytecode.opencsv.CSVReader;
-import com.interoperability.interoperability.objetsDTO.AddressDTO;
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
 import com.interoperability.interoperability.wikidata.WikidataFacade;
@@ -69,7 +68,6 @@ public class ParserCSV {
     }
 
     private void processParsing() {
-        AddressDTO adresse = new AddressDTO();
         ContactDTO contact = new ContactDTO();
         for (String[] oneData : data) {
             if(dataAreRightFormatted(oneData)){
@@ -77,25 +75,22 @@ public class ParserCSV {
                 restaurant.setMenuRestaurant(oneData[1]);
                 Integer capacite = Integer.parseInt(oneData[2]);
                 restaurant.setCapacityRestaurant(capacite);
-                Integer numeroRue = Integer.parseInt(oneData[3]);
-                adresse.setNumberStreet(numeroRue);
-                adresse.setNameStreet(oneData[4]);
-                adresse.setCity(oneData[5]);
-                restaurant.setTypeRestaurant(oneData[6]);
-                String[] nameSplited = oneData[7].split(" ");
+                restaurant.setAddressRestaurant(oneData[3]);
+                restaurant.setTypeRestaurant(oneData[4]);
+                String[] nameSplited = oneData[5].split(" ");
                 contact.setFirstnamePerson(nameSplited[0]);
                 contact.setNamePerson(nameSplited[1]);
-                contact.setPhoneContact(oneData[8]);
-                contact.setMailContact(oneData[9]);
-                contact.setFaxContact(oneData[10]);
-                contact.setWebsiteContact(oneData[11]);
-                restaurant.setDescriptionRestaurant(oneData[12]);
+                contact.setPhoneContact(oneData[6]);
+                contact.setMailContact(oneData[7]);
+                contact.setFaxContact(oneData[8]);
+                contact.setWebsiteContact(oneData[9]);
+                restaurant.setDescriptionRestaurant(oneData[10]);
             }
             /*Integer classe = Integer.parseInt(classeStr);
             Sexe sexe = (sexeStr.equalsIgnoreCase("F")) ? FEMME : HOMME;
             Date dateNaissance = dateFormat.parse(dateNaissanceStr);*/
         }
-        restaurant.setAddressRestaurant(adresse);
+        //restaurant.setAddressRestaurant(adresse);
         restaurant.setContactRestaurant(contact);
         WikidataFacade.writePage(restaurant);
     }
@@ -111,15 +106,7 @@ public class ParserCSV {
                 && oneData[7] != null && !oneData[7].isEmpty()
                 && oneData[8] != null && !oneData[8].isEmpty()
                 && oneData[9] != null && !oneData[9].isEmpty()
-                && oneData[10] != null && !oneData[10].isEmpty()
-                && oneData[11] != null && !oneData[11].isEmpty()
-                && oneData[12] != null && !oneData[12].isEmpty()) {
-            try {
-                Integer.parseInt(oneData[3]);
-            } catch (NumberFormatException ex) {
-                Logger.getLogger(ParserCSV.class.getName()).log(Level.SEVERE, "Address is not number", ex);
-                return false;
-            }
+                && oneData[10] != null && !oneData[10].isEmpty()) {
             return true;
         }
         return false;

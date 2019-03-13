@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class ActivitesDTO extends ObjectDTO{
     
-    private AddressDTO addressActivity;
+    private String addressActivity;
     private String nameActivity;
     private String scheduleActivity; //See format
     private int capacityActivity;
