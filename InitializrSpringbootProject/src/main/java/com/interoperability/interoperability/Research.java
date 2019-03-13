@@ -23,7 +23,7 @@ public class Research {
     public String requestQAnswer(String request) {
         String qId = null;
         // request the QAnswer service with the good one curl function
-        String command = "curl --data \"query=activite kb=http://qanswer-svc1.univ-st-etienne.fr/wiki\" http://qanswer-core1.univ-st-etienne.fr/gerbsil";
+        String command = "curl -o test.html --data \"query=barack obama\" http://qanswer-core1.univ-st-etienne.fr/api/gerbils";
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
         // get the qId
         return qId;

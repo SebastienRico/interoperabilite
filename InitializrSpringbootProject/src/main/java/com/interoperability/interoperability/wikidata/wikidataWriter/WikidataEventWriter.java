@@ -34,8 +34,8 @@ public class WikidataEventWriter {
     private static final String PROPERTY_ADDRESS = "P1076";
     private static final String PROPERTY_CONTACT = "P61";
     private static final String PROPERTY_TYPE = "P1077";
-    private static final String PROPERTY_DATE_START = "P34";
-    private static final String PROPERTY_DATE_END = "P43";
+    private static final String PROPERTY_DATE_START = "P1083";
+    private static final String PROPERTY_DATE_END = "P1084";
 
     private PropertyDocument propertyInstanceOf;
     private PropertyDocument propertyAddress;
@@ -85,12 +85,12 @@ public class WikidataEventWriter {
         ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
                 .withLabel(event.getNameEvent(), "en")
                 .withLabel(event.getNameEvent(), "fr")
-                .withStatement(statementInstanceOf)
                 .withStatement(statementAddress)
                 .withStatement(statementType)
                 .withStatement(statementContact)
                 .withStatement(statementDateStart)
                 .withStatement(statementDateEnd)
+                .withStatement(statementInstanceOf)
                 .build();
 
         try {

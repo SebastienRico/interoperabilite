@@ -9,7 +9,9 @@ import com.interoperability.interoperability.wikidata.wikidataReader.WikidataAct
 import com.interoperability.interoperability.wikidata.wikidataReader.WikidataContactReader;
 import com.interoperability.interoperability.wikidata.wikidataReader.WikidataEventReader;
 import com.interoperability.interoperability.wikidata.wikidataReader.WikidataRestaurantReader;
+import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataActivityWriter;
 import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataContactWriter;
+import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataEventWriter;
 import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataRestaurantWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +26,12 @@ public class WikidataFacade {
         } else if (objectDTO instanceof ContactDTO) {
             WikidataContactWriter wikidataContactWriter = new WikidataContactWriter();
             wikidataContactWriter.writeContactPage((ContactDTO) objectDTO);
+        } else if (objectDTO instanceof EventDTO) {
+            WikidataEventWriter wikidataEventWriter = new WikidataEventWriter();
+            wikidataEventWriter.writeEventPage((EventDTO) objectDTO);
+        } else if (objectDTO instanceof ActivitesDTO) {
+            WikidataActivityWriter wikidataActivityWriter = new WikidataActivityWriter();
+            wikidataActivityWriter.writeActivityPage((ActivitesDTO) objectDTO);
         } else {
             Logger.getLogger(WikidataFacade.class.getName()).log(Level.SEVERE, "[writePage] The objectDTO has no instanceof");
         }
@@ -55,6 +63,7 @@ public class WikidataFacade {
                 objectToShow = activity;
                 break;
         }
+        System.out.println(objectToShow);
         return objectToShow;
     }
 }

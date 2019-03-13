@@ -25,9 +25,9 @@
                 </div>
             </div>
             <div>
-                <a href="wikidataPage" class="list-group-item list-group-item-action ">
+                <a href="#" class="list-group-item list-group-item-action ">
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 1'"></h5>
+                        <h5 class="mb-1" th:each="v : ${activitesDTO}" th:text="${v.nameActivity}+ ' 1'"></h5>
                         <small>3 days ago</small>
                     </div>
                     <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
@@ -35,7 +35,7 @@
                 </a>
                 <a href="#" class="list-group-item list-group-item-action">
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 2'"></h5>
+                        <h5 class="mb-1" th:each="v : ${contactDTO}" th:text="${v.nameContact}+ ' 2'"></h5>
                         <small class="text-muted">3 days ago</small>
                     </div>
                     <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>

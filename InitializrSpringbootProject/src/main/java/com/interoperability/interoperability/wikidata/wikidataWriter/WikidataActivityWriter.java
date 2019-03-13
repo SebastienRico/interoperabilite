@@ -68,7 +68,7 @@ public class WikidataActivityWriter {
                 .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
         Statement statementCapacity = StatementBuilder
-                .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
+                .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
                 .withValue(Datamodel.makeQuantityValue(new BigDecimal(activity.getCapacityActivity())))
                 .build();
         Statement statementSchedule = StatementBuilder
@@ -78,16 +78,17 @@ public class WikidataActivityWriter {
         ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
                 .withLabel(activity.getNameActivity(), "en")
                 .withLabel(activity.getNameActivity(), "fr")
-                .withStatement(statementInstanceOf)
+                .withDescription(activity.getDescriptionActivity(), "fr")
                 .withStatement(statementAddress)
                 .withStatement(statementContact)
                 .withStatement(statementCapacity)
                 .withStatement(statementSchedule)
+                .withStatement(statementInstanceOf)
                 .build();
         try {
             ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
         } catch (IOException | MediaWikiApiErrorException ex) {
-            Logger.getLogger(WikidataEventWriter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
         Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.INFO, "Created or updating {0}", activity.getNameActivity());
         com.interoperability.interoperability.models.ItemDocument databaseItemDocument = new com.interoperability.interoperability.models.ItemDocument();

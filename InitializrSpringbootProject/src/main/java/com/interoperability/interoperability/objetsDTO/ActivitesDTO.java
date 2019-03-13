@@ -9,7 +9,7 @@ public class ActivitesDTO extends ObjectDTO{
     private String addressActivity;
     private String nameActivity;
     private String scheduleActivity; //See format
-    private int capacityActivity;
+    private Integer capacityActivity;
     private ContactDTO contactActivity;
     private String circuitIDActivity;
     private String rideActivity;

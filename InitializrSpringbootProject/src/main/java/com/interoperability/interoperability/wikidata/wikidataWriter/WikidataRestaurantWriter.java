@@ -68,7 +68,7 @@ public class WikidataRestaurantWriter {
                 .build();
         Statement statementAddress = StatementBuilder
                 .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
-                .withValue(Datamodel.makeStringValue(restaurant.getAddressRestaurant()))
+                .withValue(Datamodel.makeStringValue(restaurant.getAdressRestaurant()))
                 .build();
         Statement statementType = StatementBuilder
                 .forSubjectAndProperty(noid, propertyType.getPropertyId())
