@@ -77,7 +77,7 @@ public class GetterInternetPage extends TimerTask {
             }
 
             parser = new ParserHTML();
-            //parser.parserEvenementOfficeTourisme("maPage.html");
+            parser.parserEvenementOfficeTourisme("maPage.html");
             parser.parserCinemaScoop("maPage.html");
 
         } catch (MalformedURLException ex) {

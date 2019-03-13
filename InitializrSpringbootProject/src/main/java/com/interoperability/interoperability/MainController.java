@@ -7,6 +7,8 @@ import com.interoperability.interoperability.objetsDTO.HousingDTO;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.*;
+
 import com.interoperability.interoperability.objetsDTO.RentalFormDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
 import com.interoperability.interoperability.objetsDTO.OrganizerDTO;
@@ -15,12 +17,18 @@ import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
 import com.interoperability.interoperability.wikidata.WikidataFacade;
 import com.interoperability.interoperability.wikidata.WikidataUtil;
 import com.interoperability.interoperability.wikidata.wikidataReader.WikidataRestaurantReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import jdk.nashorn.internal.parser.JSONParser;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.wikidata.wdtk.datamodel.json.jackson.JacksonObjectFactory;
 
 @Controller
 public class MainController {
@@ -49,7 +57,7 @@ public class MainController {
     @RequestMapping(value = "/Research", method = RequestMethod.GET)
     public String goToResearch(Model m) {
         m.addAttribute("rech", new Research());
-
+        
         m.addAttribute("activitesDTO",activitesDTO);
         m.addAttribute("contactDTO",contactDTO);
         m.addAttribute("eventDTO",eventDTO);
@@ -92,20 +100,39 @@ public class MainController {
     }
 
     @RequestMapping(value = "/addResearch", method = RequestMethod.POST)
-    public String addResearch(Model m, @ModelAttribute("rech") Research rec) {
+    public String addResearch(Model m, @ModelAttribute("rech") Research rec) throws IOException {
+
         research = new ArrayList<>();
         restaurantDTO = new ArrayList<>();
 
         String champs = rec.getChamps();
 
-        String command = "curl --data \"query=" + champs + " kb=http://qanswer-svc1.univ-st-etienne.fr/wiki/Main_Page http://qanswer-core1.univ-st-etienne.fr/gerbil";
-        System.out.println(command);
-        /*
-        try {
-            Process process = Runtime.getRuntime().exec(command);
-        } catch (IOException ex) {
-        }*/
         ObjectDTO object =  WikidataFacade.readPage("Q1580");
+        String command = "curl --data \"query=" + champs + "\" http://qanswer-core1.univ-st-etienne.fr/api/gerbil";
+        Process process = Runtime.getRuntime().exec(command);
+
+        try {
+            System.out.println(command);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+                builder.append(System.getProperty("line.separator"));
+            }
+            String result = builder.toString();
+
+            JSONArray head = new JSONObject(new JSONObject(result.toString()).getJSONArray("questions").getJSONObject(0).getJSONObject("question").get("answers").toString()).getJSONObject("head").getJSONArray("vars");
+            System.out.println(head.toString());
+            JSONArray bindings = new JSONObject(new JSONObject(result.toString()).getJSONArray("questions").getJSONObject(0).getJSONObject("question").get("answers").toString()).getJSONObject("results").getJSONArray("bindings");
+            System.out.println(bindings.toString());
+            for (int i = 0; i < bindings.length(); i++) {
+                System.out.println(bindings.getJSONObject(i).getJSONObject(head.get(0).toString()).get("value").toString());
+            }
+
+        } catch (Exception e) {
+
+        }
         Research r = new Research(champs);
         
         if (object instanceof RestaurantDTO){

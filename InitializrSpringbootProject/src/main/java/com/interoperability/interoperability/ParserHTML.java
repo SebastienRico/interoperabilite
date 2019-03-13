@@ -4,6 +4,7 @@ package com.interoperability.interoperability;
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
+import com.interoperability.interoperability.wikidata.WikidataFacade;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -37,6 +38,8 @@ public class ParserHTML {
         contact.setWebsiteContact("http://www.office-tourisme-haut-lignon.com/");
         contact.setFaxContact(" ");
         contact.setPhoneContact(" ");
+        contact.setFirstnamePerson(" ");
+        contact.setNamePerson(" ");
         try {
             constructor = fabric.newDocumentBuilder();
             Document document = (Document) constructor.parse(file);
@@ -57,7 +60,11 @@ public class ParserHTML {
                         }
                     }
                     Element type = (Element) e.getElementsByTagName("div").item(0);
-                    this.event.setTypeEvent(type.getTextContent().trim());
+                    if(type.getTextContent() != null){
+                        this.event.setTypeEvent(type.getTextContent().trim());
+                    } else {
+                        this.event.setTypeEvent(" ");
+                    }
                     this.event.setContactEvent(contact);
                     System.out.println("Evenement " + j);
                     System.out.println("----------");
@@ -66,7 +73,7 @@ public class ParserHTML {
                     System.out.println("Date : " + this.event.getDateStartEvent());
                     System.out.println("Type : " + this.event.getTypeEvent());
                     System.out.println("----------");
-                    //TODO enregistrer event
+                    WikidataFacade.writePage(event);
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException ex) {
@@ -86,6 +93,8 @@ public class ParserHTML {
         contact.setWebsiteContact("https://www.cinema-scoop.fr/");
         contact.setPhoneContact("0471597937");
         contact.setFaxContact(" ");
+        contact.setFirstnamePerson(" ");
+        contact.setNamePerson(" ");
         this.activity.setContactActivity(contact);
         String address = "";
         address += "18";
@@ -110,6 +119,7 @@ public class ParserHTML {
                 System.out.println("Description : " + this.activity.getDescriptionActivity());
                 System.out.println("Adresse : " + this.activity.getAddressActivity());
                 System.out.println("-------------------------");
+                WikidataFacade.writePage(activity);
             }
         } catch (SAXException | IOException | ParserConfigurationException ex) {
             Logger.getLogger(ParserHTML.class.getName()).log(Level.SEVERE, null, ex);
