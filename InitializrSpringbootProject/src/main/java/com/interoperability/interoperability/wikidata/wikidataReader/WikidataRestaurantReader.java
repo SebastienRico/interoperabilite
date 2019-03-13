@@ -24,7 +24,7 @@ public class WikidataRestaurantReader {
         ItemDocument item = null;
         try {
             //Pour l'instant on met le QID en dur mais il faudra le passer en paramètre
-            item = (ItemDocument) wbdf.getEntityDocument("Q1570");
+            item = (ItemDocument) wbdf.getEntityDocument("Q1580");
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }

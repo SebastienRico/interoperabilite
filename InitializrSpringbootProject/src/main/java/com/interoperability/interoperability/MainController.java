@@ -56,7 +56,7 @@ public class MainController {
     public String goToLocationForm(Model m){
         m.addAttribute("location", new RentalFormDTO());
         m.addAttribute("rech", new Research());
-        return "locationForm.html";
+        return "locationForm";
     }
 
 
@@ -88,7 +88,6 @@ public class MainController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/addLocation")
     public String addNewLocation(@ModelAttribute("location") RentalFormDTO location) {
-        String adresse = location.getNumberStreet() + " " + location.getNameStreet() + " " + location.getCity();
         OrganizerDTO organisateurLocation = new OrganizerDTO();
         organisateurLocation.setNamePerson(location.getNamePerson());
         organisateurLocation.setFirstnamePerson(location.getFirstnamePerson());
@@ -99,7 +98,7 @@ public class MainController {
         
         
         RentDTO locationDTO = new RentDTO();
-        locationDTO.setAddressRent(adresse);
+        locationDTO.setAddressRent(location.getAdressRent());
         locationDTO.setOrganizerRent(organisateurLocation);
         locationDTO.setDateStartRent(location.getDateStartRent());
         locationDTO.setDateEndRent(location.getDateEndRent());
