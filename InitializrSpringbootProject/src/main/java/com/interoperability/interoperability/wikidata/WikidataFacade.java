@@ -4,6 +4,7 @@ import com.interoperability.interoperability.ObjectDTO;
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
+import com.interoperability.interoperability.objetsDTO.HostelDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
 import com.interoperability.interoperability.wikidata.wikidataReader.WikidataActivitiesReader;
@@ -13,6 +14,7 @@ import com.interoperability.interoperability.wikidata.wikidataReader.WikidataRes
 import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataActivityWriter;
 import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataContactWriter;
 import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataEventWriter;
+import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataHostelWriter;
 import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataRestaurantWriter;
 import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataRentWriter;
 import java.util.logging.Level;
@@ -37,6 +39,9 @@ public class WikidataFacade {
         } else if (objectDTO instanceof RentDTO) {
             WikidataRentWriter wikidataRentWriter = new WikidataRentWriter();
             wikidataRentWriter.writeRentPage((RentDTO) objectDTO);
+        } else if (objectDTO instanceof HostelDTO) {
+            WikidataHostelWriter wikidataHostelWriter = new WikidataHostelWriter();
+            wikidataHostelWriter.writeHostelPage((HostelDTO) objectDTO);
         } else {
             Logger.getLogger(WikidataFacade.class.getName()).log(Level.SEVERE, "[writePage] The objectDTO has no instanceof");
         }
