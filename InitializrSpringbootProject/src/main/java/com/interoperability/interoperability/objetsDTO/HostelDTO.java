@@ -4,7 +4,7 @@ import com.interoperability.interoperability.ObjectDTO;
 import lombok.Data;
 
 @Data
-public class HousingDTO extends ObjectDTO{
+public class HostelDTO extends ObjectDTO{
 
     private String addressHousing;
     private int capacityHousing;
@@ -15,7 +15,7 @@ public class HousingDTO extends ObjectDTO{
     private String openingPeriodHousing; //See format
     private ManagerDTO managerHousing;
 
-    public HousingDTO() {
+    public HostelDTO() {
     }
     
 }

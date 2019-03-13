@@ -75,7 +75,7 @@ public class ParserCSV {
                 restaurant.setMenuRestaurant(oneData[1]);
                 Integer capacite = Integer.parseInt(oneData[2]);
                 restaurant.setCapacityRestaurant(capacite);
-                restaurant.setAdressRestaurant(oneData[3]);
+                restaurant.setAddressRestaurant(oneData[3]);
                 restaurant.setTypeRestaurant(oneData[4]);
                 String[] nameSplited = oneData[5].split(" ");
                 contact.setFirstnamePerson(nameSplited[0]);

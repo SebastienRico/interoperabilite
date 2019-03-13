@@ -1,11 +1,11 @@
 package com.interoperability.interoperability.wikidata.wikidataWriter;
 
-import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
+import com.interoperability.interoperability.objetsDTO.RentDTO;
 import com.interoperability.interoperability.repositories.ItemDocumentRepository;
 import com.interoperability.interoperability.repositories.PropertyDocumentRepository;
 import com.interoperability.interoperability.utilities.Util;
-import com.interoperability.interoperability.wikidata.WikidataUtil;
 import com.interoperability.interoperability.wikidata.WikidataLogger;
+import com.interoperability.interoperability.wikidata.WikidataUtil;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.logging.Level;
@@ -21,99 +21,93 @@ import org.wikidata.wdtk.datamodel.interfaces.Statement;
 import org.wikidata.wdtk.wikibaseapi.WikibaseDataEditor;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
-public class WikidataRestaurantWriter {
-
+public class WikidataRentWriter {
+    
     @Autowired
     ItemDocumentRepository itemDocumentRepository;
 
     @Autowired
     PropertyDocumentRepository propertyDocumentRepository;
 
-    private static final String ITEM_RESTAURANT = "Q50";
+    private static final String ITEM_ACTIVITY = "Q101";
     private static final String PROPERTY_INSTANCE_OF = "P16";
     private static final String PROPERTY_ADDRESS = "P1076";
-    private static final String PROPERTY_TYPE = "P1077";
     private static final String PROPERTY_SEATING_CAPACITY = "P1064";
     private static final String PROPERTY_CONTACT = "P61";
-    private static final String PROPERTY_MENU = "P1072";
-    private static final String PROPERTY_SCHEDULE = "P1073";
+    private static final String PROPERTY_DATE_START = "P1083";
+    private static final String PROPERTY_DATE_END = "P1084";
+    private static final String PROPERTY_DISPONIBILITY = "P1085";
 
     private PropertyDocument propertyInstanceOf;
     private PropertyDocument propertyCapacity;
     private PropertyDocument propertyAddress;
-    private PropertyDocument propertyType;
     private PropertyDocument propertyContact;
-    private PropertyDocument propertyMenu;
-    private PropertyDocument propertySchedule;
+    private PropertyDocument propertyDateStart;
+    private PropertyDocument propertyDateEnd;
+    private PropertyDocument propertyDisponibility;
 
-    public void writeRestaurantPage(RestaurantDTO restaurant) {
+    public void writeRentPage(RentDTO rent) {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
-        
         try {
             propertyInstanceOf = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_INSTANCE_OF);
             propertyAddress = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_ADDRESS);
-            propertyType = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_TYPE);
-            propertyCapacity = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_SEATING_CAPACITY);
             propertyContact = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_CONTACT);
-            propertyMenu = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_MENU);
-            propertySchedule = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_SCHEDULE);
+            propertyCapacity = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_SEATING_CAPACITY);
+            propertyDateStart = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_DATE_START);
+            propertyDateEnd = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_DATE_END);
+            propertyDisponibility = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_DISPONIBILITY);
         } catch (MediaWikiApiErrorException ex) {
-            Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
+        ItemIdValue noid = ItemIdValue.NULL;
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(ITEM_RESTAURANT, WikidataLogger.WIKIBASE_SITE_IRI))
+                .withValue(Datamodel.makeItemIdValue(ITEM_ACTIVITY, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
         Statement statementAddress = StatementBuilder
                 .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
-                .withValue(Datamodel.makeStringValue(restaurant.getAddressRestaurant()))
+                .withValue(Datamodel.makeStringValue(rent.getAddressRent()))
                 .build();
-        Statement statementType = StatementBuilder
-                .forSubjectAndProperty(noid, propertyType.getPropertyId())
-                .withValue(Datamodel.makeStringValue(restaurant.getTypeRestaurant()))
-                .build();
-        Statement statementCapacity = StatementBuilder
-                .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
-                .withValue(Datamodel.makeQuantityValue(new BigDecimal(restaurant.getCapacityRestaurant())))
-                .build();
-        String contactQid = WikidataUtil.getOwner(restaurant.getContactRestaurant());
-        System.out.println("contactQid : " + contactQid);
+        String contactQid = WikidataUtil.getOwner(rent.getContactRent());
         Statement statementContact = StatementBuilder
                 .forSubjectAndProperty(noid, propertyContact.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
-        Statement statementMenu = StatementBuilder
-                .forSubjectAndProperty(noid, propertyMenu.getPropertyId())
-                .withValue(Datamodel.makeStringValue(restaurant.getMenuRestaurant()))
+        Statement statementCapacity = StatementBuilder
+                .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
+                .withValue(Datamodel.makeQuantityValue(new BigDecimal(rent.getCapacityRent())))
                 .build();
-        Statement statementSchedule = StatementBuilder
-                .forSubjectAndProperty(noid, propertySchedule.getPropertyId())
-                .withValue(Datamodel.makeStringValue(restaurant.getScheduleRestaurant()))
+        Statement statementDateStart = StatementBuilder
+                .forSubjectAndProperty(noid, propertyDateStart.getPropertyId())
+                .withValue(Datamodel.makeStringValue(rent.getDateStartRent()))
+                .build();
+        Statement statementDateEnt = StatementBuilder
+                .forSubjectAndProperty(noid, propertyDateEnd.getPropertyId())
+                .withValue(Datamodel.makeStringValue(rent.getDateEndRent()))
+                .build();
+        Statement statementDisponibility = StatementBuilder
+                .forSubjectAndProperty(noid, propertyDisponibility.getPropertyId())
+                .withValue(Datamodel.makeStringValue(rent.getDisponibilityRent()))
                 .build();
         ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
-                .withLabel(restaurant.getNameRestaurant(), "en")
-                .withLabel(restaurant.getNameRestaurant(), "fr")
-                .withDescription(restaurant.getDescriptionRestaurant(), "fr")
+                .withLabel(rent.getDescriptionRent(), "en")
+                .withLabel(rent.getDescriptionRent(), "fr")
                 .withStatement(statementAddress)
-                .withStatement(statementType)
-                .withStatement(statementCapacity)
                 .withStatement(statementContact)
-                .withStatement(statementMenu)
-                .withStatement(statementSchedule)
+                .withStatement(statementCapacity)
+                .withStatement(statementDateStart)
+                .withStatement(statementDateEnt)
+                .withStatement(statementDisponibility)
                 .withStatement(statementInstanceOf)
                 .build();
         try {
             ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
-        } catch (IOException | MediaWikiApiErrorException e) {
-            e.printStackTrace();
+        } catch (IOException | MediaWikiApiErrorException ex) {
+            Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "Created or updating {0}", restaurant.getNameRestaurant());
+        Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.INFO, "Created or updating {0}", rent.getDescriptionRent());
         com.interoperability.interoperability.models.ItemDocument databaseItemDocument = new com.interoperability.interoperability.models.ItemDocument();
         databaseItemDocument.setId(itemDocument.getItemId().getId());
-        databaseItemDocument.setLabel(restaurant.getNameRestaurant());
-        //itemDocumentRepository.save(databaseItemDocument);//System.out.println(itemDocument.getItemId().getId());
+        databaseItemDocument.setLabel(rent.getDescriptionRent());
     }
-
 }

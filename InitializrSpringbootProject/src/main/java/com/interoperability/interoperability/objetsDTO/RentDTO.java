@@ -2,7 +2,6 @@
 package com.interoperability.interoperability.objetsDTO;
 import com.interoperability.interoperability.ObjectDTO;
 
-import java.sql.Date;
 import lombok.Data;
 
 @Data
@@ -14,10 +13,9 @@ public class RentDTO extends ObjectDTO{
     private String dateEndRent;
     private float priceRent;
     private String disponibilityRent; //Type to change, see with other groups ?
-    private OrganizerDTO organizerRent;
+    private ContactDTO contactRent;
     
     public RentDTO() {
     }
-    
     
 }

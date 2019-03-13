@@ -1,6 +1,7 @@
 package com.interoperability.interoperability.wikidata.wikidataReader;
 
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
+import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.wikidata.wdtk.datamodel.interfaces.ItemDocument;
@@ -12,6 +13,7 @@ public class WikidataActivitiesReader {
 
     public static ActivitesDTO readActivitiesPage(String QID) {
         ActivitesDTO activity = new ActivitesDTO();
+        ContactDTO contactActivity = new ContactDTO();
 
         String siteIri = "http://qanswer-svc1.univ-st-etienne.fr/index.php";
         ApiConnection con = new ApiConnection("http://qanswer-svc1.univ-st-etienne.fr/api.php");
@@ -25,17 +27,27 @@ public class WikidataActivitiesReader {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        System.out.println("Phone " + item.getStatementGroups().get(1).getStatements().get(0).getValue().toString());
+        //System.out.println("Nom resto " + item.getLabels().get("en").getText());
+        activity.setNameActivity(item.getLabels().get("en").getText());
 
-        System.out.println("Website " + item.getStatementGroups().get(2).getStatements().get(0).getValue().toString());
+        //System.out.println(item.getDescriptions().toString());
+        activity.setDescriptionActivity(item.getDescriptions().get("fr").getText());
 
-        System.out.println("Fax " + item.getStatementGroups().get(3).getStatements().get(0).getValue().toString());
+        String adresse = item.getStatementGroups().get(0).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+        activity.setAddressActivity(adresse);
 
-        System.out.println("Nom " + item.getStatementGroups().get(4).getStatements().get(0).getValue().toString());
+        activity.setCapacityActivity(Integer.parseInt(item.getStatementGroups().get(1).getStatements().get(0).getValue().toString()));
 
-        System.out.println("Prenom " + item.getStatementGroups().get(5).getStatements().get(0).getValue().toString());
+        String schedule = item.getStatementGroups().get(3).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+        activity.setScheduleActivity(schedule);
 
-        System.out.println("Mail " + item.getStatementGroups().get(6).getStatements().get(0).getValue().toString());
+        //Get The contact Qid
+        String contactsplit = item.getStatementGroups().get(4).getStatements().get(0).getValue().toString();
+        String[] array = contactsplit.split("php");
+        String[] array2 = array[1].split(" ");
+
+        contactActivity = WikidataContactReader.readContactPage(array2[0]);
+        activity.setContactActivity(contactActivity);
 
         return activity;
     }
