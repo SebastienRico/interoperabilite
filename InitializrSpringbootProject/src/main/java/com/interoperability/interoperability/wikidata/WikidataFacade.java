@@ -4,11 +4,14 @@ import com.interoperability.interoperability.ObjectDTO;
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
+import com.interoperability.interoperability.objetsDTO.HostelDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
 import com.interoperability.interoperability.wikidata.wikidataReader.WikidataActivitiesReader;
 import com.interoperability.interoperability.wikidata.wikidataReader.WikidataContactReader;
 import com.interoperability.interoperability.wikidata.wikidataReader.WikidataEventReader;
+import com.interoperability.interoperability.wikidata.wikidataReader.WikidataHostelReader;
+import com.interoperability.interoperability.wikidata.wikidataReader.WikidataRentReader;
 import com.interoperability.interoperability.wikidata.wikidataReader.WikidataRestaurantReader;
 import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataActivityWriter;
 import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataContactWriter;
@@ -67,8 +70,18 @@ public class WikidataFacade {
                 System.out.println(activity);
                 objectToShow = activity;
                 break;
+            case "location":
+                RentDTO rental = WikidataRentReader.readRentPage(Qid);
+                System.out.println(rental);
+                objectToShow = rental;
+                break;
+            case "hostel":
+                HostelDTO hostel = WikidataHostelReader.readHostelPage(Qid);
+                System.out.println(hostel);
+                objectToShow = hostel;
+                break;
         }
-        System.out.println(objectToShow);
+        //System.out.println(objectToShow);
         return objectToShow;
     }
 }

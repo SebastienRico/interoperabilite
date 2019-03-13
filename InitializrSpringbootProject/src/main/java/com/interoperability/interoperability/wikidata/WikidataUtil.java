@@ -60,7 +60,7 @@ public class WikidataUtil {
             //System.out.println(item.getStatementGroups().get(i).getStatements().get(0).toString());
             String test = item.getStatementGroups().get(i).getStatements().get(0).toString();
             if (test.contains("P16")) {
-                System.out.println(item.getStatementGroups().get(i).getStatements().get(0));
+                //System.out.println(item.getStatementGroups().get(i).getStatements().get(0));
                 String contactsplit = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString();
                 array1 = contactsplit.split("php");
                 array2 = array1[1].split(" ");
@@ -76,7 +76,7 @@ public class WikidataUtil {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
         String instanceName = itemInstance.getLabels().get("en").getText();
-        System.out.println(instanceName);
+        //System.out.println(instanceName);
         return instanceName;
     }
 }
