@@ -31,7 +31,7 @@ public class MainController {
     private static List<ActivitesDTO> activitesDTO;
     private static List<ContactDTO> contactDTO;
     private static List<EventDTO> eventDTO;
-    private static List<HostelDTO> housingDTO;
+    private static List<HostelDTO> hostelDTO;
     private static List<PersonDTO> personDTO;
     private static List<RestaurantDTO> restaurantDTO;
 
@@ -50,31 +50,36 @@ public class MainController {
     @RequestMapping(value = "/Research", method = RequestMethod.GET)
     public String goToResearch(Model m) {
         m.addAttribute("rech", new Research());
-        
-        m.addAttribute("activitesDTO",activitesDTO);
-        m.addAttribute("contactDTO",contactDTO);
-        m.addAttribute("eventDTO",eventDTO);
-        m.addAttribute("housingDTO",housingDTO);
-        m.addAttribute("personDTO",personDTO);
-        m.addAttribute("restaurantDTO",restaurantDTO);
+
+        m.addAttribute("activitesDTO", activitesDTO);
+        m.addAttribute("contactDTO", contactDTO);
+        m.addAttribute("eventDTO", eventDTO);
+        m.addAttribute("housingDTO", hostelDTO);
+        m.addAttribute("personDTO", personDTO);
+        m.addAttribute("restaurantDTO", restaurantDTO);
 
         return "research.html";
     }
 
-   /* @RequestMapping(value = "/addResearch", method = RequestMethod.GET)
+    /* @RequestMapping(value = "/addResearch", method = RequestMethod.GET)
     public String showResearch(Model m) {
         m.addAttribute("rech", new Research());
 
         return "addResearch";
     }
-    */
-    
+     */
     @RequestMapping(value = "/restaurant", method = RequestMethod.GET)
-    public String goToRestaurant(Model m){
-        m.addAttribute("restaurant",restaurantDTO);
+    public String goToRestaurant(Model m) {
+        m.addAttribute("restaurant", restaurantDTO);
         m.addAttribute("rech", new Research());
-        System.out.println("salut");
         return "restaurant";
+    }
+    
+    @RequestMapping(value = "/activites", method = RequestMethod.GET)
+    public String goToActivites(Model m) {
+        m.addAttribute("activites", activitesDTO);
+        m.addAttribute("rech", new Research());
+        return "activites";
     }
 
     @RequestMapping(value = "/wikidataPage")
@@ -96,10 +101,15 @@ public class MainController {
 
         research = new ArrayList<>();
         restaurantDTO = new ArrayList<>();
+        activitesDTO = new ArrayList<>();
+        contactDTO = new ArrayList<>();
+        eventDTO = new ArrayList<>();
+        hostelDTO = new ArrayList<>();
+        personDTO = new ArrayList<>();
 
         String champs = rec.getChamps();
 
-        ObjectDTO object =  WikidataFacade.readPage("Q1580");
+        ObjectDTO object = WikidataFacade.readPage("Q2109");
         String command = "curl --data \"query=" + champs + "\" http://qanswer-core1.univ-st-etienne.fr/api/gerbil";
         Process process = Runtime.getRuntime().exec(command);
 
@@ -126,12 +136,37 @@ public class MainController {
 
         }
         Research r = new Research(champs);
-        
-        if (object instanceof RestaurantDTO){
+
+        if (object instanceof RestaurantDTO) {
             System.out.println("restaurant" + object);
-            
+
             restaurantDTO.add((RestaurantDTO) object);
             return "redirect:/restaurant";
+        } else if (object instanceof PersonDTO) {
+            System.out.println("personne" + object);
+
+            personDTO.add((PersonDTO) object);
+            return "redirect:/person";
+        } else if (object instanceof HostelDTO) {
+            System.out.println("hotel" + object);
+
+            hostelDTO.add((HostelDTO) object);
+            return "redirect:/hostel";
+        } else if (object instanceof EventDTO) {
+            System.out.println("événement" + object);
+
+            eventDTO.add((EventDTO) object);
+            return "redirect:/event";
+        } else if (object instanceof ContactDTO) {
+            System.out.println("contact" + object);
+
+            contactDTO.add((ContactDTO) object);
+            return "redirect:/contact";
+        } else if (object instanceof ActivitesDTO){
+            System.out.println("activité" + object);
+
+            activitesDTO.add((ActivitesDTO) object);
+            return "redirect:/activites";
         }
 
         research.add(r);
