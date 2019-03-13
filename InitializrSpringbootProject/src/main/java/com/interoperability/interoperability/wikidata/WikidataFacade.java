@@ -6,7 +6,9 @@ import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
+import com.interoperability.interoperability.wikidata.wikidataReader.WikidataActivitiesReader;
 import com.interoperability.interoperability.wikidata.wikidataReader.WikidataContactReader;
+import com.interoperability.interoperability.wikidata.wikidataReader.WikidataEventReader;
 import com.interoperability.interoperability.wikidata.wikidataReader.WikidataRestaurantReader;
 import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataActivityWriter;
 import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataContactWriter;
@@ -56,6 +58,14 @@ public class WikidataFacade {
                 objectToShow = contact;
                 break;
             case "event":
+                EventDTO event = WikidataEventReader.readEventPage(Qid);
+                System.out.println(event);
+                objectToShow = event;
+                break;
+            case "activity":
+                ActivitesDTO activity = WikidataActivitiesReader.readActivitiesPage(Qid);
+                System.out.println(activity);
+                objectToShow = activity;
                 break;
         }
         System.out.println(objectToShow);
