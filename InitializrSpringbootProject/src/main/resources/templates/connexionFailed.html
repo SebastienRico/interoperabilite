@@ -23,54 +23,16 @@
                 </div>
             </div>
             <div class="container">
-                <h1>Ajouter une offre de location</h1>
+                <h1>Connexion</h1>
                 <div class="container">
-                    <form method="POST" th:action="@{/addLocation}" th:object="${location}">
+                    <form method="POST" th:action="@{/index.html}" th:object="${connexion}">
                         <div class="form-group" style="width: 100%">
-
-                            <!--Infos sur la location -->
-                            <label for="desc">Description de la location: </label>
-                            <input id="desc" class="form-control" type="text" placeholder="Description de la location" th:field="*{descriptionRent}"/>
-
-                            <label for="dateDeb">Date de début de location: </label>
-                            <input id="dateDeb" class="form-control" type="date" th:field="*{dateStartRent}"/>
-
-                            <label for="dateFin">Date de fin de location: </label>
-                            <input id="dateFin" class="form-control" type="date" th:field="*{dateEndRent}"/>
-
-                            <label for="dispo">Période de disponibilité:  </label>
-                            <input id="dispo" class="form-control" type="text" th:field="*{disponibilityRent}"/>
-
-                            <label for="capacite">Capacité: </label>
-                            <input id="capacite" class="form-control" type="number" th:field="*{capacityRent}"/>
-
-                            <label for="tarif">Tarif:  </label>
-                            <input id="tarif" class="form-control" type="text" th:field="*{priceRent}"/>
-
-                            <!--Adresse de la location -->
-                            <label for="adresse">Adresse </label>
-                            <input id="adresse" class="form-control" type="text" th:field="*{addressRent}"/>
-
-                            <!--Infos contact -->
-                            <label for="nomOrganisateur">Nom Contact:  </label>
-                            <input id="nomOrganisateur" class="form-control" type="text" th:field="*{namePerson}"/>
-
-                            <label for="prenOmorganisateur">Prenom Contact:  </label>
-                            <input id="prenOmorganisateur" class="form-control" type="text" th:field="*{firstnamePerson}"/>
-
-                            <label for="telOrganisateur">Telephone Contact:  </label>
-                            <input id="telOrganisateur" class="form-control" type="text" th:field="*{phoneContact}"/>
-
-                            <label for="mailOrganisateur">Email Contact  </label>
-                            <input id="mailOrganisateur" class="form-control" type="text" th:field="*{mailContact}"/>
-
-                            <label for="siteWebOrganisateur">Votre Site web: </label>
-                            <input id="siteWebOrganisateur" class="form-control" type="text" th:field="*{websiteContact}"/>
-
-
+                            <div class="alert alert-danger" role="alert">
+                                Le login ou le mot de passe est incorrecte
+                            </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Valider</button>
+                        <button type="submit" class="btn btn-primary">Retour à l'accueil</button>
                     </form>
                 </div>
             </div>

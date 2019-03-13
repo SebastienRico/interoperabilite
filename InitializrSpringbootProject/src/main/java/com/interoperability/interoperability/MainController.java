@@ -178,7 +178,7 @@ public class MainController {
         m.addAttribute("location", new RentalFormDTO());
         return "locationForm";
     }
-
+    
     @RequestMapping(method = RequestMethod.POST, path = "/addLocation")
     public String addNewLocation(@ModelAttribute("location") RentalFormDTO rentalForm) {
         ContactDTO contactRent = new ContactDTO();
