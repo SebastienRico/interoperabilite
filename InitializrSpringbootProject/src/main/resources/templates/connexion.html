@@ -1,0 +1,79 @@
+<html  xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+
+        <title>Formulaire de location</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"/>
+    </head>
+    <body>
+        <div class="list-group">
+            <div>
+                <div>
+                    <nav class="navbar  navbar-dark bg-primary" style="height:55px">
+                        <a class="navbar-brand" href="/" style="margin-bottom: 15px">Accueil</a>
+                        <a class="navbar-brand" href="/locationForm" style="font-size: 14px;margin-left: 50%;text-decoration: underline;margin-bottom: 15px" onmouseout="this.style.color='';" onmouseover="this.style.color='#000F42';" >Vous louez une local? Remplissez notre formulaire!</a>
+                        <form class="form-inline" method="POST" th:action="@{/addResearch}" th:object="${rech}">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Rechercher" aria-label="Rechercher" th:field="*{champs}"/>
+                            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Rechercher</button>
+                        </form>
+                    </nav>
+                </div>
+            </div>
+            <div class="container">
+                <h1>Ajouter une offre de location</h1>
+                <div class="container">
+                    <form method="POST" th:action="@{/addLocation}" th:object="${location}">
+                        <div class="form-group" style="width: 100%">
+
+                            <!--Infos sur la location -->
+                            <label for="desc">Description de la location: </label>
+                            <input id="desc" class="form-control" type="text" placeholder="Description de la location" th:field="*{descriptionRent}"/>
+
+                            <label for="dateDeb">Date de début de location: </label>
+                            <input id="dateDeb" class="form-control" type="date" th:field="*{dateStartRent}"/>
+
+                            <label for="dateFin">Date de fin de location: </label>
+                            <input id="dateFin" class="form-control" type="date" th:field="*{dateEndRent}"/>
+
+                            <label for="dispo">Période de disponibilité:  </label>
+                            <input id="dispo" class="form-control" type="text" th:field="*{disponibilityRent}"/>
+
+                            <label for="capacite">Capacité: </label>
+                            <input id="capacite" class="form-control" type="number" th:field="*{capacityRent}"/>
+
+                            <label for="tarif">Tarif:  </label>
+                            <input id="tarif" class="form-control" type="text" th:field="*{priceRent}"/>
+
+                            <!--Adresse de la location -->
+                            <label for="adresse">Adresse </label>
+                            <input id="adresse" class="form-control" type="text" th:field="*{addressRent}"/>
+
+                            <!--Infos contact -->
+                            <label for="nomOrganisateur">Nom Contact:  </label>
+                            <input id="nomOrganisateur" class="form-control" type="text" th:field="*{namePerson}"/>
+
+                            <label for="prenOmorganisateur">Prenom Contact:  </label>
+                            <input id="prenOmorganisateur" class="form-control" type="text" th:field="*{firstnamePerson}"/>
+
+                            <label for="telOrganisateur">Telephone Contact:  </label>
+                            <input id="telOrganisateur" class="form-control" type="text" th:field="*{phoneContact}"/>
+
+                            <label for="mailOrganisateur">Email Contact  </label>
+                            <input id="mailOrganisateur" class="form-control" type="text" th:field="*{mailContact}"/>
+
+                            <label for="siteWebOrganisateur">Votre Site web: </label>
+                            <input id="siteWebOrganisateur" class="form-control" type="text" th:field="*{websiteContact}"/>
+
+
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Valider</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
