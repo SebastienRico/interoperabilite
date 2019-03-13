@@ -1,8 +1,6 @@
 package com.interoperability.interoperability;
 
 import com.interoperability.interoperability.dataAccess.DatabaseController;
-import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
-import com.interoperability.interoperability.wikidata.WikidataLogger;
 import com.interoperability.interoperability.wikidata.wikidataWriter.WikidataRestaurantWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;

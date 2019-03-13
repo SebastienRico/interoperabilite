@@ -35,21 +35,24 @@ public class WikidataFacade {
         }
     }
 
-    public static void readPage(String Qid) {
+    public static ObjectDTO readPage(String Qid) {
+        ObjectDTO objectToShow = new ObjectDTO();
         WikidataLogger.connectToWikibase();
         String instance = WikidataUtil.checkInstanceOf(Qid);
         switch (instance) {
             case "restaurant":
                 RestaurantDTO restaurant = WikidataRestaurantReader.readRestaurantPage(Qid);
                 System.out.println(restaurant);
-                //Appel affichage restaurant
+                objectToShow = restaurant;
                 break;
             case "human":
                 ContactDTO contact = WikidataContactReader.readContactPage(Qid);
                 System.out.println(contact);
-                //Appel affichage contact
+                objectToShow = contact;
+                break;
+            case "event":
                 break;
         }
-
+        return objectToShow;
     }
 }
