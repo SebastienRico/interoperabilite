@@ -1,26 +1,23 @@
 package com.interoperability.interoperability.wikidata.wikidataReader;
 
-import com.interoperability.interoperability.objetsDTO.EventDTO;
+import com.interoperability.interoperability.objetsDTO.HousingDTO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.wikidata.wdtk.datamodel.interfaces.ItemDocument;
 import org.wikidata.wdtk.wikibaseapi.ApiConnection;
 import org.wikidata.wdtk.wikibaseapi.WikibaseDataFetcher;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class WikidataEventReader {
+public class WikidataHousingReader {
 
-    public static EventDTO readEventPage(String QID) {
-        EventDTO event = new EventDTO();
+    public static HousingDTO readHousingPage(String QID) {
+        HousingDTO housing = new HousingDTO();
 
         String siteIri = "http://qanswer-svc1.univ-st-etienne.fr/index.php";
         ApiConnection con = new ApiConnection("http://qanswer-svc1.univ-st-etienne.fr/api.php");
 
         WikibaseDataFetcher wbdf = new WikibaseDataFetcher(con, siteIri);
         ItemDocument item = null;
-
-        System.out.println("Nom resto " + item.getLabels().get("en").getText());
-        event.setNameEvent(item.getLabels().get("en").getText());
 
         try {
             item = (ItemDocument) wbdf.getEntityDocument(QID);
@@ -40,6 +37,6 @@ public class WikidataEventReader {
 
         System.out.println("Mail " + item.getStatementGroups().get(6).getStatements().get(0).getValue().toString());
 
-        return event;
+        return housing;
     }
 }
