@@ -19,7 +19,7 @@ public class WikidataFacade {
     
     public static void readPage(ObjectDTO objectDTO){
         if(objectDTO instanceof RestaurantDTO){
-                WikidataRestaurantReader.readRestaurantPage((RestaurantDTO) objectDTO);
+                //WikidataRestaurantReader.readRestaurantPage((RestaurantDTO) objectDTO);
         } else {
             Logger.getLogger(WikidataFacade.class.getName()).log(Level.SEVERE, "The objectDTO has no instanceof");
         }

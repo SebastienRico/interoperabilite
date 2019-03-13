@@ -1,0 +1,95 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
+
+        <title th:each="v : ${rec}" th:text="${v.champs}"></title>
+    </head>
+    <body>
+        <div class="list-group">
+            <div>
+                <div>
+                    <nav class="navbar  navbar-dark bg-primary">
+                        <a class="navbar-brand" href="/">Accueil</a>
+                        <a class="navbar-brand" href="/locationForm" style="font-size: 14px;margin-left: 50%;text-decoration: underline;" onmouseout="this.style.color='';" onmouseover="this.style.color='#000F42';" >Vous louez une local? Remplissez notre formulaire!</a>
+                        <form class="form-inline" method="POST" th:action="@{/addResearch}" th:object="${rech}">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Rechercher" aria-label="Rechercher" th:field="*{champs}"/>
+                            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Rechercher</button>
+                        </form>
+                    </nav>
+                </div>
+            </div>
+            <div>
+                <a href="wikidataPage" class="list-group-item list-group-item-action ">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 1'"></h5>
+                        <small>3 days ago</small>
+                    </div>
+                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                    <small>Donec id elit non mi porta.</small>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 2'"></h5>
+                        <small class="text-muted">3 days ago</small>
+                    </div>
+                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                    <small class="text-muted">Donec id elit non mi porta.</small>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 3'"></h5>
+                        <small class="text-muted">3 days ago</small>
+                    </div>
+                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                    <small class="text-muted">Donec id elit non mi porta.</small>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 4'"></h5>
+                        <small class="text-muted">3 days ago</small>
+                    </div>
+                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                    <small class="text-muted">Donec id elit non mi porta.</small>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 5'"></h5>
+                        <small class="text-muted">3 days ago</small>
+                    </div>
+                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                    <small class="text-muted">Donec id elit non mi porta.</small>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 6'"></h5>
+                        <small class="text-muted">3 days ago</small>
+                    </div>
+                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                    <small class="text-muted">Donec id elit non mi porta.</small>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 7'"></h5>
+                        <small class="text-muted">3 days ago</small>
+                    </div>
+                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                    <small class="text-muted">Donec id elit non mi porta.</small>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 8'"></h5>
+                        <small class="text-muted">3 days ago</small>
+                    </div>
+                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                    <small class="text-muted">Donec id elit non mi porta.</small>
+                </a>
+            </div>
+        </div>
+    </body>
+</html>
