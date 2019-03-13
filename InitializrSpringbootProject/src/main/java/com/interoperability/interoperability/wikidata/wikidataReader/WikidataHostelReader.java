@@ -30,18 +30,18 @@ public class WikidataHostelReader {
         }
 
         String adresse = item.getStatementGroups().get(0).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        hostel.setAddressHousing(adresse);
+        hostel.setAddressHostel(adresse);
 
         String price = item.getStatementGroups().get(1).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        hostel.setPriceHousing(Float.parseFloat(price));
+        hostel.setPriceHostel(Float.parseFloat(price));
 
         String stars = item.getStatementGroups().get(2).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        hostel.setStarHousing(Integer.parseInt(stars));
+        hostel.setStarHostel(Integer.parseInt(stars));
 
-        hostel.setCapacityHousing(Integer.parseInt(item.getStatementGroups().get(3).getStatements().get(0).getValue().toString()));
+        hostel.setCapacityHostel(Integer.parseInt(item.getStatementGroups().get(3).getStatements().get(0).getValue().toString()));
 
         String timetable = item.getStatementGroups().get(5).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        hostel.setTimetableOpenHousing(timetable);
+        hostel.setTimetableOpenHostel(timetable);
 
         //Get The contact Qid
         String contactsplit = item.getStatementGroups().get(6).getStatements().get(0).getValue().toString();
@@ -49,10 +49,10 @@ public class WikidataHostelReader {
         array2 = array[1].split(" ");
 
         contactHostel = WikidataContactReader.readContactPage(array2[0]);
-        hostel.setContactHousing(contactHostel);
+        hostel.setContactHostel(contactHostel);
 
         String openingPeriod = item.getStatementGroups().get(7).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        hostel.setOpeningPeriodHousing(openingPeriod);
+        hostel.setOpeningPeriodHostel(openingPeriod);
 
         return hostel;
     }
