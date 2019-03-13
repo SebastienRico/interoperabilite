@@ -19,7 +19,7 @@
                 <div>
                     <nav class="navbar  navbar-dark bg-primary">
                         <a class="navbar-brand" href="/">Accueil</a>
-                        <a class="navbar-brand" href="/locationForm" style="font-size: 14px;margin-left: 50%;text-decoration: underline;" onmouseout="this.style.color='';" onmouseover="this.style.color='#000F42';" >Vous louez une local? Remplissez notre formulaire!</a>
+                        <a class="navbar-brand" th:href="@{/locationForm}" style="font-size: 14px;margin-left: 50%;text-decoration: underline;" onmouseout="this.style.color='';" onmouseover="this.style.color='#000F42';" >Vous louez un local? Remplissez notre formulaire!</a>
                         <form class="form-inline" method="POST" th:action="@{/addResearch}" th:object="${rech}">
                             <input class="form-control mr-sm-2" type="search" placeholder="Rechercher" aria-label="Rechercher" th:field="*{champs}"/>
                             <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Rechercher</button>

@@ -30,48 +30,42 @@
 
                             <!--Infos sur la location -->
                             <label for="desc">Description de la location: </label>
-                            <input id="desc" class="form-control" type="text" placeholder="Description de la location" th:field="*{descriptionLocation}"/>
+                            <input id="desc" class="form-control" type="text" placeholder="Description de la location" th:field="*{descriptionRent}"/>
 
                             <label for="dateDeb">Date de début de location: </label>
-                            <input id="dateDeb" class="form-control" type="date" th:field="*{dateDebutLocation}"/>
+                            <input id="dateDeb" class="form-control" type="date" th:field="*{dateStartRent}"/>
 
                             <label for="dateFin">Date de fin de location: </label>
-                            <input id="dateFin" class="form-control" type="date" th:field="*{dateFinLocation}"/>
+                            <input id="dateFin" class="form-control" type="date" th:field="*{dateEndRent}"/>
 
                             <label for="dispo">Période de disponibilité:  </label>
-                            <input id="dispo" class="form-control" type="text" th:field="*{disponibiliteLocation}"/>
+                            <input id="dispo" class="form-control" type="text" th:field="*{disponibilityRent}"/>
 
                             <label for="capacite">Capacité: </label>
-                            <input id="capacite" class="form-control" type="number" th:field="*{capaciteLocation}"/>
+                            <input id="capacite" class="form-control" type="number" th:field="*{capacityRent}"/>
 
                             <label for="tarif">Tarif:  </label>
-                            <input id="tarif" class="form-control" type="text" th:field="*{tarifLocation}"/>
+                            <input id="tarif" class="form-control" type="text" th:field="*{priceRent}"/>
 
                             <!--Adresse de la location -->
-                            <label for="numrue">Numero Rue:  </label>
-                            <input id="numrue" class="form-control" type="text" th:field="*{numeroRue}"/>
-
-                            <label for="nomrue">Nom Rue:  </label>
-                            <input id="nomrue" class="form-control" type="text" th:field="*{nomRue}"/>
-
-                            <label for="ville">Ville:  </label>
-                            <input id="ville" class="form-control" type="text" th:field="*{ville}"/>
+                            <label for="adresse">Adresse </label>
+                            <input id="adresse" class="form-control" type="text" th:field="*{addressRent}"/>
 
                             <!--Infos contact -->
                             <label for="nomOrganisateur">Nom Contact:  </label>
-                            <input id="nomOrganisateur" class="form-control" type="text" th:field="*{nomPersonne}"/>
+                            <input id="nomOrganisateur" class="form-control" type="text" th:field="*{namePerson}"/>
 
                             <label for="prenOmorganisateur">Prenom Contact:  </label>
-                            <input id="prenOmorganisateur" class="form-control" type="text" th:field="*{prenomPersonne}"/>
+                            <input id="prenOmorganisateur" class="form-control" type="text" th:field="*{firstnamePerson}"/>
 
                             <label for="telOrganisateur">Telephone Contact:  </label>
-                            <input id="telOrganisateur" class="form-control" type="text" th:field="*{telephoneContact}"/>
+                            <input id="telOrganisateur" class="form-control" type="text" th:field="*{phoneContact}"/>
 
                             <label for="mailOrganisateur">Email Contact  </label>
-                            <input id="mailOrganisateur" class="form-control" type="text" th:field="*{emailContact}"/>
+                            <input id="mailOrganisateur" class="form-control" type="text" th:field="*{mailContact}"/>
 
                             <label for="siteWebOrganisateur">Votre Site web: </label>
-                            <input id="siteWebOrganisateur" class="form-control" type="text" th:field="*{siteWebContact}"/>
+                            <input id="siteWebOrganisateur" class="form-control" type="text" th:field="*{websiteContact}"/>
 
 
                         </div>
