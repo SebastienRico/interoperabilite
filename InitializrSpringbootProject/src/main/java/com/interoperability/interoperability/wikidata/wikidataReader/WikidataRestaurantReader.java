@@ -29,8 +29,11 @@ public class WikidataRestaurantReader {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        System.out.println("Nom resto " + item.getLabels().get("en").getText());
+        restaurant.setNameRestaurant(item.getLabels().get("en").getText());
+        
         System.out.println(item.getDescriptions().toString());
-        restaurant.setDescriptionRestaurant(item.getDescriptions().get("fr").toString());
+        restaurant.setDescriptionRestaurant(item.getDescriptions().get("fr").getText());
         
         //System.out.println("1er statement " + item.getStatementGroups().get(0).getStatements().get(0).getValue().toString());        
         restaurant.setAddressRestaurant(item.getStatementGroups().get(0).getStatements().get(0).getValue().toString());

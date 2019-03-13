@@ -22,7 +22,8 @@ public class RestaurantDTO extends ObjectDTO{
         return "Restau " + typeRestaurant 
                 + " desc: " + descriptionRestaurant
                 + " ouvert : " + scheduleRestaurant 
-                + " menu : " + menuRestaurant 
+                + " menu : " + menuRestaurant
+                + " Nom resto : " + nameRestaurant
                 + " capacite : " + capacityRestaurant;
     }
 }
