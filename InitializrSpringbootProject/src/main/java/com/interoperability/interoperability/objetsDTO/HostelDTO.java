@@ -6,14 +6,14 @@ import lombok.Data;
 @Data
 public class HostelDTO extends ObjectDTO{
 
-    private String addressHousing;
-    private int capacityHousing;
-    private float priceHousing; //Perhaps String for multiple prices ? Or prices list ?
-    private ContactDTO contactHousing;
-    private int starHousing;
-    private String timetableOpenHousing; //See format
-    private String openingPeriodHousing; //See format
-    private ManagerDTO managerHousing;
+    private String nameHostel;
+    private String addressHostel;
+    private Integer capacityHostel;
+    private Float priceHostel; //Perhaps String for multiple prices ? Or prices list ?
+    private ContactDTO contactHostel;
+    private Integer starHostel;
+    private String timetableOpenHostel; //See format
+    private String openingPeriodHostel; //See format
 
     public HostelDTO() {
     }

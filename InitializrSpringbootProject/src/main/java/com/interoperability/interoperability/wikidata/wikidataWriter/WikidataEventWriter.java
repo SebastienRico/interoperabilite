@@ -35,6 +35,7 @@ public class WikidataEventWriter {
     private static final String PROPERTY_CONTACT = "P61";
     private static final String PROPERTY_TYPE = "P1077";
     private static final String PROPERTY_DATE_START = "P1083";
+    private static final String PROPERTY_PRICE = "P1087";
     private static final String PROPERTY_DATE_END = "P1084";
 
     private PropertyDocument propertyInstanceOf;
@@ -43,6 +44,7 @@ public class WikidataEventWriter {
     private PropertyDocument propertyContact;
     private PropertyDocument propertyDateStart;
     private PropertyDocument propertyDateEnd;
+    private PropertyDocument propertyPrice;
 
     public void writeEventPage(EventDTO event) {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
@@ -53,6 +55,7 @@ public class WikidataEventWriter {
             propertyContact = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_CONTACT);
             propertyDateStart = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_DATE_START);
             propertyDateEnd = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_DATE_END);
+            propertyPrice = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_PRICE);
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataEventWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -82,6 +85,10 @@ public class WikidataEventWriter {
                 .forSubjectAndProperty(noid, propertyDateEnd.getPropertyId())
                 .withValue(Datamodel.makeStringValue(event.getDateEndEvent()))
                 .build();
+        Statement statementPrice = StatementBuilder
+                .forSubjectAndProperty(noid, propertyPrice.getPropertyId())
+                .withValue(Datamodel.makeStringValue(event.getPriceEvent().toString()))
+                .build();
         ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
                 .withLabel(event.getNameEvent(), "en")
                 .withLabel(event.getNameEvent(), "fr")
@@ -90,6 +97,7 @@ public class WikidataEventWriter {
                 .withStatement(statementContact)
                 .withStatement(statementDateStart)
                 .withStatement(statementDateEnd)
+                .withStatement(statementPrice)
                 .withStatement(statementInstanceOf)
                 .build();
 

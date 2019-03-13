@@ -11,7 +11,7 @@ public class RentDTO extends ObjectDTO{
     private int capacityRent;
     private String dateStartRent; //Type to define yet
     private String dateEndRent;
-    private float priceRent;
+    private Float priceRent;
     private String disponibilityRent; //Type to change, see with other groups ?
     private ContactDTO contactRent;
     

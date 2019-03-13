@@ -8,10 +8,10 @@ import lombok.Data;
 public class EventDTO extends ObjectDTO{
     private String typeEvent;
     private String addressEvent;
-    private int capacityEvent;
+    private Integer capacityEvent;
     private String dateStartEvent; //Type to define yet
     private String dateEndEvent;
-    private float priceEvent; //Perhaps String for multiple prices ? Or prices list ?
+    private Float priceEvent; //Perhaps String for multiple prices ? Or prices list ?
     private ContactDTO contactEvent;
     private String nameEvent;
     
