@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class InteroperabilityApplication {
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(InteroperabilityApplication.class, args);
+       SpringApplication.run(InteroperabilityApplication.class, args);
         try {
             // We start the directory watcher to parse CSV files
             Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.INFO, "Launch DirectoryWatcher");
