@@ -1,5 +1,6 @@
 package com.interoperability.interoperability.wikidata.wikidataReader;
 
+import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
 import org.wikidata.wdtk.datamodel.interfaces.ItemDocument;
 import org.wikidata.wdtk.wikibaseapi.ApiConnection;
@@ -12,6 +13,9 @@ public class WikidataEventReader {
 
     public static EventDTO readEventPage(String QID) {
         EventDTO event = new EventDTO();
+        ContactDTO contactEvent = new ContactDTO();
+        String[] array = null;
+        String[] array2 = null;
 
         String siteIri = "http://qanswer-svc1.univ-st-etienne.fr/index.php";
         ApiConnection con = new ApiConnection("http://qanswer-svc1.univ-st-etienne.fr/api.php");
@@ -19,27 +23,33 @@ public class WikidataEventReader {
         WikibaseDataFetcher wbdf = new WikibaseDataFetcher(con, siteIri);
         ItemDocument item = null;
 
-        System.out.println("Nom resto " + item.getLabels().get("en").getText());
-        event.setNameEvent(item.getLabels().get("en").getText());
-
         try {
             item = (ItemDocument) wbdf.getEntityDocument(QID);
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        System.out.println("Phone " + item.getStatementGroups().get(1).getStatements().get(0).getValue().toString());
+        //System.out.println("Nom event " + item.getLabels().get("fr").getText());
+        event.setNameEvent(item.getLabels().get("fr").getText());
 
-        System.out.println("Website " + item.getStatementGroups().get(2).getStatements().get(0).getValue().toString());
+        String adresse = item.getStatementGroups().get(0).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+        event.setAddressEvent(adresse);
 
-        System.out.println("Fax " + item.getStatementGroups().get(3).getStatements().get(0).getValue().toString());
+        String speciality = item.getStatementGroups().get(1).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+        event.setTypeEvent(speciality);
 
-        System.out.println("Nom " + item.getStatementGroups().get(4).getStatements().get(0).getValue().toString());
+        String dateDebut = item.getStatementGroups().get(3).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+        event.setDateStartEvent(dateDebut);
 
-        System.out.println("Prenom " + item.getStatementGroups().get(5).getStatements().get(0).getValue().toString());
+        String dateFin = item.getStatementGroups().get(4).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+        event.setDateEndEvent(dateFin);
 
-        System.out.println("Mail " + item.getStatementGroups().get(6).getStatements().get(0).getValue().toString());
+        String contactsplit = item.getStatementGroups().get(5).getStatements().get(0).getValue().toString();
+        array = contactsplit.split("php");
+        array2 = array[1].split(" ");
 
+        contactEvent = WikidataContactReader.readContactPage(array2[0]);
+        event.setContactEvent(contactEvent);
         return event;
     }
 }

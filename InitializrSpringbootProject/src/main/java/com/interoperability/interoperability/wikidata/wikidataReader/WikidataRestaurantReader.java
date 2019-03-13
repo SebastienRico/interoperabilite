@@ -29,28 +29,25 @@ public class WikidataRestaurantReader {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        System.out.println("Nom resto " + item.getLabels().get("en").getText());
+        //System.out.println("Nom resto " + item.getLabels().get("en").getText());
         restaurant.setNameRestaurant(item.getLabels().get("en").getText());
         
-        System.out.println(item.getDescriptions().toString());
+        //System.out.println(item.getDescriptions().toString());
         restaurant.setDescriptionRestaurant(item.getDescriptions().get("fr").getText());
         
-        //System.out.println("1er statement " + item.getStatementGroups().get(0).getStatements().get(0).getValue().toString());        
-        restaurant.setAddressRestaurant(item.getStatementGroups().get(0).getStatements().get(0).getValue().toString());
+        String adresse = item.getStatementGroups().get(0).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+        restaurant.setAddressRestaurant(adresse);
         
-        //System.out.println("2eme statement " + item.getStatementGroups().get(1).getStatements().get(0).getValue().toString());
-        restaurant.setTypeRestaurant(item.getStatementGroups().get(1).getStatements().get(0).getValue().toString());
+        String typeResto = item.getStatementGroups().get(1).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+        restaurant.setTypeRestaurant(typeResto);
         
-        //System.out.println("3eme statement " + item.getStatementGroups().get(2).getStatements().get(0).getValue().toString());
         restaurant.setCapacityRestaurant(Integer.parseInt(item.getStatementGroups().get(2).getStatements().get(0).getValue().toString()));
         
-        //System.out.println("4eme statement is the instance of for now");
+        String menu = item.getStatementGroups().get(4).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+        restaurant.setMenuRestaurant(menu);
         
-        //System.out.println("5eme statement " + item.getStatementGroups().get(4).getStatements().get(0).getValue().toString());
-        restaurant.setMenuRestaurant(item.getStatementGroups().get(4).getStatements().get(0).getValue().toString());
-        
-        //System.out.println("6eme statement " + item.getStatementGroups().get(5).getStatements().get(0).getValue().toString());
-        restaurant.setScheduleRestaurant(item.getStatementGroups().get(5).getStatements().get(0).getValue().toString());
+        String schedule = item.getStatementGroups().get(5).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+        restaurant.setScheduleRestaurant(schedule);
         
         //Get The contact Qid
         String contactsplit = item.getStatementGroups().get(6).getStatements().get(0).getValue().toString();
@@ -58,9 +55,7 @@ public class WikidataRestaurantReader {
         arrayRestaurant2 = arrayRestaurant[1].split(" ");
         
         contactResto = WikidataContactReader.readContactPage(arrayRestaurant2[0]);
-        //System.out.println(contactResto);
         restaurant.setContactRestaurant(contactResto);
-        //System.out.println(restaurant);
 
         return restaurant;
     }
