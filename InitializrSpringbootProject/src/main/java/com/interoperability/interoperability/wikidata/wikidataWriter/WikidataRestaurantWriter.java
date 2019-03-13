@@ -93,16 +93,16 @@ public class WikidataRestaurantWriter {
                 .withValue(Datamodel.makeStringValue(restaurant.getScheduleRestaurant()))
                 .build();
         ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
-                .withLabel("La mandarine", "en")
-                .withLabel("La mandarine", "fr")
+                .withLabel(restaurant.getNameRestaurant(), "en")
+                .withLabel(restaurant.getNameRestaurant(), "fr")
                 .withDescription(restaurant.getDescriptionRestaurant(), "fr")
-                .withStatement(statementInstanceOf)
                 .withStatement(statementAddress)
                 .withStatement(statementType)
                 .withStatement(statementCapacity)
                 .withStatement(statementContact)
                 .withStatement(statementMenu)
                 .withStatement(statementSchedule)
+                .withStatement(statementInstanceOf)
                 .build();
         try {
             ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));

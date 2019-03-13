@@ -38,7 +38,7 @@ public class MainController {
         m.addAttribute("rech", new Research());
         m.addAttribute("rec",research);
 
-        return "recherche.html";
+        return "research.html";
     }
 
     @RequestMapping(value = "/addResearch", method = RequestMethod.GET)
@@ -47,11 +47,18 @@ public class MainController {
 
         return "addResearch";
     }
-    @RequestMapping(value="/pageWikidata")
+    @RequestMapping(value="/wikidataPage")
     public String goToPageWikidata(Model m){
         m.addAttribute("rec",research);
         m.addAttribute("rech", new Research());
-        return "pageWikidata";
+        return "wikidataPage";
+    }
+    
+    @RequestMapping(value="/locationForm", method = RequestMethod.GET)
+    public String goToLocationForm(Model m){
+        m.addAttribute("location", new RentalFormDTO());
+        m.addAttribute("rech", new Research());
+        return "locationForm.html";
     }
 
 
@@ -78,7 +85,7 @@ public class MainController {
     @RequestMapping("/addLocation")
     public String addLocation(Model m) {
         m.addAttribute("location", new RentalFormDTO());
-        return "formulaireLocation";
+        return "locationForm";
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/addLocation")
