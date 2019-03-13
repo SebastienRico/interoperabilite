@@ -6,6 +6,8 @@ import java.util.List;
 import com.interoperability.interoperability.objetsDTO.RentalFormDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
 import com.interoperability.interoperability.objetsDTO.OrganizerDTO;
+import com.interoperability.interoperability.wikidata.WikidataFacade;
+import com.interoperability.interoperability.wikidata.WikidataUtil;
 import com.interoperability.interoperability.wikidata.wikidataReader.WikidataRestaurantReader;
 
 import org.springframework.stereotype.Controller;
@@ -27,7 +29,7 @@ public class MainController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String gotToIndex(Model m) {
         m.addAttribute("rech", new Research());
-        WikidataRestaurantReader.readRestaurantPage();
+        WikidataFacade.readPage("Q1569");
         return "index.html";
     }
 
