@@ -1,5 +1,6 @@
 package com.interoperability.interoperability.models;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import lombok.Data;
 import javax.persistence.Entity;
@@ -11,7 +12,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "connexion")
-public class Connexion {
+public class Connexion implements Serializable {
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)

@@ -25,19 +25,15 @@
             <div class="container col-lg-4">
                 <h1>Connexion</h1>
                 <div class="container">
-                    <form method="POST" th:action="@{/tryConnexion}" th:object="${co}">
+                    <form method="POST" th:action="@{/downloadFile}">
                         <div class="form-group" style="width: 100%">
-
-                            <!--Infos sur la connexion -->
-                            <label for="login">Login : </label>
-                            <input id="login" class="form-control" type="text" placeholder="Login" th:field="*{login}"/>
-
-                            <label for="pswd">Password : </label>
-                            <input id="pswd" class="form-control" type="password" placeholder="*******" th:field="*{password}"/>
+                            <label for="login">Téléchergez le fichier CSV ici : </label>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Connexion</button>
                     </form>
+                    
+                    <!-- Ici insérer le code pour charger le fichier -->
                 </div>
             </div>
         </div>

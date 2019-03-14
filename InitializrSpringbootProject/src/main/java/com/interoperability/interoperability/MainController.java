@@ -1,5 +1,6 @@
 package com.interoperability.interoperability;
 
+import com.interoperability.interoperability.models.Connexion;
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
@@ -13,10 +14,12 @@ import com.interoperability.interoperability.objetsDTO.RentalFormDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
 import com.interoperability.interoperability.objetsDTO.PersonDTO;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
+import com.interoperability.interoperability.repositories.ConnexionRepository;
 import com.interoperability.interoperability.wikidata.WikidataFacade;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class MainController {
+    
+    @Autowired
+    ConnexionRepository connexionRepository;
 
     private static List<Research> research;
     private static List<ActivitesDTO> activitesDTO;
@@ -207,6 +213,27 @@ public class MainController {
     public String redirectResearch() {
         return null;
 
+    }
+    
+    @RequestMapping(value = "/connect", method = RequestMethod.GET)
+    public String goToConnexion(Model m){
+        m.addAttribute("co", new Connexion());
+        m.addAttribute("rech", new Research());
+        return "connexion";
+    }
+    
+    @RequestMapping(value = "/tryConnexion", method = RequestMethod.POST)
+    public String tryConnexion(@ModelAttribute("co") Connexion co){
+        Connexion tryConnexion = connexionRepository.findConnexionWithLoginAndPassword(co.getLogin(), co.getPassword());
+        if(tryConnexion == null){
+            return "connexionFaild";
+        }
+        return "connexionSuccess";
+    }
+    
+    @RequestMapping(value = "/connexionSuccess", method = RequestMethod.POST)
+    public void connexionOk(@ModelAttribute("co") Connexion co, Model m){
+        m.addAttribute("rech", new Research());
     }
 
 }

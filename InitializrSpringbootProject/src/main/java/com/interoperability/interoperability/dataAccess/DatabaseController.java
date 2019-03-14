@@ -19,7 +19,7 @@ public class DatabaseController {
     public void setDatabase(){
         try {
             connexion = DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
-            //insertConnexion();
+            insertConnexion();
             Logger.getLogger(DatabaseController.class.getName()).log(Level.INFO, "Inserting data ok");
             connexion.close();
         } catch (SQLException ex) {
@@ -32,7 +32,7 @@ public class DatabaseController {
         try {
             statement = connexion.createStatement();
             // put here all user to insert
-            statement.execute("insert into connexion(login, password) values ('brigite', 'dusecretariat);");
+            statement.execute("insert into connexion(id, login, password) values (1, 'brigite', 'dusecretariat');");
             Logger.getLogger(DatabaseController.class.getName()).log(Level.INFO, "Inserting connexions ok");
             statement.close();
         } catch (SQLException ex) {
