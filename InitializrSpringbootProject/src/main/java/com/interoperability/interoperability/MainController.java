@@ -33,7 +33,7 @@ public class MainController {
     @Autowired
     ConnexionRepository connexionRepository;
 
-    private static List<Research> research;
+    private static List<Research> researches;
     private static List<ActivitesDTO> activitesDTO;
     private static List<ContactDTO> contactDTO;
     private static List<EventDTO> eventDTO;
@@ -90,7 +90,7 @@ public class MainController {
 
     @RequestMapping(value = "/wikidataPage")
     public String goToPageWikidata(Model m) {
-        m.addAttribute("rec", research);
+        m.addAttribute("rec", researches);
         m.addAttribute("rech", new Research());
         return "wikidataPage";
     }
@@ -105,7 +105,7 @@ public class MainController {
     @RequestMapping(value = "/addResearch", method = RequestMethod.POST)
     public String addResearch(Model m, @ModelAttribute("rech") Research rec) throws IOException {
 
-        research = new ArrayList<>();
+        researches = new ArrayList<>();
         restaurantDTO = new ArrayList<>();
         activitesDTO = new ArrayList<>();
         contactDTO = new ArrayList<>();
@@ -116,32 +116,12 @@ public class MainController {
         String champs = rec.getChamps();
 
         ObjectDTO object = WikidataFacade.readPage("Q2109");
-        String command = "curl --data \"query=" + champs + "\" http://qanswer-core1.univ-st-etienne.fr/api/gerbil";
-        Process process = Runtime.getRuntime().exec(command);
-
-        try {
-            System.out.println(command);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            StringBuilder builder = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-                builder.append(System.getProperty("line.separator"));
-            }
-            String result = builder.toString();
-
-            JSONArray head = new JSONObject(new JSONObject(result.toString()).getJSONArray("questions").getJSONObject(0).getJSONObject("question").get("answers").toString()).getJSONObject("head").getJSONArray("vars");
-            System.out.println(head.toString());
-            JSONArray bindings = new JSONObject(new JSONObject(result.toString()).getJSONArray("questions").getJSONObject(0).getJSONObject("question").get("answers").toString()).getJSONObject("results").getJSONArray("bindings");
-            System.out.println(bindings.toString());
-            for (int i = 0; i < bindings.length(); i++) {
-                System.out.println(bindings.getJSONObject(i).getJSONObject(head.get(0).toString()).get("value").toString());
-            }
-
-        } catch (Exception e) {
-
-        }
-        Research r = new Research(champs);
+        
+        Research research = new Research(champs);
+        List<String> qIds = new ArrayList<>();
+        qIds = research.requestQAnswer();
+        // if la liste qIds.size() == 1 alors l'objetDTO est égale au seul Qid de la liste
+        // if la liste est plus grande qu'un seul résultat alors on appelle l'affichage d'une liste de résultat
 
         if (object instanceof RestaurantDTO) {
             System.out.println("restaurant" + object);
@@ -175,7 +155,7 @@ public class MainController {
             return "redirect:/activites";
         }
 
-        research.add(r);
+        researches.add(research);
         return "redirect:/Research";
     }
 
