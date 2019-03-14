@@ -195,7 +195,7 @@ public class MainController {
 
     }
     
-    @RequestMapping(value = "/connect", method = RequestMethod.GET)
+    @RequestMapping(value = "/connect", method = RequestMethod.POST)
     public String goToConnexion(Model m){
         m.addAttribute("co", new Connexion());
         m.addAttribute("rech", new Research());
@@ -206,9 +206,15 @@ public class MainController {
     public String tryConnexion(@ModelAttribute("co") Connexion co){
         Connexion tryConnexion = connexionRepository.findConnexionWithLoginAndPassword(co.getLogin(), co.getPassword());
         if(tryConnexion == null){
-            return "connexionFaild";
+            return "connexionFailed";
         }
         return "connexionSuccess";
+    }
+    
+    @RequestMapping(value = "/connexionFailed", method = RequestMethod.GET)
+    public String FailedConnexion(Model m){
+        m.addAttribute("rech", new Research());
+        return "connexionFailed";
     }
     
     @RequestMapping(value = "/connexionSuccess", method = RequestMethod.POST)
