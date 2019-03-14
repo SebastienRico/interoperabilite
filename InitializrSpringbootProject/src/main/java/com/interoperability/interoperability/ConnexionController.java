@@ -13,7 +13,7 @@ public class ConnexionController {
     @Autowired
     ConnexionRepository connexionRepository;
     
-    @RequestMapping("/connect")
+    /**@RequestMapping("/connect")
     public String goToConnexion(Model m) {
         Connexion co = new Connexion();
         m.addAttribute("connexion", co);
@@ -22,7 +22,7 @@ public class ConnexionController {
         } else {
             return "connexionFailed";
         }
-    }
+    }**/
 
     private boolean isGoodConnexion(Connexion connexion) {
         Connexion co = connexionRepository.findConnexionWithLoginAndPassword(connexion.getLogin(), connexion.getPassword());

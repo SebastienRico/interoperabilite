@@ -1,8 +1,6 @@
 package com.interoperability.interoperability.wikidata.wikidataWriter;
 
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
-import com.interoperability.interoperability.repositories.ItemDocumentRepository;
-import com.interoperability.interoperability.repositories.PropertyDocumentRepository;
 import com.interoperability.interoperability.utilities.Util;
 import com.interoperability.interoperability.wikidata.WikidataLogger;
 import com.interoperability.interoperability.wikidata.WikidataUtil;
@@ -10,7 +8,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.wikidata.wdtk.datamodel.helpers.Datamodel;
 import org.wikidata.wdtk.datamodel.helpers.ItemDocumentBuilder;
 import org.wikidata.wdtk.datamodel.helpers.StatementBuilder;
@@ -22,12 +19,6 @@ import org.wikidata.wdtk.wikibaseapi.WikibaseDataEditor;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 public class WikidataActivityWriter {
-
-    @Autowired
-    ItemDocumentRepository itemDocumentRepository;
-
-    @Autowired
-    PropertyDocumentRepository propertyDocumentRepository;
 
     private static final String ITEM_ACTIVITY = "Q101";
     private static final String PROPERTY_INSTANCE_OF = "P16";
@@ -91,8 +82,5 @@ public class WikidataActivityWriter {
             Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
         Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.INFO, "Created or updating {0}", activity.getNameActivity());
-        com.interoperability.interoperability.models.ItemDocument databaseItemDocument = new com.interoperability.interoperability.models.ItemDocument();
-        databaseItemDocument.setId(itemDocument.getItemId().getId());
-        databaseItemDocument.setLabel(activity.getNameActivity());
     }
 }

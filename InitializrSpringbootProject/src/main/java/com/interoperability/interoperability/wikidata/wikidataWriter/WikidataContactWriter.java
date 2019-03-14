@@ -1,14 +1,11 @@
 package com.interoperability.interoperability.wikidata.wikidataWriter;
 
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
-import com.interoperability.interoperability.repositories.ItemDocumentRepository;
-import com.interoperability.interoperability.repositories.PropertyDocumentRepository;
 import com.interoperability.interoperability.utilities.Util;
 import com.interoperability.interoperability.wikidata.WikidataLogger;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.wikidata.wdtk.datamodel.helpers.Datamodel;
 import org.wikidata.wdtk.datamodel.helpers.ItemDocumentBuilder;
 import org.wikidata.wdtk.datamodel.helpers.StatementBuilder;
@@ -20,12 +17,6 @@ import org.wikidata.wdtk.wikibaseapi.WikibaseDataEditor;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 public class WikidataContactWriter {
-
-    @Autowired
-    ItemDocumentRepository itemDocumentRepository;
-
-    @Autowired
-    PropertyDocumentRepository propertyDocumentRepository;
 
     private static final String ITEM_PERSON = "Q1298";
     private static final String PROPERTY_INSTANCE_OF = "P16";
@@ -105,9 +96,5 @@ public class WikidataContactWriter {
             e.printStackTrace();
         }
         Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "Created or updating {0}", contact.getFirstnamePerson() + " " + contact.getNamePerson());
-        com.interoperability.interoperability.models.ItemDocument databaseItemDocument = new com.interoperability.interoperability.models.ItemDocument();
-        databaseItemDocument.setId(itemDocument.getItemId().getId());
-        databaseItemDocument.setLabel(contact.getFirstnamePerson() + " " + contact.getNamePerson());
-        //itemDocumentRepository.save(databaseItemDocument);//System.out.println(itemDocument.getItemId().getId());
     }
 }
