@@ -10,7 +10,7 @@
         <link href="/lib/style.min.css" rel="stylesheet"/>
         <script src="/lib/vue.js"></script>
         <script src="/lib/axios.min.js"></script>
-        <title th:each = "v : ${activites}" th:text = "${v.nameActivity}">Recherche</title>
+        <title th:each = "v : ${hostel}" th:text = "${v.nameHostel}"></title>
     </head>
     <body>
         <div class="list-group">
@@ -26,18 +26,17 @@
                     </nav>
                 </div>
             </div>
-            <div class="container" th:each="v : ${activites}"> 
-                <h1 style="font-size: 50px"   th:text="${v.nameActivity}"></h1>
+            <div class="container" th:each="v : ${hostel}"> 
+                <h1 style="font-size: 50px"   th:text="${v.nameHostel}"></h1>
                 <div class="container">
-                    <p style="font-size: 20px" th:text="${'Adresse de l''activité : ' + v.addressActivity}"></p>
-                    <p style="font-size: 20px" th:text="${'Prix de l''activité : ' + v.priceActivity}"></p>
-                    <p style="font-size: 20px" th:text="${'Descritpion de l''activité : ' + v.descriptionActivity}"></p>
-                    <p style="font-size: 20px" th:text="${'Circuit de l''activité : ' + v.circuitIDActivity}"></p>
-                    <p style="font-size: 20px" th:text="${'Tour de l''activité : ' + v.rideActivity}"></p>
-                    <p style="font-size: 20px" th:text="${'Capacité de l''activité: ' + v.capacityActivity}"></p>
-                    <p style="font-size: 20px" th:text="${'Horaire d''ouverture : ' + v.scheduleActivity}"></p>
-                    <div th:each = "w : ${v.contactActivity}">
-                        <p style="font-size: 20px" >Contact de l'actvité :</p>
+                    <p style="font-size: 20px" th:text="${'Adresse de l''hotel : ' + v.addressHostel}"></p>
+                    <p style="font-size: 20px" th:text="${'Nombre d'étoiles de l''hotel : ' + v.starHostel}"></p>
+                    <p style="font-size: 20px" th:text="${'Capacité de l''hotel : ' + v.capacityHostel}"></p>
+                    <p style="font-size: 20px" th:text="${'Prix : ' + v.priceHostel}"></p>
+                    <p style="font-size: 20px" th:text="${'Horaires d''ouverture : ' + v.timetableOpenHostel}"></p>
+                    <p style="font-size: 20px" th:text="${'Période d''ouverture : ' + v.openingPeriodHostel}"></p>
+                    <div th:each = "w : ${v.contactHostel}">
+                        <p style="font-size: 20px" >Contact de l'hotel :</p>
                         <p style="font-size: 20px;margin-left:10px" th:text="${'Nom : ' + w.namePerson}"></p>
                         <p style="font-size: 20px;margin-left:10px" th:text="${'Prénom : ' + w.firstnamePerson}"></p>
                         <p style="font-size: 20px;margin-left:10px" th:text="${'Téléphone : ' + w.phoneContact}"></p>

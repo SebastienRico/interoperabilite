@@ -10,7 +10,7 @@
         <link href="/lib/style.min.css" rel="stylesheet"/>
         <script src="/lib/vue.js"></script>
         <script src="/lib/axios.min.js"></script>
-        <title th:each = "v : ${event}" th:text = "${v.nameEvent}"></title>
+        <title th:each = "v : ${contact}" th:text = "${v.namePerson + ' ' + v.firstnamePerson}"></title>
     </head>
     <body>
         <div class="list-group">
@@ -26,24 +26,15 @@
                     </nav>
                 </div>
             </div>
-            <div class="container" th:each="v : ${event}"> 
-                <h1 style="font-size: 50px"   th:text="${v.nameEvent}"></h1>
-                <div class="container">
-                    <p style="font-size: 20px" th:text="${'Adresse de l''événement : ' + v.addressEvent}"></p>
-                    <p style="font-size: 20px" th:text="${'Type de l''événement : ' + v.typeEvent}"></p>
-                    <p style="font-size: 20px" th:text="${'Capacité de l''événement : ' + v.capacityEvent}"></p>
-                    <p style="font-size: 20px" th:text="${'Durée de l''événement : ' + v.dateStartEvent + ' - ' + v.dateEndEvent }"></p>
-                    <p style="font-size: 20px" th:text="${'Prix de l''événement: ' + v.capacityActivity}"></p>
-                    <div th:each = "w : ${v.contactEvent}">
-                        <p style="font-size: 20px" >Contact de l'événement :</p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Nom : ' + w.namePerson}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Prénom : ' + w.firstnamePerson}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Téléphone : ' + w.phoneContact}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Mail : ' + w.mailContact}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Site Web : ' + w.websiteContact}"></p>
-                    </div>
+            <div class="container" th:each="v : ${contact}"> 
+                <h1 style="font-size: 50px" th:text="${v.namePerson + ' '+  v.firstnamePerson }"></h1>
+              <div class="container">  
+                    <p style="font-size: 20px;margin-left:10px" th:text="${'Téléphone : ' + v.phoneContact}"></p>
+                    <p style="font-size: 20px;margin-left:10px" th:text="${'Mail : ' + v.mailContact}"></p>
+                    <p style="font-size: 20px;margin-left:10px" th:text="${'Site Web : ' + v.websiteContact}"></p>
                 </div>
             </div>
+        </div>
         </div>
     </body>
 </html>

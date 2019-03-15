@@ -38,7 +38,6 @@ public class MainController {
     private static List<ContactDTO> contactDTO;
     private static List<EventDTO> eventDTO;
     private static List<HostelDTO> hostelDTO;
-    private static List<PersonDTO> personDTO;
     private static List<RestaurantDTO> restaurantDTO;
 
 
@@ -61,7 +60,6 @@ public class MainController {
         m.addAttribute("contactDTO", contactDTO);
         m.addAttribute("eventDTO", eventDTO);
         m.addAttribute("housingDTO", hostelDTO);
-        m.addAttribute("personDTO", personDTO);
         m.addAttribute("restaurantDTO", restaurantDTO);
 
         return "research.html";
@@ -109,7 +107,19 @@ public class MainController {
         return "event";
     }
     
+    @RequestMapping(value = "/contact", method = RequestMethod.GET)
+    public String goToContact(Model m) {
+        m.addAttribute("contact", contactDTO);
+        m.addAttribute("rech", new Research());
+        return "contact";
+    }
     
+    @RequestMapping(value = "/hostel", method = RequestMethod.GET)
+    public String goToHostel(Model m) {
+        m.addAttribute("hostel", hostelDTO);
+        m.addAttribute("rech", new Research());
+        return "hostel";
+    }
 
     @RequestMapping(value = "/addResearch", method = RequestMethod.POST)
     public String addResearch(Model m, @ModelAttribute("rech") Research rec) throws IOException {
@@ -120,12 +130,11 @@ public class MainController {
         contactDTO = new ArrayList<>();
         eventDTO = new ArrayList<>();
         hostelDTO = new ArrayList<>();
-        personDTO = new ArrayList<>();
 
         String champs = rec.getChamps();
 
-        ObjectDTO object = WikidataFacade.readPage("Q1638");
-        
+        ObjectDTO object = WikidataFacade.readPage("Q2310");
+       
         Research research = new Research(champs);
         List<String> qIds = new ArrayList<>();
         qIds = research.requestQAnswer();
@@ -137,11 +146,6 @@ public class MainController {
 
             restaurantDTO.add((RestaurantDTO) object);
             return "redirect:/restaurant";
-        } else if (object instanceof PersonDTO) {
-            System.out.println("personne" + object);
-
-            personDTO.add((PersonDTO) object);
-            return "redirect:/person";
         } else if (object instanceof HostelDTO) {
             System.out.println("hotel" + object);
 
