@@ -1,5 +1,6 @@
 package com.interoperability.interoperability.wikidata.wikidataWriter;
 
+import com.interoperability.interoperability.ObjectDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
 import com.interoperability.interoperability.utilities.Util;
 import com.interoperability.interoperability.wikidata.WikidataConstantes;
@@ -28,6 +29,8 @@ public class WikidataEventWriter {
     private PropertyDocument propertyDateEnd;
     private PropertyDocument propertyPrice;
 
+    private Boolean firstTry = true;
+
     public void writeEventPage(EventDTO event) {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
         try {
@@ -43,6 +46,9 @@ public class WikidataEventWriter {
         }
 
         ItemIdValue noid = ItemIdValue.NULL;
+        if (!firstTry) {
+            noid = WikidataUtil.getObjectItemIdValue((ObjectDTO) event);
+        }
 
         ItemDocumentBuilder itemDocumentBuilder = ItemDocumentBuilder.forItemId(noid)
                 .withLabel(event.getNameEvent(), "en")
@@ -98,13 +104,26 @@ public class WikidataEventWriter {
                     .build();
             itemDocumentBuilder.withStatement(statementPrice);
         }
+
         ItemDocument itemDocument = itemDocumentBuilder.build();
 
-        try {
-            ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
-        } catch (IOException | MediaWikiApiErrorException ex) {
-            Logger.getLogger(WikidataEventWriter.class.getName()).log(Level.SEVERE, null, ex);
+        if (firstTry) {
+            firstTry = false;
+            try {
+                wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "{0} created", event.getNameEvent());
+            } catch (IOException | MediaWikiApiErrorException e) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, "Canot create " + event.getNameEvent(), e);
+            } finally {
+                writeEventPage(event);
+            }
+        } else {
+            try {
+                wbde.editItemDocument(itemDocument, true, "Statement updated by the bot " + Util.getProperty("usn_wikibase"));
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "{0} updated", event.getNameEvent());
+            } catch (IOException | MediaWikiApiErrorException ex) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, "Canot update " + event.getNameEvent(), ex);
+            }
         }
-        Logger.getLogger(WikidataEventWriter.class.getName()).log(Level.INFO, "Created or updating {0}", event.getNameEvent());
     }
 }

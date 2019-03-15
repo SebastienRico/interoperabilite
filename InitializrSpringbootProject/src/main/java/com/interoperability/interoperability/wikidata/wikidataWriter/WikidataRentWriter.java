@@ -31,6 +31,8 @@ public class WikidataRentWriter {
     private PropertyDocument propertyDisponibility;
     private PropertyDocument propertyPrice;
 
+    private Boolean firstTry = true;
+
     public void writeRentPage(RentDTO rent) {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
         try {
@@ -45,7 +47,11 @@ public class WikidataRentWriter {
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         ItemIdValue noid = ItemIdValue.NULL;
+        if (!firstTry) {
+            noid = WikidataUtil.getObjectItemIdValue((ObjectDTO) rent);
+        }
 
         ItemDocumentBuilder itemDocumentBuilder = ItemDocumentBuilder.forItemId(noid)
                 .withLabel(rent.getNameRent(), "en")
@@ -108,12 +114,26 @@ public class WikidataRentWriter {
                     .build();
             itemDocumentBuilder.withStatement(statementPrice);
         }
+
         ItemDocument itemDocument = itemDocumentBuilder.build();
-        try {
-            ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
-        } catch (IOException | MediaWikiApiErrorException ex) {
-            Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
+
+        if (firstTry) {
+            firstTry = false;
+            try {
+                wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "{0} created", rent.getNameRent());
+            } catch (IOException | MediaWikiApiErrorException e) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, "Canot create " + rent.getNameRent(), e);
+            } finally {
+                writeRentPage(rent);
+            }
+        } else {
+            try {
+                wbde.editItemDocument(itemDocument, true, "Statement updated by the bot " + Util.getProperty("usn_wikibase"));
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "{0} updated", rent.getNameRent());
+            } catch (IOException | MediaWikiApiErrorException ex) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, "Canot update " + rent.getNameRent(), ex);
+            }
         }
-        Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.INFO, "Created or updating {0}", rent.getDescriptionRent());
     }
 }

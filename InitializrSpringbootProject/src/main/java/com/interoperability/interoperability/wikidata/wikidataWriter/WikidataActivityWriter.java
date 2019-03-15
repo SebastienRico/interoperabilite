@@ -1,5 +1,6 @@
 package com.interoperability.interoperability.wikidata.wikidataWriter;
 
+import com.interoperability.interoperability.ObjectDTO;
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
 import com.interoperability.interoperability.utilities.Util;
 import com.interoperability.interoperability.wikidata.WikidataConstantes;
@@ -27,6 +28,8 @@ public class WikidataActivityWriter {
     private PropertyDocument propertyContact;
     private PropertyDocument propertySchedule;
 
+    private Boolean firstTry = true;
+
     public void writeActivityPage(ActivitesDTO activity) {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
         try {
@@ -40,8 +43,11 @@ public class WikidataActivityWriter {
         }
 
         ItemIdValue noid = ItemIdValue.NULL;
+        if (!firstTry) {
+            noid = WikidataUtil.getObjectItemIdValue((ObjectDTO) activity);
+        }
 
-        ItemDocumentBuilder.forItemId(noid)
+        ItemDocumentBuilder itemDocumentBuilder = ItemDocumentBuilder.forItemId(noid)
                 .withLabel(activity.getNameActivity(), "en")
                 .withLabel(activity.getNameActivity(), "fr")
                 .withDescription(activity.getDescriptionActivity(), "fr");
@@ -50,46 +56,57 @@ public class WikidataActivityWriter {
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(WikidataConstantes.ITEM_ACTIVITY, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
-                ItemDocumentBuilder.forItemId(noid).withStatement(statementInstanceOf);
+        itemDocumentBuilder.withStatement(statementInstanceOf);
 
         if (activity.getAddressActivity() != null && !activity.getAddressActivity().isEmpty()) {
-        Statement statementAddress = StatementBuilder
-                .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
-                .withValue(Datamodel.makeStringValue(activity.getAddressActivity()))
-                .build();
-                ItemDocumentBuilder.forItemId(noid).withStatement(statementAddress);
+            Statement statementAddress = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(activity.getAddressActivity()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementAddress);
         }
-
         String contactQid = WikidataUtil.getOwner(activity.getContactActivity());
         if (!contactQid.isEmpty()) {
-        Statement statementContact = StatementBuilder
-                .forSubjectAndProperty(noid, propertyContact.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
-                .build();
-                ItemDocumentBuilder.forItemId(noid).withStatement(statementContact);
+            Statement statementContact = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyContact.getPropertyId())
+                    .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
+                    .build();
+            itemDocumentBuilder.withStatement(statementContact);
         }
-
         if (activity.getContactActivity() != null) {
-        Statement statementCapacity = StatementBuilder
-                .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
-                .withValue(Datamodel.makeQuantityValue(new BigDecimal(activity.getCapacityActivity())))
-                .build();
-                ItemDocumentBuilder.forItemId(noid).withStatement(statementCapacity);
+            Statement statementCapacity = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
+                    .withValue(Datamodel.makeQuantityValue(new BigDecimal(activity.getCapacityActivity())))
+                    .build();
+            itemDocumentBuilder.withStatement(statementCapacity);
+        }
+        if (activity.getScheduleActivity() != null && !activity.getScheduleActivity().isEmpty()) {
+            Statement statementSchedule = StatementBuilder
+                    .forSubjectAndProperty(noid, propertySchedule.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(activity.getScheduleActivity()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementSchedule);
         }
 
-        if (activity.getScheduleActivity() != null && !activity.getScheduleActivity().isEmpty()) {
-        Statement statementSchedule = StatementBuilder
-                .forSubjectAndProperty(noid, propertySchedule.getPropertyId())
-                .withValue(Datamodel.makeStringValue(activity.getScheduleActivity()))
-                .build();
-                ItemDocumentBuilder.forItemId(noid).withStatement(statementSchedule);
+        ItemDocument itemDocument = itemDocumentBuilder.build();
+
+        if (firstTry) {
+            firstTry = false;
+            try {
+                wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "{0} created", activity.getNameActivity());
+            } catch (IOException | MediaWikiApiErrorException e) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, "Canot create " + activity.getNameActivity(), e);
+            } finally {
+                writeActivityPage(activity);
+            }
+        } else {
+            try {
+                wbde.editItemDocument(itemDocument, true, "Statement updated by the bot " + Util.getProperty("usn_wikibase"));
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "{0} updated", activity.getNameActivity());
+            } catch (IOException | MediaWikiApiErrorException ex) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, "Canot update " + activity.getNameActivity(), ex);
+            }
         }
-        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid).build();
-        try {
-            ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
-        } catch (IOException | MediaWikiApiErrorException ex) {
-            Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.INFO, "Created or updating {0}", activity.getNameActivity());
     }
 }

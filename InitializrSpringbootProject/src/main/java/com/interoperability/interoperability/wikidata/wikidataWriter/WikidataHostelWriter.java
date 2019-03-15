@@ -1,5 +1,6 @@
 package com.interoperability.interoperability.wikidata.wikidataWriter;
 
+import com.interoperability.interoperability.ObjectDTO;
 import com.interoperability.interoperability.objetsDTO.HostelDTO;
 import com.interoperability.interoperability.utilities.Util;
 import com.interoperability.interoperability.wikidata.WikidataConstantes;
@@ -30,6 +31,8 @@ public class WikidataHostelWriter {
     private PropertyDocument propertyPeriode;
     private PropertyDocument propertySchedule;
 
+    private Boolean firstTry = true;
+
     public void writeHostelPage(HostelDTO hostel) {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
         try {
@@ -44,7 +47,11 @@ public class WikidataHostelWriter {
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         ItemIdValue noid = ItemIdValue.NULL;
+        if (!firstTry) {
+            noid = WikidataUtil.getObjectItemIdValue((ObjectDTO) hostel);
+        }
 
         ItemDocumentBuilder itemDocumentBuilder = ItemDocumentBuilder.forItemId(noid)
                 .withLabel(hostel.getNameHostel(), "en")
@@ -107,12 +114,26 @@ public class WikidataHostelWriter {
                     .build();
             itemDocumentBuilder.withStatement(statementStarHousing);
         }
+
         ItemDocument itemDocument = itemDocumentBuilder.build();
-        try {
-            ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
-        } catch (IOException | MediaWikiApiErrorException ex) {
-            Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
+
+        if (firstTry) {
+            firstTry = false;
+            try {
+                wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "{0} created", hostel.getNameHostel());
+            } catch (IOException | MediaWikiApiErrorException e) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, "Canot create " + hostel.getNameHostel(), e);
+            } finally {
+                writeHostelPage(hostel);
+            }
+        } else {
+            try {
+                wbde.editItemDocument(itemDocument, true, "Statement updated by the bot " + Util.getProperty("usn_wikibase"));
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "{0} updated", hostel.getNameHostel());
+            } catch (IOException | MediaWikiApiErrorException ex) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, "Canot update " + hostel.getNameHostel(), ex);
+            }
         }
-        Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.INFO, "Created or updating {0}", hostel.getNameHostel());
     }
 }

@@ -1,9 +1,11 @@
 package com.interoperability.interoperability.wikidata.wikidataWriter;
 
+import com.interoperability.interoperability.ObjectDTO;
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import com.interoperability.interoperability.utilities.Util;
 import com.interoperability.interoperability.wikidata.WikidataConstantes;
 import com.interoperability.interoperability.wikidata.WikidataLogger;
+import com.interoperability.interoperability.wikidata.WikidataUtil;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +29,8 @@ public class WikidataContactWriter {
     private PropertyDocument propertyMail;
     private PropertyDocument propertyWebsite;
 
+    private Boolean firstTry = true;
+
     public void writeContactPage(ContactDTO contact) {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
 
@@ -43,6 +47,9 @@ public class WikidataContactWriter {
         }
 
         ItemIdValue noid = ItemIdValue.NULL;
+        if (!firstTry) {
+            noid = WikidataUtil.getObjectItemIdValue((ObjectDTO) contact);
+        }
 
         ItemDocumentBuilder itemDocumentBuilder = ItemDocumentBuilder.forItemId(noid)
                 .withLabel(contact.getNamePerson(), "en")
@@ -53,7 +60,7 @@ public class WikidataContactWriter {
                 .withValue(Datamodel.makeItemIdValue(WikidataConstantes.ITEM_PERSON, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
         itemDocumentBuilder.withStatement(statementInstanceOf);
-        
+
         if (contact.getNamePerson() != null && !contact.getNamePerson().isEmpty()) {
             Statement statementName = StatementBuilder
                     .forSubjectAndProperty(noid, propertyName.getPropertyId())
@@ -98,11 +105,25 @@ public class WikidataContactWriter {
         }
 
         ItemDocument itemDocument = itemDocumentBuilder.build();
-        try {
-            ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
-        } catch (IOException | MediaWikiApiErrorException e) {
-            e.printStackTrace();
+
+        String contactName = contact.getFirstnamePerson() + " " + contact.getNamePerson();
+        if (firstTry) {
+            firstTry = false;
+            try {
+                wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "{0} created", contactName);
+            } catch (IOException | MediaWikiApiErrorException e) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, "Canot create " + contactName, e);
+            } finally {
+                writeContactPage(contact);
+            }
+        } else {
+            try {
+                wbde.editItemDocument(itemDocument, true, "Statement updated by the bot " + Util.getProperty("usn_wikibase"));
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "{0} updated", contactName);
+            } catch (IOException | MediaWikiApiErrorException ex) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, "Canot update " + contactName, ex);
+            }
         }
-        Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "Created or updating {0}", contact.getFirstnamePerson() + " " + contact.getNamePerson());
     }
 }

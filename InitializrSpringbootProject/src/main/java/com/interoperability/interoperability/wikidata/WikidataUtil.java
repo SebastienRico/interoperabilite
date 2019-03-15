@@ -68,20 +68,18 @@ public class WikidataUtil {
                 RentDTO rent = (RentDTO) object;
                 objectToSearch = rent.getDescriptionRent();
             }
-            System.out.println("On cherche : " + objectToSearch);
             List<WbSearchEntitiesResult> entities = WikidataLogger.WikibaseWbdf.searchEntities(objectToSearch);
             if (!entities.isEmpty()) {
                 for (WbSearchEntitiesResult entity : entities) {
                     WikidataLogger.WikibaseWbdf.getEntityDocument(entity.getEntityId());
                     if (entity.getEntityId() != null) {
                         noid = Datamodel.makeWikidataItemIdValue​(entity.getEntityId());
-                        System.out.println("[getObjectItemIdValue] noid : " + noid);
                         return noid;
                     }
                 }
             }
         } catch (MediaWikiApiErrorException ex) {
-            Logger.getLogger(WikidataUtil.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WikidataUtil.class.getName()).log(Level.SEVERE, "Cannot find ItemIdValue", ex);
         }
         return noid;
     }
@@ -100,7 +98,7 @@ public class WikidataUtil {
         try {
             item = (ItemDocument) wbdf.getEntityDocument(QId);
         } catch (MediaWikiApiErrorException ex) {
-            Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, "Cannot find itemDocument for QId : " + QId, ex);
         }
 
         for (int i = 0; i < item.getStatementGroups().size(); i++) {
@@ -120,7 +118,7 @@ public class WikidataUtil {
             //Pour l'instant on met le QID en dur mais il faudra le passer en paramètre
             itemInstance = (ItemDocument) wbdf.getEntityDocument(array2[0]);
         } catch (MediaWikiApiErrorException ex) {
-            Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, "Cannot find itemDocument for QId : " + array2[0], ex);
         }
         String instanceName = itemInstance.getLabels().get("en").getText();
         //System.out.println(instanceName);

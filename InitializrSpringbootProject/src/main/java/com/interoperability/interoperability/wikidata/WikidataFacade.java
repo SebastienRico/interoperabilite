@@ -45,7 +45,7 @@ public class WikidataFacade {
             WikidataHostelWriter wikidataHostelWriter = new WikidataHostelWriter();
             wikidataHostelWriter.writeHostelPage((HostelDTO) objectDTO);
         } else {
-            Logger.getLogger(WikidataFacade.class.getName()).log(Level.SEVERE, "[writePage] The objectDTO has no instanceof");
+            Logger.getLogger(WikidataFacade.class.getName()).log(Level.SEVERE, "The objectDTO has no instanceof");
         }
     }
 
@@ -85,7 +85,6 @@ public class WikidataFacade {
                 objectToShow = hostel;
                 break;
         }
-        //System.out.println(objectToShow);
         return objectToShow;
     }
 }
