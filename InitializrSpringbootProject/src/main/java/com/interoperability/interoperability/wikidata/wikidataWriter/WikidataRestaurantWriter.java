@@ -39,7 +39,7 @@ public class WikidataRestaurantWriter {
 
     public void writeRestaurantPage(RestaurantDTO restaurant) {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
-        
+
         try {
             propertyInstanceOf = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_INSTANCE_OF);
             propertyAddress = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_ADDRESS);
@@ -53,36 +53,71 @@ public class WikidataRestaurantWriter {
         }
 
         ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
+
+        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
+                .withLabel(restaurant.getNameRestaurant(), "en")
+                .withLabel(restaurant.getNameRestaurant(), "fr")
+                .withDescription(restaurant.getDescriptionRestaurant(), "fr");
+
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(ITEM_RESTAURANT, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
-        Statement statementAddress = StatementBuilder
+        itemDocument.withStatement(statementInstanceOf);
+
+        if (restaurant.getAddressRestaurant() != null && !restaurant.getAddressRestaurant().isEmpty()) {
+            Statement statementAddress = StatementBuilder
                 .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
                 .withValue(Datamodel.makeStringValue(restaurant.getAddressRestaurant()))
                 .build();
+                itemDocument.withStatement(statementAddress);
+            }
+
+        if (restaurant.getTypeRestaurant() != null && !restaurant.getTypeRestaurant().isEmpty()) {
         Statement statementType = StatementBuilder
                 .forSubjectAndProperty(noid, propertyType.getPropertyId())
                 .withValue(Datamodel.makeStringValue(restaurant.getTypeRestaurant()))
                 .build();
+                itemDocument.withStatement(statementType);
+            }
+
+        if (restaurant.getCapacityRestaurant() != null) {
         Statement statementCapacity = StatementBuilder
                 .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
                 .withValue(Datamodel.makeQuantityValue(new BigDecimal(restaurant.getCapacityRestaurant())))
                 .build();
+                itemDocument.withStatement(statementCapacity);
+            }
+
         String contactQid = WikidataUtil.getOwner(restaurant.getContactRestaurant());
         System.out.println("contactQid : " + contactQid);
-        Statement statementContact = StatementBuilder
+
+        if (!contactQid.isEmpty()) {
+            Statement statementContact = StatementBuilder
                 .forSubjectAndProperty(noid, propertyContact.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
+                itemDocument.withStatement(statementContact);
+            }
+
+        if (restaurant.getMenuRestaurant() != null && !restaurant.getMenuRestaurant().isEmpty()) {
         Statement statementMenu = StatementBuilder
                 .forSubjectAndProperty(noid, propertyMenu.getPropertyId())
                 .withValue(Datamodel.makeStringValue(restaurant.getMenuRestaurant()))
                 .build();
+                itemDocument.withStatement(statementMenu);
+            }
+
+        if (restaurant.getScheduleRestaurant() != null && !restaurant.getScheduleRestaurant().isEmpty()) {
         Statement statementSchedule = StatementBuilder
                 .forSubjectAndProperty(noid, propertySchedule.getPropertyId())
                 .withValue(Datamodel.makeStringValue(restaurant.getScheduleRestaurant()))
                 .build();
+                itemDocument.withStatement(statementSchedule);
+            }
+
+            itemDocument.build();
+            /*
         ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
                 .withLabel(restaurant.getNameRestaurant(), "en")
                 .withLabel(restaurant.getNameRestaurant(), "fr")
@@ -94,7 +129,7 @@ public class WikidataRestaurantWriter {
                 .withStatement(statementMenu)
                 .withStatement(statementSchedule)
                 .withStatement(statementInstanceOf)
-                .build();
+                .build();*/
         try {
             ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
         } catch (IOException | MediaWikiApiErrorException e) {
