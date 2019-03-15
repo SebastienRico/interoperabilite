@@ -39,12 +39,12 @@ public class WikidataActivityWriter {
             Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        ItemIdValue noid = ItemIdValue.NULL;
+        ItemIdValue noid = WikidataUtil.getObjectItemIdValue((ObjectDTO)activity);;
 
         ItemDocumentBuilder.forItemId(noid)
-                .withLabel(restaurant.getNameRestaurant(), "en")
-                .withLabel(restaurant.getNameRestaurant(), "fr")
-                .withDescription(restaurant.getDescriptionRestaurant(), "fr");
+                .withLabel(activity.getNameAdress(), "en")
+                .withLabel(activity.getNameAdress(), "fr")
+                .withDescription(activity.getDescriptionAdress(), "fr");
 
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())

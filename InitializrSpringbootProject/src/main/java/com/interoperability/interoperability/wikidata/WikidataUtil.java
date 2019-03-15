@@ -48,7 +48,7 @@ public class WikidataUtil {
         return owner;
     }
 
-    public static ItemIdValue getObject(ObjectDTO object) {
+    public static ItemIdValue getObjectItemIdValue(ObjectDTO object) {
         ItemIdValue noid = ItemIdValue.NULL;
         try {
             String objectToSearch = "";

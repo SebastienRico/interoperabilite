@@ -44,7 +44,7 @@ public class WikidataRestaurantWriter {
             Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
+        ItemIdValue noid = WikidataUtil.getObjectItemIdValue((ObjectDTO)restaurant); // used when creating new items
 
         ItemDocumentBuilder.forItemId(noid)
                 .withLabel(restaurant.getNameRestaurant(), "en")
