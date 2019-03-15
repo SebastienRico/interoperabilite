@@ -39,7 +39,6 @@ public class ParserHTML {
         contact.setFaxContact(" ");
         contact.setPhoneContact(" ");
         contact.setFirstnamePerson(" ");
-        contact.setNamePerson(" ");
         try {
             constructor = fabric.newDocumentBuilder();
             Document document = (Document) constructor.parse(file);
