@@ -101,6 +101,15 @@ public class MainController {
         m.addAttribute("rech", new Research());
         return "locationForm";
     }
+    
+    @RequestMapping(value = "/event", method = RequestMethod.GET)
+    public String goToEvent(Model m) {
+        m.addAttribute("event", eventDTO);
+        m.addAttribute("rech", new Research());
+        return "event";
+    }
+    
+    
 
     @RequestMapping(value = "/addResearch", method = RequestMethod.POST)
     public String addResearch(Model m, @ModelAttribute("rech") Research rec) throws IOException {
@@ -115,7 +124,7 @@ public class MainController {
 
         String champs = rec.getChamps();
 
-        ObjectDTO object = WikidataFacade.readPage("Q2109");
+        ObjectDTO object = WikidataFacade.readPage("Q1638");
         
         Research research = new Research(champs);
         List<String> qIds = new ArrayList<>();
