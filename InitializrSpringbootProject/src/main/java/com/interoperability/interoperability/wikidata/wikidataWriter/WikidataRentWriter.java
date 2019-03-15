@@ -2,6 +2,7 @@ package com.interoperability.interoperability.wikidata.wikidataWriter;
 
 import com.interoperability.interoperability.objetsDTO.RentDTO;
 import com.interoperability.interoperability.utilities.Util;
+import com.interoperability.interoperability.wikidata.WikidataConstantes;
 import com.interoperability.interoperability.wikidata.WikidataLogger;
 import com.interoperability.interoperability.wikidata.WikidataUtil;
 import java.io.IOException;
@@ -20,16 +21,6 @@ import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 public class WikidataRentWriter {
 
-    private static final String ITEM_RENT = "Q1640";
-    private static final String PROPERTY_INSTANCE_OF = "P16";
-    private static final String PROPERTY_ADDRESS = "P1076";
-    private static final String PROPERTY_SEATING_CAPACITY = "P1064";
-    private static final String PROPERTY_CONTACT = "P61";
-    private static final String PROPERTY_DATE_START = "P1083";
-    private static final String PROPERTY_DATE_END = "P1084";
-    private static final String PROPERTY_DISPONIBILITY = "P1085";
-    private static final String PROPERTY_PRICE = "P1087";
-
     private PropertyDocument propertyInstanceOf;
     private PropertyDocument propertyCapacity;
     private PropertyDocument propertyAddress;
@@ -42,21 +33,21 @@ public class WikidataRentWriter {
     public void writeRentPage(RentDTO rent) {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
         try {
-            propertyInstanceOf = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_INSTANCE_OF);
-            propertyAddress = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_ADDRESS);
-            propertyContact = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_CONTACT);
-            propertyCapacity = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_SEATING_CAPACITY);
-            propertyDateStart = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_DATE_START);
-            propertyDateEnd = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_DATE_END);
-            propertyDisponibility = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_DISPONIBILITY);
-            propertyPrice = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_PRICE);
+            propertyInstanceOf = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_INSTANCE_OF);
+            propertyAddress = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_ADDRESS);
+            propertyContact = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_CONTACT);
+            propertyCapacity = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_SEATING_CAPACITY);
+            propertyDateStart = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_DATE_START);
+            propertyDateEnd = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_DATE_END);
+            propertyDisponibility = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_DISPONIBILITY);
+            propertyPrice = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_PRICE);
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
         ItemIdValue noid = ItemIdValue.NULL;
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(ITEM_RENT, WikidataLogger.WIKIBASE_SITE_IRI))
+                .withValue(Datamodel.makeItemIdValue(WikidataConstantes.ITEM_RENT, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
         Statement statementAddress = StatementBuilder
                 .forSubjectAndProperty(noid, propertyAddress.getPropertyId())

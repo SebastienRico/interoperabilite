@@ -2,6 +2,7 @@ package com.interoperability.interoperability.wikidata.wikidataWriter;
 
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import com.interoperability.interoperability.utilities.Util;
+import com.interoperability.interoperability.wikidata.WikidataConstantes;
 import com.interoperability.interoperability.wikidata.WikidataLogger;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -17,15 +18,6 @@ import org.wikidata.wdtk.wikibaseapi.WikibaseDataEditor;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 public class WikidataContactWriter {
-
-    private static final String ITEM_PERSON = "Q1298";
-    private static final String PROPERTY_INSTANCE_OF = "P16";
-    private static final String PROPERTY_NAME = "P1078";
-    private static final String PROPERTY_FIRSTNAME = "P1068";
-    private static final String PROPERTY_FAX = "P1069";
-    private static final String PROPERTY_PHONE = "P981";
-    private static final String PROPERTY_MAIL = "P1079";
-    private static final String PROPERTY_WEBSITE = "P172";
     
     private PropertyDocument propertyInstanceOf;
     private PropertyDocument propertyName;
@@ -39,13 +31,13 @@ public class WikidataContactWriter {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
 
         try {
-            propertyInstanceOf = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_INSTANCE_OF);
-            propertyName = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_NAME);
-            propertyFirstName = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_FIRSTNAME);
-            propertyFax = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_FAX);
-            propertyPhone = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_PHONE);
-            propertyMail = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_MAIL);
-            propertyWebsite = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_WEBSITE);
+            propertyInstanceOf = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_INSTANCE_OF);
+            propertyName = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_NAME);
+            propertyFirstName = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_FIRSTNAME);
+            propertyFax = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_FAX);
+            propertyPhone = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_PHONE);
+            propertyMail = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_MAIL);
+            propertyWebsite = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_WEBSITE);
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataContactWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +45,7 @@ public class WikidataContactWriter {
         ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(ITEM_PERSON, WikidataLogger.WIKIBASE_SITE_IRI))
+                .withValue(Datamodel.makeItemIdValue(WikidataConstantes.ITEM_PERSON, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
         Statement statementName = StatementBuilder
                 .forSubjectAndProperty(noid, propertyName.getPropertyId())
