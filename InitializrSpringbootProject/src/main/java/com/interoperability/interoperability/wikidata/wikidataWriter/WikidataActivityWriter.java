@@ -42,9 +42,9 @@ public class WikidataActivityWriter {
         ItemIdValue noid = ItemIdValue.NULL;
 
         ItemDocumentBuilder.forItemId(noid)
-                .withLabel(restaurant.getNameRestaurant(), "en")
-                .withLabel(restaurant.getNameRestaurant(), "fr")
-                .withDescription(restaurant.getDescriptionRestaurant(), "fr");
+                .withLabel(activity.getNameActivity(), "en")
+                .withLabel(activity.getNameActivity(), "fr")
+                .withDescription(activity.getDescriptionActivity(), "fr");
 
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
