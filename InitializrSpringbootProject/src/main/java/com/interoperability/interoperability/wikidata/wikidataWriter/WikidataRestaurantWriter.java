@@ -46,7 +46,7 @@ public class WikidataRestaurantWriter {
 
         ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
 
-        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
+        ItemDocumentBuilder.forItemId(noid)
                 .withLabel(restaurant.getNameRestaurant(), "en")
                 .withLabel(restaurant.getNameRestaurant(), "fr")
                 .withDescription(restaurant.getDescriptionRestaurant(), "fr");
@@ -55,61 +55,61 @@ public class WikidataRestaurantWriter {
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(WikidataConstantes.ITEM_RESTAURANT, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
-        itemDocument.withStatement(statementInstanceOf);
+        ItemDocumentBuilder.forItemId(noid).withStatement(statementInstanceOf);
 
         if (restaurant.getAddressRestaurant() != null && !restaurant.getAddressRestaurant().isEmpty()) {
             Statement statementAddress = StatementBuilder
-                .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
-                .withValue(Datamodel.makeStringValue(restaurant.getAddressRestaurant()))
-                .build();
-                itemDocument.withStatement(statementAddress);
-            }
+                    .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(restaurant.getAddressRestaurant()))
+                    .build();
+            ItemDocumentBuilder.forItemId(noid).withStatement(statementAddress);
+        }
 
         if (restaurant.getTypeRestaurant() != null && !restaurant.getTypeRestaurant().isEmpty()) {
-        Statement statementType = StatementBuilder
-                .forSubjectAndProperty(noid, propertyType.getPropertyId())
-                .withValue(Datamodel.makeStringValue(restaurant.getTypeRestaurant()))
-                .build();
-                itemDocument.withStatement(statementType);
-            }
+            Statement statementType = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyType.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(restaurant.getTypeRestaurant()))
+                    .build();
+            ItemDocumentBuilder.forItemId(noid).withStatement(statementType);
+        }
 
         if (restaurant.getCapacityRestaurant() != null) {
-        Statement statementCapacity = StatementBuilder
-                .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
-                .withValue(Datamodel.makeQuantityValue(new BigDecimal(restaurant.getCapacityRestaurant())))
-                .build();
-                itemDocument.withStatement(statementCapacity);
-            }
+            Statement statementCapacity = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
+                    .withValue(Datamodel.makeQuantityValue(new BigDecimal(restaurant.getCapacityRestaurant())))
+                    .build();
+            ItemDocumentBuilder.forItemId(noid).withStatement(statementCapacity);
+        }
 
         String contactQid = WikidataUtil.getOwner(restaurant.getContactRestaurant());
         System.out.println("contactQid : " + contactQid);
 
         if (!contactQid.isEmpty()) {
             Statement statementContact = StatementBuilder
-                .forSubjectAndProperty(noid, propertyContact.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
-                .build();
-                itemDocument.withStatement(statementContact);
-            }
+                    .forSubjectAndProperty(noid, propertyContact.getPropertyId())
+                    .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
+                    .build();
+            ItemDocumentBuilder.forItemId(noid).withStatement(statementContact);
+        }
 
         if (restaurant.getMenuRestaurant() != null && !restaurant.getMenuRestaurant().isEmpty()) {
-        Statement statementMenu = StatementBuilder
-                .forSubjectAndProperty(noid, propertyMenu.getPropertyId())
-                .withValue(Datamodel.makeStringValue(restaurant.getMenuRestaurant()))
-                .build();
-                itemDocument.withStatement(statementMenu);
-            }
+            Statement statementMenu = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyMenu.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(restaurant.getMenuRestaurant()))
+                    .build();
+            ItemDocumentBuilder.forItemId(noid).withStatement(statementMenu);
+        }
 
         if (restaurant.getScheduleRestaurant() != null && !restaurant.getScheduleRestaurant().isEmpty()) {
-        Statement statementSchedule = StatementBuilder
-                .forSubjectAndProperty(noid, propertySchedule.getPropertyId())
-                .withValue(Datamodel.makeStringValue(restaurant.getScheduleRestaurant()))
-                .build();
-                itemDocument.withStatement(statementSchedule);
-            }
+            Statement statementSchedule = StatementBuilder
+                    .forSubjectAndProperty(noid, propertySchedule.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(restaurant.getScheduleRestaurant()))
+                    .build();
+            ItemDocumentBuilder.forItemId(noid).withStatement(statementSchedule);
+        }
 
-            itemDocument.build();
-            /*
+        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid).build();
+        /*
         ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
                 .withLabel(restaurant.getNameRestaurant(), "en")
                 .withLabel(restaurant.getNameRestaurant(), "fr")
