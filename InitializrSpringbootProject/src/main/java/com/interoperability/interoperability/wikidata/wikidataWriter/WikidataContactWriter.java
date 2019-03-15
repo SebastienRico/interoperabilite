@@ -18,7 +18,7 @@ import org.wikidata.wdtk.wikibaseapi.WikibaseDataEditor;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 public class WikidataContactWriter {
-    
+
     private PropertyDocument propertyInstanceOf;
     private PropertyDocument propertyName;
     private PropertyDocument propertyFirstName;
@@ -42,46 +42,62 @@ public class WikidataContactWriter {
             Logger.getLogger(WikidataContactWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
+        ItemIdValue noid = ItemIdValue.NULL;
+
+        ItemDocumentBuilder itemDocumentBuilder = ItemDocumentBuilder.forItemId(noid)
+                .withLabel(contact.getNamePerson(), "en")
+                .withLabel(contact.getNamePerson(), "fr");
+
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(WikidataConstantes.ITEM_PERSON, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
-        Statement statementName = StatementBuilder
-                .forSubjectAndProperty(noid, propertyName.getPropertyId())
-                .withValue(Datamodel.makeStringValue(contact.getNamePerson()))
-                .build();
-        Statement statementFirstname = StatementBuilder
-                .forSubjectAndProperty(noid, propertyFirstName.getPropertyId())
-                .withValue(Datamodel.makeStringValue(contact.getFirstnamePerson()))
-                .build();
-        Statement statementFax = StatementBuilder
-                .forSubjectAndProperty(noid, propertyFax.getPropertyId())
-                .withValue(Datamodel.makeStringValue(contact.getFaxContact()))
-                .build();
-        Statement statementPhone = StatementBuilder
-                .forSubjectAndProperty(noid, propertyPhone.getPropertyId())
-                .withValue(Datamodel.makeStringValue(contact.getPhoneContact()))
-                .build();
-        Statement statementMail = StatementBuilder
-                .forSubjectAndProperty(noid, propertyMail.getPropertyId())
-                .withValue(Datamodel.makeStringValue(contact.getMailContact()))
-                .build();
-        Statement statementWebsite = StatementBuilder
-                .forSubjectAndProperty(noid, propertyWebsite.getPropertyId())
-                .withValue(Datamodel.makeStringValue(contact.getWebsiteContact()))
-                .build();
-        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
-                .withLabel(contact.getFirstnamePerson() + " " + contact.getNamePerson(), "en")
-                .withLabel(contact.getFirstnamePerson() + " " + contact.getNamePerson(), "fr")
-                .withStatement(statementInstanceOf)
-                .withStatement(statementName)
-                .withStatement(statementFirstname)
-                .withStatement(statementFax)
-                .withStatement(statementPhone)
-                .withStatement(statementMail)
-                .withStatement(statementWebsite)
-                .build();
+        itemDocumentBuilder.withStatement(statementInstanceOf);
+        
+        if (contact.getNamePerson() != null && !contact.getNamePerson().isEmpty()) {
+            Statement statementName = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyName.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(contact.getNamePerson()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementName);
+        }
+        if (contact.getFirstnamePerson() != null && !contact.getFirstnamePerson().isEmpty()) {
+            Statement statementFirstname = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyFirstName.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(contact.getFirstnamePerson()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementFirstname);
+        }
+        if (contact.getFaxContact() != null && !contact.getFaxContact().isEmpty()) {
+            Statement statementFax = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyFax.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(contact.getFaxContact()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementFax);
+        }
+        if (contact.getPhoneContact() != null && !contact.getPhoneContact().isEmpty()) {
+            Statement statementPhone = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyPhone.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(contact.getPhoneContact()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementPhone);
+        }
+        if (contact.getMailContact() != null && !contact.getMailContact().isEmpty()) {
+            Statement statementMail = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyMail.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(contact.getMailContact()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementMail);
+        }
+        if (contact.getWebsiteContact() != null && !contact.getWebsiteContact().isEmpty()) {
+            Statement statementWebsite = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyWebsite.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(contact.getWebsiteContact()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementWebsite);
+        }
+
+        ItemDocument itemDocument = itemDocumentBuilder.build();
         try {
             ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
         } catch (IOException | MediaWikiApiErrorException e) {

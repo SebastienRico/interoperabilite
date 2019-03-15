@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class HostelDTO extends ObjectDTO{
 
+    private String descriptionHostel;
     private String nameHostel;
     private String addressHostel;
     private Integer capacityHostel;

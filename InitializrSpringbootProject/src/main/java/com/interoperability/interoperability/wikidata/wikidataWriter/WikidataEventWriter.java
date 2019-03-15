@@ -41,47 +41,64 @@ public class WikidataEventWriter {
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataEventWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         ItemIdValue noid = ItemIdValue.NULL;
+
+        ItemDocumentBuilder itemDocumentBuilder = ItemDocumentBuilder.forItemId(noid)
+                .withLabel(event.getNameEvent(), "en")
+                .withLabel(event.getNameEvent(), "fr")
+                .withDescription(event.getDescriptionEvent(), "fr");
+
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(WikidataConstantes.ITEM_EVENT, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
-        Statement statementAddress = StatementBuilder
-                .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
-                .withValue(Datamodel.makeStringValue(event.getAddressEvent()))
-                .build();
-        Statement statementType = StatementBuilder
-                .forSubjectAndProperty(noid, propertyType.getPropertyId())
-                .withValue(Datamodel.makeStringValue(event.getTypeEvent()))
-                .build();
+        itemDocumentBuilder.withStatement(statementInstanceOf);
+
+        if (event.getAddressEvent() != null && !event.getAddressEvent().isEmpty()) {
+            Statement statementAddress = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(event.getAddressEvent()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementAddress);
+        }
+        if (event.getTypeEvent() != null && !event.getTypeEvent().isEmpty()) {
+            Statement statementType = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyType.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(event.getTypeEvent()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementType);
+        }
         String contactQid = WikidataUtil.getOwner(event.getContactEvent());
-        Statement statementContact = StatementBuilder
-                .forSubjectAndProperty(noid, propertyContact.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
-                .build();
-        Statement statementDateStart = StatementBuilder
-                .forSubjectAndProperty(noid, propertyDateStart.getPropertyId())
-                .withValue(Datamodel.makeStringValue(event.getDateStartEvent()))
-                .build();
-        Statement statementDateEnd = StatementBuilder
-                .forSubjectAndProperty(noid, propertyDateEnd.getPropertyId())
-                .withValue(Datamodel.makeStringValue(event.getDateEndEvent()))
-                .build();
-        Statement statementPrice = StatementBuilder
-                .forSubjectAndProperty(noid, propertyPrice.getPropertyId())
-                .withValue(Datamodel.makeStringValue(event.getPriceEvent().toString()))
-                .build();
-        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
-                .withLabel(event.getNameEvent(), "en")
-                .withLabel(event.getNameEvent(), "fr")
-                .withStatement(statementAddress)
-                .withStatement(statementType)
-                .withStatement(statementContact)
-                .withStatement(statementDateStart)
-                .withStatement(statementDateEnd)
-                .withStatement(statementPrice)
-                .withStatement(statementInstanceOf)
-                .build();
+        if (!contactQid.isEmpty()) {
+            Statement statementContact = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyContact.getPropertyId())
+                    .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
+                    .build();
+            itemDocumentBuilder.withStatement(statementContact);
+        }
+        if (event.getDateStartEvent() != null && !event.getDateStartEvent().isEmpty()) {
+            Statement statementDateStart = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyDateStart.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(event.getDateStartEvent()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementDateStart);
+        }
+        if (event.getDateEndEvent() != null && !event.getDateEndEvent().isEmpty()) {
+            Statement statementDateEnd = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyDateEnd.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(event.getDateEndEvent()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementDateEnd);
+        }
+        if (event.getPriceEvent() != null && !event.getPriceEvent().toString().isEmpty()) {
+            Statement statementPrice = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyPrice.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(event.getPriceEvent().toString()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementPrice);
+        }
+        ItemDocument itemDocument = itemDocumentBuilder.build();
 
         try {
             ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));

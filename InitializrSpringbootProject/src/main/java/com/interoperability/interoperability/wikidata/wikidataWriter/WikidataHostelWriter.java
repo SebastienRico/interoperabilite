@@ -45,51 +45,69 @@ public class WikidataHostelWriter {
             Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
         ItemIdValue noid = ItemIdValue.NULL;
+
+        ItemDocumentBuilder itemDocumentBuilder = ItemDocumentBuilder.forItemId(noid)
+                .withLabel(hostel.getNameHostel(), "en")
+                .withLabel(hostel.getNameHostel(), "fr")
+                .withDescription(hostel.getDescriptionHostel(), "fr");
+
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(WikidataConstantes.ITEM_HOSTEL, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
-        Statement statementAddress = StatementBuilder
-                .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
-                .withValue(Datamodel.makeStringValue(hostel.getAddressHostel()))
-                .build();
+        itemDocumentBuilder.withStatement(statementInstanceOf);
+
+        if (hostel.getAddressHostel() != null && !hostel.getAddressHostel().isEmpty()) {
+            Statement statementAddress = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(hostel.getAddressHostel()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementAddress);
+        }
         String contactQid = WikidataUtil.getOwner(hostel.getContactHostel());
-        Statement statementContact = StatementBuilder
-                .forSubjectAndProperty(noid, propertyContact.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
-                .build();
-        Statement statementCapacity = StatementBuilder
-                .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
-                .withValue(Datamodel.makeQuantityValue(new BigDecimal(hostel.getCapacityHostel())))
-                .build();
-        Statement statementPrice = StatementBuilder
-                .forSubjectAndProperty(noid, propertyPrice.getPropertyId())
-                .withValue(Datamodel.makeStringValue(hostel.getPriceHostel().toString()))
-                .build();
-        Statement statementSchedule = StatementBuilder
-                .forSubjectAndProperty(noid, propertySchedule.getPropertyId())
-                .withValue(Datamodel.makeStringValue(hostel.getTimetableOpenHostel()))
-                .build();
-        Statement statementPeriode = StatementBuilder
-                .forSubjectAndProperty(noid, propertyPeriode.getPropertyId())
-                .withValue(Datamodel.makeStringValue(hostel.getOpeningPeriodHostel()))
-                .build();
-        Statement statementStarHousing = StatementBuilder
-                .forSubjectAndProperty(noid, propertyStarHousing.getPropertyId())
-                .withValue(Datamodel.makeStringValue(hostel.getStarHostel().toString()))
-                .build();
-        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
-                .withLabel(hostel.getNameHostel(), "en")
-                .withLabel(hostel.getNameHostel(), "fr")
-                .withStatement(statementAddress)
-                .withStatement(statementContact)
-                .withStatement(statementCapacity)
-                .withStatement(statementSchedule)
-                .withStatement(statementPrice)
-                .withStatement(statementPeriode)
-                .withStatement(statementStarHousing)
-                .withStatement(statementInstanceOf)
-                .build();
+        if (!contactQid.isEmpty()) {
+            Statement statementContact = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyContact.getPropertyId())
+                    .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
+                    .build();
+            itemDocumentBuilder.withStatement(statementContact);
+        }
+        if (hostel.getCapacityHostel() != null) {
+            Statement statementCapacity = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
+                    .withValue(Datamodel.makeQuantityValue(new BigDecimal(hostel.getCapacityHostel())))
+                    .build();
+            itemDocumentBuilder.withStatement(statementCapacity);
+        }
+        if (hostel.getPriceHostel() != null && !hostel.getPriceHostel().toString().isEmpty()) {
+            Statement statementPrice = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyPrice.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(hostel.getPriceHostel().toString()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementPrice);
+        }
+        if (hostel.getTimetableOpenHostel() != null && !hostel.getTimetableOpenHostel().isEmpty()) {
+            Statement statementSchedule = StatementBuilder
+                    .forSubjectAndProperty(noid, propertySchedule.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(hostel.getTimetableOpenHostel()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementSchedule);
+        }
+        if (hostel.getOpeningPeriodHostel() != null && !hostel.getOpeningPeriodHostel().isEmpty()) {
+            Statement statementPeriode = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyPeriode.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(hostel.getOpeningPeriodHostel()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementPeriode);
+        }
+        if (hostel.getStarHostel() != null && !hostel.getStarHostel().toString().isEmpty()) {
+            Statement statementStarHousing = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyStarHousing.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(hostel.getStarHostel().toString()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementStarHousing);
+        }
+        ItemDocument itemDocument = itemDocumentBuilder.build();
         try {
             ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
         } catch (IOException | MediaWikiApiErrorException ex) {

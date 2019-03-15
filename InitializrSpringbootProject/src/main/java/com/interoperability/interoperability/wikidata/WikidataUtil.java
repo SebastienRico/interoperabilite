@@ -48,7 +48,7 @@ public class WikidataUtil {
         return owner;
     }
 
-    public static ItemIdValue getObject(ObjectDTO object) {
+    public static ItemIdValue getObjectItemIdValue(ObjectDTO object) {
         ItemIdValue noid = ItemIdValue.NULL;
         try {
             String objectToSearch = "";
@@ -68,13 +68,14 @@ public class WikidataUtil {
                 RentDTO rent = (RentDTO) object;
                 objectToSearch = rent.getDescriptionRent();
             }
-
+            System.out.println("On cherche : " + objectToSearch);
             List<WbSearchEntitiesResult> entities = WikidataLogger.WikibaseWbdf.searchEntities(objectToSearch);
             if (!entities.isEmpty()) {
                 for (WbSearchEntitiesResult entity : entities) {
                     WikidataLogger.WikibaseWbdf.getEntityDocument(entity.getEntityId());
                     if (entity.getEntityId() != null) {
                         noid = Datamodel.makeWikidataItemIdValue​(entity.getEntityId());
+                        System.out.println("[getObjectItemIdValue] noid : " + noid);
                         return noid;
                     }
                 }

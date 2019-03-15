@@ -19,10 +19,10 @@ public class InteroperabilityApplication {
        SpringApplication.run(InteroperabilityApplication.class, args);
         try {
             // We start the directory watcher to parse CSV files
-            /**Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.INFO, "Launch DirectoryWatcher");
+            Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.INFO, "Launch DirectoryWatcher");
             DirectoryWatch directoryWatch = new DirectoryWatch();
             directoryWatch.start();
-            Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.INFO, "DirectoryWatcher launched");**/
+            Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.INFO, "DirectoryWatcher launched");
             
             // We start the scheduler to update datas from HTML pages
             /**Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.INFO, "Launch Scheduler");

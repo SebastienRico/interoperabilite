@@ -29,6 +29,8 @@ public class WikidataRestaurantWriter {
     private PropertyDocument propertyContact;
     private PropertyDocument propertyMenu;
     private PropertyDocument propertySchedule;
+    
+    private Boolean firstTry = true;
 
     public void writeRestaurantPage(RestaurantDTO restaurant) {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
@@ -45,15 +47,18 @@ public class WikidataRestaurantWriter {
             Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        ItemIdValue noid = WikidataUtil.getObject((ObjectDTO) restaurant); // used when creating new items
-        //ItemIdValue noid = ItemIdValue.NULL;
+        ItemIdValue noid = ItemIdValue.NULL;
+        if(!firstTry){
+            noid = WikidataUtil.getObjectItemIdValue((ObjectDTO) restaurant);
+        }
+        
         System.out.println("noid : " + noid.getId());
 
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(WikidataConstantes.ITEM_RESTAURANT, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
-        
+
         ItemDocumentBuilder itemDocumentBuilder = ItemDocumentBuilder.forItemId(noid)
                 .withLabel(restaurant.getNameRestaurant(), "en")
                 .withLabel(restaurant.getNameRestaurant(), "fr")
@@ -119,33 +124,40 @@ public class WikidataRestaurantWriter {
 
         ItemDocument itemDocument = itemDocumentBuilder.build();
         System.out.println("BUILD");
-        /*
-        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
-                .withLabel(restaurant.getNameRestaurant(), "en")
-                .withLabel(restaurant.getNameRestaurant(), "fr")
-                .withDescription(restaurant.getDescriptionRestaurant(), "fr")
-                .withStatement(statementAddress)
-                .withStatement(statementType)
-                .withStatement(statementCapacity)
-                .withStatement(statementContact)
-                .withStatement(statementMenu)
-                .withStatement(statementSchedule)
-                .withStatement(statementInstanceOf)
-                .build();*/
-        try {
-            ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
-            System.out.println("CREATE ITEM");
-        } catch (IOException | MediaWikiApiErrorException e) {
+
+        System.out.println("firstTry : " + firstTry);
+        System.out.println("noid : " + noid);
+        if (firstTry) {
+            firstTry = false;
             try {
-                ItemDocument newItemDocument = wbde.editItemDocument(itemDocument, true, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
-            } catch (IOException ex) {
-                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (MediaWikiApiErrorException ex) {
-                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, null, ex);
+                ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "{0} created", restaurant.getNameRestaurant());
+            } catch (IOException | MediaWikiApiErrorException e) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, "Canot create " + restaurant.getNameRestaurant(), e);
+            } finally {
+                writeRestaurantPage(restaurant);
             }
-            e.printStackTrace();
+        } else {
+            try {
+                ItemDocument newItemDocument = wbde.editItemDocument(itemDocument, true, "Statement updated by the bot " + Util.getProperty("usn_wikibase"));
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "{0} updated", restaurant.getNameRestaurant());
+            } catch (IOException | MediaWikiApiErrorException ex) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, "Canot update " + restaurant.getNameRestaurant(), ex);
+            }
         }
-        Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "Created or updating {0}", restaurant.getNameRestaurant());
+        /**try {
+            ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
+            Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "{0} created", restaurant.getNameRestaurant());
+        } catch (IOException | MediaWikiApiErrorException e) {
+            Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, "Canot create " + restaurant.getNameRestaurant(), e);
+            try {
+                firstTry = false;
+                ItemDocument newItemDocument = wbde.editItemDocument(itemDocument, true, "Statement updated by the bot " + Util.getProperty("usn_wikibase"));
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "{0} updated", restaurant.getNameRestaurant());
+            } catch (IOException | MediaWikiApiErrorException ex) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, "Canot update " + restaurant.getNameRestaurant(), ex);
+            }
+        }**/
     }
 
 }

@@ -38,38 +38,53 @@ public class WikidataActivityWriter {
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         ItemIdValue noid = ItemIdValue.NULL;
+
+        ItemDocumentBuilder.forItemId(noid)
+                .withLabel(activity.getNameActivity(), "en")
+                .withLabel(activity.getNameActivity(), "fr")
+                .withDescription(activity.getDescriptionActivity(), "fr");
+
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(WikidataConstantes.ITEM_ACTIVITY, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
+                ItemDocumentBuilder.forItemId(noid).withStatement(statementInstanceOf);
+
+        if (activity.getAddressActivity() != null && !activity.getAddressActivity().isEmpty()) {
         Statement statementAddress = StatementBuilder
                 .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
                 .withValue(Datamodel.makeStringValue(activity.getAddressActivity()))
                 .build();
+                ItemDocumentBuilder.forItemId(noid).withStatement(statementAddress);
+        }
+
         String contactQid = WikidataUtil.getOwner(activity.getContactActivity());
+        if (!contactQid.isEmpty()) {
         Statement statementContact = StatementBuilder
                 .forSubjectAndProperty(noid, propertyContact.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
+                ItemDocumentBuilder.forItemId(noid).withStatement(statementContact);
+        }
+
+        if (activity.getContactActivity() != null) {
         Statement statementCapacity = StatementBuilder
                 .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
                 .withValue(Datamodel.makeQuantityValue(new BigDecimal(activity.getCapacityActivity())))
                 .build();
+                ItemDocumentBuilder.forItemId(noid).withStatement(statementCapacity);
+        }
+
+        if (activity.getScheduleActivity() != null && !activity.getScheduleActivity().isEmpty()) {
         Statement statementSchedule = StatementBuilder
                 .forSubjectAndProperty(noid, propertySchedule.getPropertyId())
                 .withValue(Datamodel.makeStringValue(activity.getScheduleActivity()))
                 .build();
-        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
-                .withLabel(activity.getNameActivity(), "en")
-                .withLabel(activity.getNameActivity(), "fr")
-                .withDescription(activity.getDescriptionActivity(), "fr")
-                .withStatement(statementAddress)
-                .withStatement(statementContact)
-                .withStatement(statementCapacity)
-                .withStatement(statementSchedule)
-                .withStatement(statementInstanceOf)
-                .build();
+                ItemDocumentBuilder.forItemId(noid).withStatement(statementSchedule);
+        }
+        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid).build();
         try {
             ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
         } catch (IOException | MediaWikiApiErrorException ex) {

@@ -1,5 +1,6 @@
 package com.interoperability.interoperability.wikidata.wikidataWriter;
 
+import com.interoperability.interoperability.ObjectDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
 import com.interoperability.interoperability.utilities.Util;
 import com.interoperability.interoperability.wikidata.WikidataConstantes;
@@ -45,51 +46,69 @@ public class WikidataRentWriter {
             Logger.getLogger(WikidataActivityWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
         ItemIdValue noid = ItemIdValue.NULL;
+
+        ItemDocumentBuilder itemDocumentBuilder = ItemDocumentBuilder.forItemId(noid)
+                .withLabel(rent.getNameRent(), "en")
+                .withLabel(rent.getNameRent(), "fr")
+                .withDescription(rent.getDescriptionRent(), "fr");
+
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(WikidataConstantes.ITEM_RENT, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
-        Statement statementAddress = StatementBuilder
-                .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
-                .withValue(Datamodel.makeStringValue(rent.getAddressRent()))
-                .build();
+        itemDocumentBuilder.withStatement(statementInstanceOf);
+
+        if (rent.getAddressRent() != null && !rent.getAddressRent().isEmpty()) {
+            Statement statementAddress = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(rent.getAddressRent()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementAddress);
+        }
         String contactQid = WikidataUtil.getOwner(rent.getContactRent());
-        Statement statementContact = StatementBuilder
-                .forSubjectAndProperty(noid, propertyContact.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
-                .build();
-        Statement statementCapacity = StatementBuilder
-                .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
-                .withValue(Datamodel.makeQuantityValue(new BigDecimal(rent.getCapacityRent())))
-                .build();
-        Statement statementDateStart = StatementBuilder
-                .forSubjectAndProperty(noid, propertyDateStart.getPropertyId())
-                .withValue(Datamodel.makeStringValue(rent.getDateStartRent()))
-                .build();
-        Statement statementDateEnt = StatementBuilder
-                .forSubjectAndProperty(noid, propertyDateEnd.getPropertyId())
-                .withValue(Datamodel.makeStringValue(rent.getDateEndRent()))
-                .build();
-        Statement statementDisponibility = StatementBuilder
-                .forSubjectAndProperty(noid, propertyDisponibility.getPropertyId())
-                .withValue(Datamodel.makeStringValue(rent.getDisponibilityRent()))
-                .build();
-        Statement statementPrice = StatementBuilder
-                .forSubjectAndProperty(noid, propertyPrice.getPropertyId())
-                .withValue(Datamodel.makeStringValue(rent.getPriceRent().toString()))
-                .build();
-        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
-                .withLabel(rent.getDescriptionRent(), "en")
-                .withLabel(rent.getDescriptionRent(), "fr")
-                .withStatement(statementAddress)
-                .withStatement(statementContact)
-                .withStatement(statementCapacity)
-                .withStatement(statementDateStart)
-                .withStatement(statementDateEnt)
-                .withStatement(statementDisponibility)
-                .withStatement(statementInstanceOf)
-                .withStatement(statementPrice)
-                .build();
+        if (!contactQid.isEmpty()) {
+            Statement statementContact = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyContact.getPropertyId())
+                    .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
+                    .build();
+            itemDocumentBuilder.withStatement(statementContact);
+        }
+        if (rent.getCapacityRent() != null) {
+            Statement statementCapacity = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
+                    .withValue(Datamodel.makeQuantityValue(new BigDecimal(rent.getCapacityRent())))
+                    .build();
+            itemDocumentBuilder.withStatement(statementCapacity);
+        }
+        if (rent.getDateStartRent() != null && !rent.getDateStartRent().isEmpty()) {
+            Statement statementDateStart = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyDateStart.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(rent.getDateStartRent()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementDateStart);
+        }
+        if (rent.getDateEndRent() != null && !rent.getDateEndRent().isEmpty()) {
+            Statement statementDateEnt = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyDateEnd.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(rent.getDateEndRent()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementDateEnt);
+        }
+        if (rent.getDisponibilityRent() != null && !rent.getDisponibilityRent().isEmpty()) {
+            Statement statementDisponibility = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyDisponibility.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(rent.getDisponibilityRent()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementDisponibility);
+        }
+        if (rent.getPriceRent() != null && rent.getPriceRent().toString().isEmpty()) {
+            Statement statementPrice = StatementBuilder
+                    .forSubjectAndProperty(noid, propertyPrice.getPropertyId())
+                    .withValue(Datamodel.makeStringValue(rent.getPriceRent().toString()))
+                    .build();
+            itemDocumentBuilder.withStatement(statementPrice);
+        }
+        ItemDocument itemDocument = itemDocumentBuilder.build();
         try {
             ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
         } catch (IOException | MediaWikiApiErrorException ex) {
