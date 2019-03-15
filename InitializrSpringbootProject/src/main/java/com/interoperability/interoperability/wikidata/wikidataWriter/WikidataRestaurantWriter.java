@@ -2,6 +2,7 @@ package com.interoperability.interoperability.wikidata.wikidataWriter;
 
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
 import com.interoperability.interoperability.utilities.Util;
+import com.interoperability.interoperability.wikidata.WikidataConstantes;
 import com.interoperability.interoperability.wikidata.WikidataUtil;
 import com.interoperability.interoperability.wikidata.WikidataLogger;
 import java.io.IOException;
@@ -20,15 +21,6 @@ import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 public class WikidataRestaurantWriter {
 
-    private static final String ITEM_RESTAURANT = "Q50";
-    private static final String PROPERTY_INSTANCE_OF = "P16";
-    private static final String PROPERTY_ADDRESS = "P1076";
-    private static final String PROPERTY_TYPE = "P1077";
-    private static final String PROPERTY_SEATING_CAPACITY = "P1064";
-    private static final String PROPERTY_CONTACT = "P61";
-    private static final String PROPERTY_MENU = "P1072";
-    private static final String PROPERTY_SCHEDULE = "P1073";
-
     private PropertyDocument propertyInstanceOf;
     private PropertyDocument propertyCapacity;
     private PropertyDocument propertyAddress;
@@ -41,13 +33,13 @@ public class WikidataRestaurantWriter {
         WikibaseDataEditor wbde = new WikibaseDataEditor(WikidataLogger.WikibaseConnexion, WikidataLogger.WIKIBASE_SITE_IRI);
         
         try {
-            propertyInstanceOf = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_INSTANCE_OF);
-            propertyAddress = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_ADDRESS);
-            propertyType = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_TYPE);
-            propertyCapacity = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_SEATING_CAPACITY);
-            propertyContact = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_CONTACT);
-            propertyMenu = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_MENU);
-            propertySchedule = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(PROPERTY_SCHEDULE);
+            propertyInstanceOf = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_INSTANCE_OF);
+            propertyAddress = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_ADDRESS);
+            propertyType = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_TYPE);
+            propertyCapacity = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_SEATING_CAPACITY);
+            propertyContact = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_CONTACT);
+            propertyMenu = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_MENU);
+            propertySchedule = (PropertyDocument) WikidataLogger.WikibaseWbdf.getEntityDocument(WikidataConstantes.PROPERTY_SCHEDULE);
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -55,7 +47,7 @@ public class WikidataRestaurantWriter {
         ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
-                .withValue(Datamodel.makeItemIdValue(ITEM_RESTAURANT, WikidataLogger.WIKIBASE_SITE_IRI))
+                .withValue(Datamodel.makeItemIdValue(WikidataConstantes.ITEM_RESTAURANT, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
         Statement statementAddress = StatementBuilder
                 .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
