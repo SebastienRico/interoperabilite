@@ -1,5 +1,6 @@
 package com.interoperability.interoperability.wikidata.wikidataWriter;
 
+import com.interoperability.interoperability.ObjectDTO;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
 import com.interoperability.interoperability.utilities.Util;
 import com.interoperability.interoperability.wikidata.WikidataConstantes;
@@ -44,25 +45,28 @@ public class WikidataRestaurantWriter {
             Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        ItemIdValue noid = ItemIdValue.NULL; // used when creating new items
-
-        ItemDocumentBuilder.forItemId(noid)
-                .withLabel(restaurant.getNameRestaurant(), "en")
-                .withLabel(restaurant.getNameRestaurant(), "fr")
-                .withDescription(restaurant.getDescriptionRestaurant(), "fr");
+        ItemIdValue noid = WikidataUtil.getObject((ObjectDTO) restaurant); // used when creating new items
+        //ItemIdValue noid = ItemIdValue.NULL;
+        System.out.println("noid : " + noid.getId());
 
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
                 .withValue(Datamodel.makeItemIdValue(WikidataConstantes.ITEM_RESTAURANT, WikidataLogger.WIKIBASE_SITE_IRI))
                 .build();
-        ItemDocumentBuilder.forItemId(noid).withStatement(statementInstanceOf);
+        
+        ItemDocumentBuilder itemDocumentBuilder = ItemDocumentBuilder.forItemId(noid)
+                .withLabel(restaurant.getNameRestaurant(), "en")
+                .withLabel(restaurant.getNameRestaurant(), "fr")
+                .withDescription(restaurant.getDescriptionRestaurant(), "fr")
+                .withStatement(statementInstanceOf);
 
         if (restaurant.getAddressRestaurant() != null && !restaurant.getAddressRestaurant().isEmpty()) {
             Statement statementAddress = StatementBuilder
                     .forSubjectAndProperty(noid, propertyAddress.getPropertyId())
                     .withValue(Datamodel.makeStringValue(restaurant.getAddressRestaurant()))
                     .build();
-            ItemDocumentBuilder.forItemId(noid).withStatement(statementAddress);
+            itemDocumentBuilder.withStatement(statementAddress);
+            System.out.println("address : " + restaurant.getAddressRestaurant());
         }
 
         if (restaurant.getTypeRestaurant() != null && !restaurant.getTypeRestaurant().isEmpty()) {
@@ -70,7 +74,8 @@ public class WikidataRestaurantWriter {
                     .forSubjectAndProperty(noid, propertyType.getPropertyId())
                     .withValue(Datamodel.makeStringValue(restaurant.getTypeRestaurant()))
                     .build();
-            ItemDocumentBuilder.forItemId(noid).withStatement(statementType);
+            itemDocumentBuilder.withStatement(statementType);
+            System.out.println("type : " + restaurant.getTypeRestaurant());
         }
 
         if (restaurant.getCapacityRestaurant() != null) {
@@ -78,7 +83,8 @@ public class WikidataRestaurantWriter {
                     .forSubjectAndProperty(noid, propertyCapacity.getPropertyId())
                     .withValue(Datamodel.makeQuantityValue(new BigDecimal(restaurant.getCapacityRestaurant())))
                     .build();
-            ItemDocumentBuilder.forItemId(noid).withStatement(statementCapacity);
+            itemDocumentBuilder.withStatement(statementCapacity);
+            System.out.println("capacite : " + restaurant.getCapacityRestaurant());
         }
 
         String contactQid = WikidataUtil.getOwner(restaurant.getContactRestaurant());
@@ -89,7 +95,8 @@ public class WikidataRestaurantWriter {
                     .forSubjectAndProperty(noid, propertyContact.getPropertyId())
                     .withValue(Datamodel.makeItemIdValue(contactQid, WikidataLogger.WIKIBASE_SITE_IRI))
                     .build();
-            ItemDocumentBuilder.forItemId(noid).withStatement(statementContact);
+            itemDocumentBuilder.withStatement(statementContact);
+            System.out.println("contact : " + contactQid);
         }
 
         if (restaurant.getMenuRestaurant() != null && !restaurant.getMenuRestaurant().isEmpty()) {
@@ -97,7 +104,8 @@ public class WikidataRestaurantWriter {
                     .forSubjectAndProperty(noid, propertyMenu.getPropertyId())
                     .withValue(Datamodel.makeStringValue(restaurant.getMenuRestaurant()))
                     .build();
-            ItemDocumentBuilder.forItemId(noid).withStatement(statementMenu);
+            itemDocumentBuilder.withStatement(statementMenu);
+            System.out.println("menu : " + restaurant.getMenuRestaurant());
         }
 
         if (restaurant.getScheduleRestaurant() != null && !restaurant.getScheduleRestaurant().isEmpty()) {
@@ -105,10 +113,12 @@ public class WikidataRestaurantWriter {
                     .forSubjectAndProperty(noid, propertySchedule.getPropertyId())
                     .withValue(Datamodel.makeStringValue(restaurant.getScheduleRestaurant()))
                     .build();
-            ItemDocumentBuilder.forItemId(noid).withStatement(statementSchedule);
+            itemDocumentBuilder.withStatement(statementSchedule);
+            System.out.println("schedule : " + restaurant.getScheduleRestaurant());
         }
 
-        ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid).build();
+        ItemDocument itemDocument = itemDocumentBuilder.build();
+        System.out.println("BUILD");
         /*
         ItemDocument itemDocument = ItemDocumentBuilder.forItemId(noid)
                 .withLabel(restaurant.getNameRestaurant(), "en")
@@ -124,7 +134,15 @@ public class WikidataRestaurantWriter {
                 .build();*/
         try {
             ItemDocument newItemDocument = wbde.createItemDocument(itemDocument, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
+            System.out.println("CREATE ITEM");
         } catch (IOException | MediaWikiApiErrorException e) {
+            try {
+                ItemDocument newItemDocument = wbde.editItemDocument(itemDocument, true, "Statement created by the bot " + Util.getProperty("usn_wikibase"));
+            } catch (IOException ex) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MediaWikiApiErrorException ex) {
+                Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.SEVERE, null, ex);
+            }
             e.printStackTrace();
         }
         Logger.getLogger(WikidataRestaurantWriter.class.getName()).log(Level.INFO, "Created or updating {0}", restaurant.getNameRestaurant());
