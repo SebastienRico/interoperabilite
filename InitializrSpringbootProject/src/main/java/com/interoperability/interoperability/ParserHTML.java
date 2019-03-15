@@ -66,13 +66,6 @@ public class ParserHTML {
                         this.event.setTypeEvent(" ");
                     }
                     this.event.setContactEvent(contact);
-                    System.out.println("Evenement " + j);
-                    System.out.println("----------");
-                    System.out.println("Nom : " + this.event.getNameEvent());
-                    System.out.println("Ville : " + this.event.getAddressEvent());
-                    System.out.println("Date : " + this.event.getDateStartEvent());
-                    System.out.println("Type : " + this.event.getTypeEvent());
-                    System.out.println("----------");
                     WikidataFacade.writePage(event);
                 }
             }
@@ -114,11 +107,6 @@ public class ParserHTML {
                     this.activity.setScheduleActivity(e.getAttribute("data-day"));
                     this.activity.setDescriptionActivity(e.getElementsByTagName("a").item(1).getTextContent());
                 }
-                System.out.println("Seance de Cinema :");
-                System.out.println("Horaire : " + this.activity.getScheduleActivity());
-                System.out.println("Description : " + this.activity.getDescriptionActivity());
-                System.out.println("Adresse : " + this.activity.getAddressActivity());
-                System.out.println("-------------------------");
                 WikidataFacade.writePage(activity);
             }
         } catch (SAXException | IOException | ParserConfigurationException ex) {
