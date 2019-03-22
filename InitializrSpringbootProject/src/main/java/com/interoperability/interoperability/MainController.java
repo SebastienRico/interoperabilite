@@ -183,7 +183,6 @@ public class MainController {
         ContactDTO contactRent = new ContactDTO();
         contactRent.setNamePerson(rentalForm.getNamePerson());
         contactRent.setFirstnamePerson(rentalForm.getFirstnamePerson());
-        contactRent.setNamePerson(rentalForm.getNamePerson() + " " + rentalForm.getFirstnamePerson());
         contactRent.setPhoneContact(rentalForm.getPhoneContact());
         contactRent.setMailContact(rentalForm.getMailContact());
         contactRent.setWebsiteContact(rentalForm.getWebsiteContact());
@@ -197,6 +196,7 @@ public class MainController {
         locationDTO.setDisponibilityRent(rentalForm.getDisponibilityRent());
         locationDTO.setPriceRent(rentalForm.getPriceRent());
         locationDTO.setDescriptionRent(rentalForm.getDescriptionRent());
+        locationDTO.setNameRent(rentalForm.getNameRent());
 
         //Envoyer locationDTO au BOT qui écrit dans la WikiBase
         WikidataFacade.writePage(locationDTO);

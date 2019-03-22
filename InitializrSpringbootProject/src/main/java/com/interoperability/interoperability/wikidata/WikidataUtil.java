@@ -26,7 +26,7 @@ public class WikidataUtil {
     public static String getOwner(ContactDTO contact) {
         String owner = "";
         try {
-            String contactToSearch = contact.getFirstnamePerson() + " " + contact.getNamePerson();
+            String contactToSearch = contact.getNamePerson();
             List<WbSearchEntitiesResult> entities = WikidataLogger.WikibaseWbdf.searchEntities(contactToSearch);
             if (!entities.isEmpty()) {
                 for (WbSearchEntitiesResult entity : entities) {
@@ -67,6 +67,9 @@ public class WikidataUtil {
             } else if (object instanceof RentDTO) {
                 RentDTO rent = (RentDTO) object;
                 objectToSearch = rent.getDescriptionRent();
+            } else if (object instanceof ContactDTO) {
+                ContactDTO contact = (ContactDTO) object;
+                objectToSearch = contact.getNamePerson();
             }
             List<WbSearchEntitiesResult> entities = WikidataLogger.WikibaseWbdf.searchEntities(objectToSearch);
             if (!entities.isEmpty()) {
