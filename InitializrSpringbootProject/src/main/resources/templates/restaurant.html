@@ -10,7 +10,7 @@
         <link href="/lib/style.min.css" rel="stylesheet"/>
         <script src="/lib/vue.js"></script>
         <script src="/lib/axios.min.js"></script>
-        <title th:each = "${v:restaurant}" th:text = "${v.nameRestaurant}">Recherche</title>
+        <title th:each = "v: ${restaurant}" th:text = "${v.nameRestaurant}">Recherche</title>
     </head>
     <body>
         <div class="list-group">
@@ -27,22 +27,37 @@
                 </div>
             </div>
             <div class="container" th:each="v : ${restaurant}"> 
-                <h1 style="font-size: 50px"   th:text="${v.nameRestaurant}"></h1>
-                <div class="container">
-                    <p style="font-size: 20px" th:text="${'Adresse du restaurant : ' + v.adressRestaurant}"></p>
-                    <p style="font-size: 20px" th:text="${'Type de restaurant : ' + v.typeRestaurant}"></p>
-                    <p style="font-size: 20px" th:text="${'Descritpion du restaurant : ' + v.descriptionRestaurant}"></p>
-                    <p style="font-size: 20px" th:text="${'Menu du restaurant : ' + v.menuRestaurant}"></p>
-                    <p style="font-size: 20px" th:text="${'Capacité du restaurant : ' + v.capacityRestaurant}"></p>
-                    <p style="font-size: 20px" th:text="${'Horaire d''ouverture : ' + v.scheduleRestaurant}"></p>
-                    <div th:each = "w : ${v.contactRestaurant}">
-                        <p style="font-size: 20px" >Contact du restaurant :</p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Nom : ' + w.namePerson}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Prénom : ' + w.firstnamePerson}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Téléphone : ' + w.phoneContact}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Mail : ' + w.mailContact}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Site Web : ' + w.websiteContact}"></p>
+                <div class = "row" style="margin-top:2%">
+                    <div class="col-lg-4"></div>
+                    <div class="col-lg-4">
+                        <h1 style="font-size: 50px"   th:text="${v.nameRestaurant}"></h1>
                     </div>
+
+                    <div class="col-lg-4"></div>
+                </div>
+
+                <div class="row" style="margin-top:5%">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-4">
+                        <h3 style="font-size: 20px" >Information sur le restaurant :</h3>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Adresse du restaurant : ' + v.addressRestaurant}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Type de restaurant : ' + v.typeRestaurant}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Descritpion du restaurant : ' + v.descriptionRestaurant}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Menu du restaurant : ' + v.menuRestaurant}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Capacité du restaurant : ' + v.capacityRestaurant}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Horaire d''ouverture : ' + v.scheduleRestaurant}"></p>
+                    </div>
+                    <div class="col-lg-4">
+                        <div th:each = "w : ${v.contactRestaurant}">
+                            <h3 style="font-size: 20px" >Contact du restaurant :</h3>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Nom : ' + w.namePerson}"></p>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Prénom : ' + w.firstnamePerson}"></p>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Téléphone : ' + w.phoneContact}"></p>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Mail : ' + w.mailContact}"></p>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Site Web : ' + w.websiteContact}"></p>
+                        </div>
+                    </div>
+                    <div class="col-lg-2"></div>
                 </div>
             </div>
         </div>

@@ -26,23 +26,37 @@
                     </nav>
                 </div>
             </div>
-            <div class="container" th:each="v : ${hostel}"> 
-                <h1 style="font-size: 50px"   th:text="${v.nameHostel}"></h1>
-                <div class="container">
-                    <p style="font-size: 20px" th:text="${'Adresse de l''hotel : ' + v.addressHostel}"></p>
-                    <p style="font-size: 20px" th:text="${'Nombre d''étoiles de l''hotel : ' + v.starHostel}"></p>
-                    <p style="font-size: 20px" th:text="${'Capacité de l''hotel : ' + v.capacityHostel}"></p>
-                    <p style="font-size: 20px" th:text="${'Prix : ' + v.priceHostel}"></p>
-                    <p style="font-size: 20px" th:text="${'Horaires d''ouverture : ' + v.timetableOpenHostel}"></p>
-                    <p style="font-size: 20px" th:text="${'Période d''ouverture : ' + v.openingPeriodHostel}"></p>
-                    <div th:each = "w : ${v.contactHostel}">
-                        <p style="font-size: 20px" >Contact de l'hotel :</p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Nom : ' + w.namePerson}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Prénom : ' + w.firstnamePerson}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Téléphone : ' + w.phoneContact}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Mail : ' + w.mailContact}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Site Web : ' + w.websiteContact}"></p>
+            <div class = "container" th:each="v : ${hostel}" > 
+                <div class = "row" style="margin-top:2%">
+                    <div class="col-lg-4"></div>
+                    <div class="col-lg-4">
+                        <h1 style="font-size: 50px"   th:text="${v.nameHostel}"></h1>
                     </div>
+
+                    <div class="col-lg-4"></div>
+                </div>
+                <div class="row" style="margin-top:5%">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-4">
+                        <h3 style="font-size: 20px" >Information de l'hotel :</h3>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Adresse de l''hotel : ' + v.addressHostel}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Nombre d''étoiles de l''hotel : ' + v.starHostel}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Capacité de l''hotel : ' + v.capacityHostel}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Prix : ' + v.priceHostel}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Horaires d''ouverture : ' + v.timetableOpenHostel}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Période d''ouverture : ' + v.openingPeriodHostel}"></p>
+                    </div>
+                    <div class="col-lg-4">
+                        <div th:each = "w : ${v.contactHostel}">
+                            <h3 style="font-size: 20px" >Contact de l'hotel :</h3>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Nom : ' + w.namePerson}"></p>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Prénom : ' + w.firstnamePerson}"></p>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Téléphone : ' + w.phoneContact}"></p>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Mail : ' + w.mailContact}"></p>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Site Web : ' + w.websiteContact}"></p>
+                        </div>
+                    </div>
+                    <div class="col-lg-2"></div>
                 </div>
             </div>
         </div>

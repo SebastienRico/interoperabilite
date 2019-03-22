@@ -27,23 +27,39 @@
                 </div>
             </div>
             <div class="container" th:each="v : ${activites}"> 
-                <h1 style="font-size: 50px"   th:text="${v.nameActivity}"></h1>
-                <div class="container">
-                    <p style="font-size: 20px" th:text="${'Adresse de l''activité : ' + v.addressActivity}"></p>
-                    <p style="font-size: 20px" th:text="${'Prix de l''activité : ' + v.priceActivity}"></p>
-                    <p style="font-size: 20px" th:text="${'Descritpion de l''activité : ' + v.descriptionActivity}"></p>
-                    <p style="font-size: 20px" th:text="${'Circuit de l''activité : ' + v.circuitIDActivity}"></p>
-                    <p style="font-size: 20px" th:text="${'Tour de l''activité : ' + v.rideActivity}"></p>
-                    <p style="font-size: 20px" th:text="${'Capacité de l''activité: ' + v.capacityActivity}"></p>
-                    <p style="font-size: 20px" th:text="${'Horaire d''ouverture : ' + v.scheduleActivity}"></p>
-                    <div th:each = "w : ${v.contactActivity}">
-                        <p style="font-size: 20px" >Contact de l'actvité :</p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Nom : ' + w.namePerson}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Prénom : ' + w.firstnamePerson}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Téléphone : ' + w.phoneContact}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Mail : ' + w.mailContact}"></p>
-                        <p style="font-size: 20px;margin-left:10px" th:text="${'Site Web : ' + w.websiteContact}"></p>
+
+                <div class = "row" style="margin-top:2%">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <h1 style="font-size: 50px"   th:text="${v.nameActivity}"></h1>
                     </div>
+
+                    <div class="col-lg-3"></div>
+                </div>
+
+                <div class="row" style="margin-top:5%">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-4">
+                        <h3 style="font-size: 20px" >Information sur l'activité :</h3>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Adresse de l''activité : ' + v.addressActivity}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Prix de l''activité : ' + v.priceActivity}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Descritpion de l''activité : ' + v.descriptionActivity}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Circuit de l''activité : ' + v.circuitIDActivity}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Tour de l''activité : ' + v.rideActivity}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Capacité de l''activité: ' + v.capacityActivity}"></p>
+                        <p style="font-size: 20px;margin-left:10px" th:text="${'Horaire d''ouverture : ' + v.scheduleActivity}"></p>
+                    </div>
+                    <div class="col-lg-4">
+                        <div th:each = "w : ${v.contactActivity}">
+                            <h3 style="font-size: 20px" >Contact de l'actvité :</h3>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Nom : ' + w.namePerson}"></p>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Prénom : ' + w.firstnamePerson}"></p>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Téléphone : ' + w.phoneContact}"></p>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Mail : ' + w.mailContact}"></p>
+                            <p style="font-size: 20px;margin-left:10px" th:text="${'Site Web : ' + w.websiteContact}"></p>
+                        </div>
+                    </div>
+                    <div class="col-lg-2"></div>
                 </div>
             </div>
         </div>
