@@ -8,18 +8,12 @@ import com.interoperability.interoperability.objetsDTO.HostelDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.*;
-
 import com.interoperability.interoperability.objetsDTO.RentalFormDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
-import com.interoperability.interoperability.objetsDTO.PersonDTO;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
 import com.interoperability.interoperability.repositories.ConnexionRepository;
 import com.interoperability.interoperability.wikidata.WikidataFacade;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
@@ -41,15 +35,9 @@ public class MainController {
     private static List<HostelDTO> hostelDTO;
     private static List<RestaurantDTO> restaurantDTO;
 
-
-    /*@RequestMapping(value = "/...")
-    public String goTo...(){
-        return "...";
-    }*/
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String goToIndex(Model m) {
         m.addAttribute("rech", new Research());
-        WikidataFacade.readPage("Q2109");
         return "index.html";
     }
 
@@ -66,13 +54,6 @@ public class MainController {
         return "research.html";
     }
 
-    /* @RequestMapping(value = "/addResearch", method = RequestMethod.GET)
-    public String showResearch(Model m) {
-        m.addAttribute("rech", new Research());
-
-        return "addResearch";
-    }
-     */
     @RequestMapping(value = "/restaurant", method = RequestMethod.GET)
     public String goToRestaurant(Model m) {
         m.addAttribute("restaurant", restaurantDTO);
@@ -143,6 +124,7 @@ public class MainController {
         if (qIds.isEmpty()) {
             return "redirect:/noData";
         } else if (qIds.size() == 1) {
+            System.out.println(qIds.get(0));
             object = WikidataFacade.readPage(qIds.get(0));
             if (object instanceof RestaurantDTO) {
                 System.out.println("restaurant" + object);
@@ -173,6 +155,7 @@ public class MainController {
         } else {
             // if la liste est plus grande qu'un seul résultat alors on appelle l'affichage d'une liste de résultat*
             for (int i = 0; i < qIds.size(); i++) {
+                System.out.println(qIds.get(0));
                 object = WikidataFacade.readPage(qIds.get(i));
                 if (object instanceof RestaurantDTO) {
                     System.out.println("restaurant" + object);

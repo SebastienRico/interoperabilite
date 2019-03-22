@@ -27,10 +27,8 @@ public class WikidataActivitiesReader {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        //System.out.println("Nom activity " + item.getLabels().get("en").getText());
         activity.setNameActivity(item.getLabels().get("en").getText());
 
-        //System.out.println(item.getDescriptions().toString());
         activity.setDescriptionActivity(item.getDescriptions().get("fr").getText());
 
         for (int i = 0; i < item.getStatementGroups().size(); i++) {
@@ -47,6 +45,7 @@ public class WikidataActivitiesReader {
                 activity.setCapacityActivity(Integer.parseInt(item.getStatementGroups().get(i).getStatements().get(0).getValue().toString()));
             }
             if (statement.contains("P61")) {
+                
                 //Get The contact Qid
                 String contactsplit = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString();
                 String[] array = contactsplit.split("php");

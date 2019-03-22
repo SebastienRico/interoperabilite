@@ -1,8 +1,6 @@
 package com.interoperability.interoperability;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -17,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import lombok.Data;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 @Data
