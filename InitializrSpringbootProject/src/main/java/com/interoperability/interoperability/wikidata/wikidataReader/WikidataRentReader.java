@@ -44,6 +44,9 @@ public class WikidataRentReader {
         
         String endDate = item.getStatementGroups().get(5).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
         rental.setDateEndRent(endDate);
+        
+        //rental.setPriceRent(Float.parseFloat(item.getStatementGroups().get(7).getStatements().get(0).getValue().toString()));
+
         //Get The contact Qid
         String contactsplit = item.getStatementGroups().get(6).getStatements().get(0).getValue().toString();
         array = contactsplit.split("php");

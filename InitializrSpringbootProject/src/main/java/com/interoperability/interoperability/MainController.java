@@ -200,6 +200,7 @@ public class MainController {
         locationDTO.setDescriptionRent(rentalForm.getDescriptionRent());
 
         //Envoyer locationDTO au BOT qui écrit dans la WikiBase
+        WikidataFacade.writePage(locationDTO);
         return "redirect:/";
     }
 

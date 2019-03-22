@@ -29,6 +29,8 @@ public class WikidataHostelReader {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        hostel.setNameHostel(item.getLabels().get("en").getText());
+        
         String adresse = item.getStatementGroups().get(0).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
         hostel.setAddressHostel(adresse);
 
