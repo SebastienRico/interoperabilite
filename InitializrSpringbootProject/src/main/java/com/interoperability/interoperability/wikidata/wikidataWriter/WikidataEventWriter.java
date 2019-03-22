@@ -52,8 +52,7 @@ public class WikidataEventWriter {
 
         ItemDocumentBuilder itemDocumentBuilder = ItemDocumentBuilder.forItemId(noid)
                 .withLabel(event.getNameEvent(), "en")
-                .withLabel(event.getNameEvent(), "fr")
-                .withDescription(event.getDescriptionEvent(), "fr");
+                .withLabel(event.getNameEvent(), "fr");
 
         Statement statementInstanceOf = StatementBuilder
                 .forSubjectAndProperty(noid, propertyInstanceOf.getPropertyId())
