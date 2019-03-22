@@ -1,5 +1,4 @@
 package com.interoperability.interoperability;
-//Cinema scoop : h3 class= tribe-events-month-event-title (plusieurs) https://www.cinema-scoop.fr/seances/categorie/seances/
 
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
@@ -24,7 +23,6 @@ public class ParserHTML {
     public ParserHTML() {
 
     }
-    //Evenement : div class = wpetItem resultsListItem wrapper_wpet_offer agenda > a class = resultItemDetail (nom) < > p class = wpetItemContainerContentCity (lieu) < > p class = wpetItemContainerDate (date) < > li (ce que c'est) http://www.office-tourisme-haut-lignon.com/info_pratique/agenda/
 
     public void parserEvenementOfficeTourisme(String path) {
         this.event = new EventDTO();
@@ -72,7 +70,6 @@ public class ParserHTML {
         }
     }
 
-    //https://www.cinema-scoop.fr/seances/categorie/seances/
     public void parserCinemaScoop(String path) {
         this.activity = new ActivitesDTO();
         File fichier = new File("cinemaScoop.html");

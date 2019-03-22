@@ -5,7 +5,6 @@ import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
 import com.interoperability.interoperability.objetsDTO.HostelDTO;
-import com.interoperability.interoperability.objetsDTO.PersonDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
 import com.interoperability.interoperability.wikidata.wikidataReader.WikidataRestaurantReader;
@@ -105,10 +104,8 @@ public class WikidataUtil {
         }
 
         for (int i = 0; i < item.getStatementGroups().size(); i++) {
-            //System.out.println(item.getStatementGroups().get(i).getStatements().get(0).toString());
             String test = item.getStatementGroups().get(i).getStatements().get(0).toString();
             if (test.contains("P16")) {
-                //System.out.println(item.getStatementGroups().get(i).getStatements().get(0));
                 String contactsplit = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString();
                 array1 = contactsplit.split("php");
                 array2 = array1[1].split(" ");
@@ -118,13 +115,11 @@ public class WikidataUtil {
 
         ItemDocument itemInstance = null;
         try {
-            //Pour l'instant on met le QID en dur mais il faudra le passer en paramètre
             itemInstance = (ItemDocument) wbdf.getEntityDocument(array2[0]);
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, "Cannot find itemDocument for QId : " + array2[0], ex);
         }
         String instanceName = itemInstance.getLabels().get("en").getText();
-        //System.out.println(instanceName);
         return instanceName;
     }
 }

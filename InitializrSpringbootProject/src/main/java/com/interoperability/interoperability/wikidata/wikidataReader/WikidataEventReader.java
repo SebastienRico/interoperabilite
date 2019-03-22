@@ -29,7 +29,6 @@ public class WikidataEventReader {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        //System.out.println("Nom event " + item.getLabels().get("fr").getText());
         event.setNameEvent(item.getLabels().get("fr").getText());
 
         for (int i = 0; i < item.getStatementGroups().size(); i++) {

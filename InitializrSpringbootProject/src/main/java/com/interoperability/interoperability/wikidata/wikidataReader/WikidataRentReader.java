@@ -23,7 +23,6 @@ public class WikidataRentReader {
         WikibaseDataFetcher wbdf = new WikibaseDataFetcher(con, siteIri);
         ItemDocument item = null;
         try {
-            //Pour l'instant on met le QID en dur mais il faudra le passer en paramètre
             item = (ItemDocument) wbdf.getEntityDocument(Qid);
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);

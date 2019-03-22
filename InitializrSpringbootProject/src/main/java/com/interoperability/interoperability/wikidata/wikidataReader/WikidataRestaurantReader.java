@@ -23,16 +23,13 @@ public class WikidataRestaurantReader {
         WikibaseDataFetcher wbdf = new WikibaseDataFetcher(con, siteIri);
         ItemDocument item = null;
         try {
-            //Pour l'instant on met le QID en dur mais il faudra le passer en paramètre
             item = (ItemDocument) wbdf.getEntityDocument(Qid);
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        //System.out.println("Nom resto " + item.getLabels().get("en").getText());
         restaurant.setNameRestaurant(item.getLabels().get("en").getText());
 
-        //System.out.println(item.getDescriptions().toString());
         restaurant.setDescriptionRestaurant(item.getDescriptions().get("fr").getText());
 
         for (int i = 0; i < item.getStatementGroups().size(); i++) {

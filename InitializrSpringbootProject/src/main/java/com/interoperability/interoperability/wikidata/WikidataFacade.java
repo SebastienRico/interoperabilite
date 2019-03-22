@@ -56,32 +56,26 @@ public class WikidataFacade {
         switch (instance) {
             case "restaurant":
                 RestaurantDTO restaurant = WikidataRestaurantReader.readRestaurantPage(Qid);
-                System.out.println(restaurant);
                 objectToShow = restaurant;
                 break;
             case "human":
                 ContactDTO contact = WikidataContactReader.readContactPage(Qid);
-                System.out.println(contact);
                 objectToShow = contact;
                 break;
             case "event":
                 EventDTO event = WikidataEventReader.readEventPage(Qid);
-                System.out.println(event);
                 objectToShow = event;
                 break;
             case "activity":
                 ActivitesDTO activity = WikidataActivitiesReader.readActivitiesPage(Qid);
-                System.out.println(activity);
                 objectToShow = activity;
                 break;
             case "location":
                 RentDTO rental = WikidataRentReader.readRentPage(Qid);
-                System.out.println(rental);
                 objectToShow = rental;
                 break;
             case "hostel":
                 HostelDTO hostel = WikidataHostelReader.readHostelPage(Qid);
-                System.out.println(hostel);
                 objectToShow = hostel;
                 break;
         }

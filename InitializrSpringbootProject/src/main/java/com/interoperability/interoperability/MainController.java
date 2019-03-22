@@ -8,17 +8,12 @@ import com.interoperability.interoperability.objetsDTO.HostelDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.*;
-
 import com.interoperability.interoperability.objetsDTO.RentalFormDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
-import com.interoperability.interoperability.objetsDTO.PersonDTO;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
 import com.interoperability.interoperability.repositories.ConnexionRepository;
 import com.interoperability.interoperability.wikidata.WikidataFacade;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
@@ -40,11 +35,6 @@ public class MainController {
     private static List<HostelDTO> hostelDTO;
     private static List<RestaurantDTO> restaurantDTO;
 
-
-    /*@RequestMapping(value = "/...")
-    public String goTo...(){
-        return "...";
-    }*/
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String gotToIndex(Model m) {
         m.addAttribute("rech", new Research());
@@ -65,13 +55,6 @@ public class MainController {
         return "research.html";
     }
 
-    /* @RequestMapping(value = "/addResearch", method = RequestMethod.GET)
-    public String showResearch(Model m) {
-        m.addAttribute("rech", new Research());
-
-        return "addResearch";
-    }
-     */
     @RequestMapping(value = "/restaurant", method = RequestMethod.GET)
     public String goToRestaurant(Model m) {
         m.addAttribute("restaurant", restaurantDTO);
@@ -138,8 +121,8 @@ public class MainController {
         Research research = new Research(champs);
         List<String> qIds = new ArrayList<>();
         qIds = research.requestQAnswer();
-        // if la liste qIds.size() == 1 alors l'objetDTO est égale au seul Qid de la liste
-        // if la liste est plus grande qu'un seul résultat alors on appelle l'affichage d'une liste de résultat
+        // Si la liste qIds.size() == 1 alors l'objetDTO est égale au seul Qid de la liste
+        // Si la liste est plus grande qu'un seul résultat alors on appelle l'affichage d'une liste de résultat
 
         if (object instanceof RestaurantDTO) {
             System.out.println("restaurant" + object);

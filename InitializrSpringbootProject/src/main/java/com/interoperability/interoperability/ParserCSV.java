@@ -17,8 +17,8 @@ public class ParserCSV {
 
     private final static char SEPARATOR = ';';
 
-    private RestaurantDTO restaurant = new RestaurantDTO();
-    private List<String[]> data = new ArrayList<String[]>();
+    private final RestaurantDTO restaurant = new RestaurantDTO();
+    private final List<String[]> data = new ArrayList<>();
 
     public ParserCSV() {
     }
@@ -39,6 +39,7 @@ public class ParserCSV {
             
             while ((nextLine = csvReader.readNext()) != null) {
                 int size = nextLine.length;
+                
                 // ligne vide
                 if (size == 0) {
                     continue;
@@ -86,11 +87,7 @@ public class ParserCSV {
                 contact.setWebsiteContact(oneData[9]);
                 restaurant.setDescriptionRestaurant(oneData[10]);
             }
-            /*Integer classe = Integer.parseInt(classeStr);
-            Sexe sexe = (sexeStr.equalsIgnoreCase("F")) ? FEMME : HOMME;
-            Date dateNaissance = dateFormat.parse(dateNaissanceStr);*/
         }
-        //restaurant.setAddressRestaurant(adresse);
         restaurant.setContactRestaurant(contact);
         WikidataFacade.writePage(restaurant);
     }
