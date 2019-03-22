@@ -24,71 +24,22 @@
                     </nav>
                 </div>
             </div>
-            <div>
-                <a href="#" class="list-group-item list-group-item-action ">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1" th:each="v : ${activitesDTO}" th:text="${v.nameActivity}+ ' 1'"></h5>
-                        <small>3 days ago</small>
-                    </div>
-                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    <small>Donec id elit non mi porta.</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1" th:each="v : ${contactDTO}" th:text="${v.nameContact}+ ' 2'"></h5>
-                        <small class="text-muted">3 days ago</small>
-                    </div>
-                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 3'"></h5>
-                        <small class="text-muted">3 days ago</small>
-                    </div>
-                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 4'"></h5>
-                        <small class="text-muted">3 days ago</small>
-                    </div>
-                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 5'"></h5>
-                        <small class="text-muted">3 days ago</small>
-                    </div>
-                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 6'"></h5>
-                        <small class="text-muted">3 days ago</small>
-                    </div>
-                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 7'"></h5>
-                        <small class="text-muted">3 days ago</small>
-                    </div>
-                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1" th:each="v : ${rec}" th:text="${v.champs}+ ' 8'"></h5>
-                        <small class="text-muted">3 days ago</small>
-                    </div>
-                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
+            <div class ="container">
+                <div th:each="v : ${hostel}">
+                    <a href="#" th:text ="${v.nameHostel}"></a>
+                </div>
+                <div th:each="v : ${contact}">
+                    <a href="#" th:text ="${v.namePerson}"></a>
+                </div>
+                <div th:each="v : ${restaurant}">
+                    <a href="#" th:text ="${v.nameRestaurant}"></a>
+                </div>
+                <div th:each="v : ${activite}">
+                    <a href="#" th:text ="${v.nameActivity}"></a>
+                </div>
+                <div th:each="v : ${event}">
+                    <a href="#" th:text ="${v.nameEvent}"></a>
+                </div>
             </div>
         </div>
     </body>

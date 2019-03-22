@@ -17,6 +17,7 @@ import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
 import com.interoperability.interoperability.repositories.ConnexionRepository;
 import com.interoperability.interoperability.wikidata.WikidataFacade;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class MainController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String goToIndex(Model m) {
         m.addAttribute("rech", new Research());
-        WikidataFacade.readPage("Q1580");
+        WikidataFacade.readPage("Q2109");
         return "index.html";
     }
 
@@ -124,7 +125,6 @@ public class MainController {
     @RequestMapping(value = "/addResearch", method = RequestMethod.POST)
     public String addResearch(Model m, @ModelAttribute("rech") Research rec) throws IOException {
 
-        researches = new ArrayList<>();
         restaurantDTO = new ArrayList<>();
         activitesDTO = new ArrayList<>();
         contactDTO = new ArrayList<>();
@@ -133,43 +133,73 @@ public class MainController {
 
         String champs = rec.getChamps();
 
-        ObjectDTO object = WikidataFacade.readPage("Q1580");
+        ObjectDTO object = new ObjectDTO();// = WikidataFacade.readPage("Q2310");
 
         Research research = new Research(champs);
+
         List<String> qIds = new ArrayList<>();
         qIds = research.requestQAnswer();
-        // if la liste qIds.size() == 1 alors l'objetDTO est égale au seul Qid de la liste
-        // if la liste est plus grande qu'un seul résultat alors on appelle l'affichage d'une liste de résultat
 
-        if (object instanceof RestaurantDTO) {
-            System.out.println("restaurant" + object);
+        if (qIds.isEmpty()) {
+            return "redirect:/noData";
+        } else if (qIds.size() == 1) {
+            object = WikidataFacade.readPage(qIds.get(0));
+            if (object instanceof RestaurantDTO) {
+                System.out.println("restaurant" + object);
 
-            restaurantDTO.add((RestaurantDTO) object);
-            return "redirect:/restaurant";
-        } else if (object instanceof HostelDTO) {
-            System.out.println("hotel" + object);
+                restaurantDTO.add((RestaurantDTO) object);
+                return "redirect:/restaurant";
+            } else if (object instanceof HostelDTO) {
+                System.out.println("hotel" + object);
 
-            hostelDTO.add((HostelDTO) object);
-            return "redirect:/hostel";
-        } else if (object instanceof EventDTO) {
-            System.out.println("événement" + object);
+                hostelDTO.add((HostelDTO) object);
+                return "redirect:/hostel";
+            } else if (object instanceof EventDTO) {
+                System.out.println("événement" + object);
 
-            eventDTO.add((EventDTO) object);
-            return "redirect:/event";
-        } else if (object instanceof ContactDTO) {
-            System.out.println("contact" + object);
+                eventDTO.add((EventDTO) object);
+                return "redirect:/event";
+            } else if (object instanceof ContactDTO) {
+                System.out.println("contact" + object);
 
-            contactDTO.add((ContactDTO) object);
-            return "redirect:/contact";
-        } else if (object instanceof ActivitesDTO) {
-            System.out.println("activité" + object);
+                contactDTO.add((ContactDTO) object);
+                return "redirect:/contact";
+            } else if (object instanceof ActivitesDTO) {
+                System.out.println("activité" + object);
 
-            activitesDTO.add((ActivitesDTO) object);
-            return "redirect:/activites";
+                activitesDTO.add((ActivitesDTO) object);
+                return "redirect:/activites";
+            }
+        } else {
+            // if la liste est plus grande qu'un seul résultat alors on appelle l'affichage d'une liste de résultat*
+            for (int i = 0; i < qIds.size(); i++) {
+                object = WikidataFacade.readPage(qIds.get(i));
+                if (object instanceof RestaurantDTO) {
+                    System.out.println("restaurant" + object);
+
+                    restaurantDTO.add((RestaurantDTO) object);
+                } else if (object instanceof HostelDTO) {
+                    System.out.println("hotel" + object);
+
+                    hostelDTO.add((HostelDTO) object);
+                } else if (object instanceof EventDTO) {
+                    System.out.println("événement" + object);
+
+                    eventDTO.add((EventDTO) object);
+                } else if (object instanceof ContactDTO) {
+                    System.out.println("contact" + object);
+
+                    contactDTO.add((ContactDTO) object);
+                } else if (object instanceof ActivitesDTO) {
+                    System.out.println("activité" + object);
+
+                    activitesDTO.add((ActivitesDTO) object);
+                }
+            }
+
+            return "Research";
         }
-
-        researches.add(research);
-        return "redirect:/Research";
+        return null;
     }
 
     @RequestMapping("/addLocation")
@@ -213,16 +243,18 @@ public class MainController {
     public String goToConnexion(Model m) {
         m.addAttribute("co", new Connexion());
         m.addAttribute("rech", new Research());
+        m.addAttribute("file", new ImportCSV());
         return "connexion";
     }
 
     @RequestMapping(value = "/tryConnexion", method = RequestMethod.POST)
-    public String tryConnexion(@ModelAttribute("co") Connexion co,Model m) {
-        Connexion tryConnexion = connexionRepository.findConnexionWithLoginAndPassword(co.getLogin(), co.getPassword());
+    public String tryConnexion(@ModelAttribute("co") Connexion co, Model m) {
         m.addAttribute("rech", new Research());
+        Connexion tryConnexion = connexionRepository.findConnexionWithLoginAndPassword(co.getLogin(), co.getPassword());
         if (tryConnexion == null) {
             return "connexionFailed";
         }
+        m.addAttribute("file", new ImportCSV());
         return "connexionSuccess";
     }
 
@@ -235,6 +267,14 @@ public class MainController {
     @RequestMapping(value = "/connexionSuccess", method = RequestMethod.POST)
     public void connexionOk(@ModelAttribute("co") Connexion co, Model m) {
         m.addAttribute("rech", new Research());
+        m.addAttribute("file", new ImportCSV());
+    }
+
+    @RequestMapping(value = "/downloadFile", method = RequestMethod.POST)
+    public void copyFile(@ModelAttribute("file") ImportCSV f, Model m) throws IOException {
+        m.addAttribute("rech", new Research());
+        m.addAttribute("file", new ImportCSV());
+        f.copyFile();
     }
 
 }

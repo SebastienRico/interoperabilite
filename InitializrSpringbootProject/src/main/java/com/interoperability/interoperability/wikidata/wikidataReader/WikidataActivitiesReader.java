@@ -27,28 +27,35 @@ public class WikidataActivitiesReader {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        //System.out.println("Nom resto " + item.getLabels().get("en").getText());
+        //System.out.println("Nom activity " + item.getLabels().get("en").getText());
         activity.setNameActivity(item.getLabels().get("en").getText());
 
         //System.out.println(item.getDescriptions().toString());
         activity.setDescriptionActivity(item.getDescriptions().get("fr").getText());
 
-        String adresse = item.getStatementGroups().get(0).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        activity.setAddressActivity(adresse);
+        for (int i = 0; i < item.getStatementGroups().size(); i++) {
+            String statement = item.getStatementGroups().get(i).getStatements().get(0).toString();
+            if (statement.contains("P1076")) {
+                String adresse = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                activity.setAddressActivity(adresse);
+            }
+            if (statement.contains("P1073")) {
+                String schedule = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                activity.setScheduleActivity(schedule);
+            }
+            if (statement.contains("P1064")) {
+                activity.setCapacityActivity(Integer.parseInt(item.getStatementGroups().get(i).getStatements().get(0).getValue().toString()));
+            }
+            if (statement.contains("P61")) {
+                //Get The contact Qid
+                String contactsplit = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString();
+                String[] array = contactsplit.split("php");
+                String[] array2 = array[1].split(" ");
 
-        activity.setCapacityActivity(Integer.parseInt(item.getStatementGroups().get(1).getStatements().get(0).getValue().toString()));
-
-        String schedule = item.getStatementGroups().get(3).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        activity.setScheduleActivity(schedule);
-
-        //Get The contact Qid
-        String contactsplit = item.getStatementGroups().get(4).getStatements().get(0).getValue().toString();
-        String[] array = contactsplit.split("php");
-        String[] array2 = array[1].split(" ");
-
-        contactActivity = WikidataContactReader.readContactPage(array2[0]);
-        activity.setContactActivity(contactActivity);
-
+                contactActivity = WikidataContactReader.readContactPage(array2[0]);
+                activity.setContactActivity(contactActivity);
+            }
+        }
         return activity;
     }
 }
