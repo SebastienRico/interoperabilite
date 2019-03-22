@@ -48,17 +48,21 @@ public class Research {
             RequestBody body = RequestBody.create(mediaType, "test");
             
             String champsForQuery = formatChamps();
-
+            
+            System.out.println("champsForQuery : " + champsForQuery);
+            
             Request request = new Request.Builder()
-                    .url("http://qanswer-core1.univ-st-etienne.fr/api/gerbil?query=" + champsForQuery + "&kb=students")
+                    .url("http://qanswer-core1.univ-st-etienne.fr/api/gerbil?query=" +champsForQuery +"kb=students")
                     .post(body)
-                    .addHeader("authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5MCIsImlhdCI6MTU1MjY0NTQ2NiwiZXhwIjoxNTUzMjUwMjY2fQ.8c7G2LxKtaL98jMIBxeRWSXjDCII22g-kCD6KHGU_0uqpT7xtOMF8F4WnS4An5KNErLCFRrbNYQV2XY2bBkz3w")
+                    .addHeader("authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5MCIsImlhdCI6MTU1MzI2MzEwOCwiZXhwIjoxNTUzODY3OTA4fQ.VX54-6i4ninDrA_0CNRgdH4G0vX47OiguoY29SkK1Ge1Hfperv2KF5N5fXPBbZwwdAToHkvuViGUGwAXH7DQsg")
                     .addHeader("cache-control", "no-cache")
                     .addHeader("Postman-Token", "bfede952-3409-42f3-88cd-2ac5f6eb75d2")
                     .build();
             
             Response response = client.newCall(request).execute();
             String urlInResponse = response.body().string();
+            
+            System.out.println("urlInResponse : " + urlInResponse);
             
             JSONArray head = new JSONObject(new JSONObject(urlInResponse).getJSONArray("questions").getJSONObject(0).getJSONObject("question").get("answers").toString()).getJSONObject("head").getJSONArray("vars");
             System.out.println("head " + head.toString());
