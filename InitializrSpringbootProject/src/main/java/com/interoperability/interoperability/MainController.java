@@ -189,7 +189,7 @@ public class MainController {
         contactRent.setWebsiteContact(rentalForm.getWebsiteContact());
 
         RentDTO locationDTO = new RentDTO();
-        locationDTO.setAddressRent(rentalForm.getAdressRent());
+        locationDTO.setAddressRent(rentalForm.getAddressRent());
         locationDTO.setContactRent(contactRent);
         locationDTO.setDateStartRent(rentalForm.getDateStartRent());
         locationDTO.setDateEndRent(rentalForm.getDateEndRent());
@@ -199,6 +199,7 @@ public class MainController {
         locationDTO.setDescriptionRent(rentalForm.getDescriptionRent());
 
         //Envoyer locationDTO au BOT qui écrit dans la WikiBase
+        WikidataFacade.writePage(locationDTO);
         return "redirect:/";
     }
 
