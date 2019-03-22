@@ -107,7 +107,7 @@ public class WikidataRentWriter {
                     .build();
             itemDocumentBuilder.withStatement(statementDisponibility);
         }
-        if (rent.getPriceRent() != null && rent.getPriceRent().toString().isEmpty()) {
+        if (rent.getPriceRent() != null && !rent.getPriceRent().toString().isEmpty()) {
             Statement statementPrice = StatementBuilder
                     .forSubjectAndProperty(noid, propertyPrice.getPropertyId())
                     .withValue(Datamodel.makeStringValue(rent.getPriceRent().toString()))

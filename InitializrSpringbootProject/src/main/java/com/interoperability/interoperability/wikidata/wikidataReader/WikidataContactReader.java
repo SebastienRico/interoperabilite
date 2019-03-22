@@ -25,24 +25,33 @@ public class WikidataContactReader {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        String phone = item.getStatementGroups().get(1).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        contact.setPhoneContact(phone);
-
-        String website = item.getStatementGroups().get(2).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        contact.setWebsiteContact(website);
-
-        String fax = item.getStatementGroups().get(3).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        contact.setFaxContact(fax);
-
-        String name = item.getStatementGroups().get(4).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        contact.setNamePerson(name);
-
-        String firstName = item.getStatementGroups().get(5).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        contact.setFirstnamePerson(firstName);
-
-        //System.out.println("Mail " + item.getStatementGroups().get(6).getStatements().get(0).getValue().toString());
-        String mail = item.getStatementGroups().get(6).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        contact.setMailContact(mail);
+        for (int i = 0; i < item.getStatementGroups().size(); i++) {
+            String statement = item.getStatementGroups().get(i).getStatements().get(0).toString();
+            if (statement.contains("P981")) {
+                String phone = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                contact.setPhoneContact(phone);
+            }
+            if (statement.contains("P172")) {
+                String website = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                contact.setWebsiteContact(website);
+            }
+            if (statement.contains("P1069")) {
+                String fax = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                contact.setFaxContact(fax);
+            }
+            if (statement.contains("P1078")) {
+                String name = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                contact.setNamePerson(name);
+            }
+            if (statement.contains("P1068")) {
+                String firstName = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                contact.setFirstnamePerson(firstName);
+            }
+            if (statement.contains("P1079")) {
+                String mail = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                contact.setMailContact(mail);
+            }
+        }
 
         return contact;
     }

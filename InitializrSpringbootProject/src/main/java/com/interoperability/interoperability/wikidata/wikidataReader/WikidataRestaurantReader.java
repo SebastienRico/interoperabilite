@@ -28,34 +28,44 @@ public class WikidataRestaurantReader {
         } catch (MediaWikiApiErrorException ex) {
             Logger.getLogger(WikidataRestaurantReader.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         //System.out.println("Nom resto " + item.getLabels().get("en").getText());
         restaurant.setNameRestaurant(item.getLabels().get("en").getText());
-        
+
         //System.out.println(item.getDescriptions().toString());
         restaurant.setDescriptionRestaurant(item.getDescriptions().get("fr").getText());
-        
-        String adresse = item.getStatementGroups().get(0).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        restaurant.setAddressRestaurant(adresse);
-        
-        String typeResto = item.getStatementGroups().get(1).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        restaurant.setTypeRestaurant(typeResto);
-        
-        restaurant.setCapacityRestaurant(Integer.parseInt(item.getStatementGroups().get(2).getStatements().get(0).getValue().toString()));
-        
-        String menu = item.getStatementGroups().get(4).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        restaurant.setMenuRestaurant(menu);
-        
-        String schedule = item.getStatementGroups().get(5).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        restaurant.setScheduleRestaurant(schedule);
-        
-        //Get The contact Qid
-        String contactsplit = item.getStatementGroups().get(6).getStatements().get(0).getValue().toString();
-        arrayRestaurant = contactsplit.split("php");
-        arrayRestaurant2 = arrayRestaurant[1].split(" ");
-        
-        contactResto = WikidataContactReader.readContactPage(arrayRestaurant2[0]);
-        restaurant.setContactRestaurant(contactResto);
+
+        for (int i = 0; i < item.getStatementGroups().size(); i++) {
+            String statement = item.getStatementGroups().get(i).getStatements().get(0).toString();
+            if (statement.contains("P1076")) {
+                String adresse = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                restaurant.setAddressRestaurant(adresse);
+            }
+            if (statement.contains("P1077")) {
+                String typeResto = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                restaurant.setTypeRestaurant(typeResto);
+            }
+            if (statement.contains("P1064")) {
+                restaurant.setCapacityRestaurant(Integer.parseInt(item.getStatementGroups().get(i).getStatements().get(0).getValue().toString()));
+            }
+            if (statement.contains("P1072")) {
+                String menu = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                restaurant.setMenuRestaurant(menu);
+            }
+            if (statement.contains("P1073")) {
+                String schedule = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                restaurant.setScheduleRestaurant(schedule);
+            }
+            if (statement.contains("P61")) {
+                //Get The contact Qid
+                String contactsplit = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString();
+                arrayRestaurant = contactsplit.split("php");
+                arrayRestaurant2 = arrayRestaurant[1].split(" ");
+
+                contactResto = WikidataContactReader.readContactPage(arrayRestaurant2[0]);
+                restaurant.setContactRestaurant(contactResto);
+            }
+        }
 
         return restaurant;
     }

@@ -30,31 +30,42 @@ public class WikidataHostelReader {
         }
 
         hostel.setNameHostel(item.getLabels().get("en").getText());
-        
-        String adresse = item.getStatementGroups().get(0).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        hostel.setAddressHostel(adresse);
 
-        String price = item.getStatementGroups().get(1).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        hostel.setPriceHostel(Float.parseFloat(price));
+        for (int i = 0; i < item.getStatementGroups().size(); i++) {
+            String statement = item.getStatementGroups().get(i).getStatements().get(0).toString();
+            if (statement.contains("P1076")) {
+                String adresse = item.getStatementGroups().get(0).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                hostel.setAddressHostel(adresse);
+            }
+            if (statement.contains("P1087")) {
+                String price = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                hostel.setPriceHostel(Float.parseFloat(price));
+            }
+            if (statement.contains("P1088")) {
+                String stars = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                hostel.setStarHostel(Integer.parseInt(stars));
+            }
+            if (statement.contains("P1064")) {
+                hostel.setCapacityHostel(Integer.parseInt(item.getStatementGroups().get(i).getStatements().get(0).getValue().toString()));
+            }
+            if (statement.contains("P1073")) {
+                String timetable = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                hostel.setTimetableOpenHostel(timetable);
+            }
+            if (statement.contains("P61")) {
+                //Get The contact Qid
+                String contactsplit = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString();
+                array = contactsplit.split("php");
+                array2 = array[1].split(" ");
 
-        String stars = item.getStatementGroups().get(2).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        hostel.setStarHostel(Integer.parseInt(stars));
-
-        hostel.setCapacityHostel(Integer.parseInt(item.getStatementGroups().get(3).getStatements().get(0).getValue().toString()));
-
-        String timetable = item.getStatementGroups().get(5).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        hostel.setTimetableOpenHostel(timetable);
-
-        //Get The contact Qid
-        String contactsplit = item.getStatementGroups().get(6).getStatements().get(0).getValue().toString();
-        array = contactsplit.split("php");
-        array2 = array[1].split(" ");
-
-        contactHostel = WikidataContactReader.readContactPage(array2[0]);
-        hostel.setContactHostel(contactHostel);
-
-        String openingPeriod = item.getStatementGroups().get(7).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        hostel.setOpeningPeriodHostel(openingPeriod);
+                contactHostel = WikidataContactReader.readContactPage(array2[0]);
+                hostel.setContactHostel(contactHostel);
+            }
+            if (statement.contains("P1089")) {
+                String openingPeriod = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                hostel.setOpeningPeriodHostel(openingPeriod);
+            }
+        }
 
         return hostel;
     }
