@@ -6,6 +6,8 @@ import lombok.Data;
 
 @Data
 public class EventDTO extends ObjectDTO{
+    
+    private String descriptionEvent;
     private String typeEvent;
     private String addressEvent;
     private Integer capacityEvent;

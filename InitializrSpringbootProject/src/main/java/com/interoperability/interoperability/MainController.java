@@ -1,5 +1,6 @@
 package com.interoperability.interoperability;
 
+import com.interoperability.interoperability.models.Connexion;
 import com.interoperability.interoperability.objetsDTO.ActivitesDTO;
 import com.interoperability.interoperability.objetsDTO.ContactDTO;
 import com.interoperability.interoperability.objetsDTO.EventDTO;
@@ -13,10 +14,12 @@ import com.interoperability.interoperability.objetsDTO.RentalFormDTO;
 import com.interoperability.interoperability.objetsDTO.RentDTO;
 import com.interoperability.interoperability.objetsDTO.PersonDTO;
 import com.interoperability.interoperability.objetsDTO.RestaurantDTO;
+import com.interoperability.interoperability.repositories.ConnexionRepository;
 import com.interoperability.interoperability.wikidata.WikidataFacade;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,13 +29,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class MainController {
+    
+    @Autowired
+    ConnexionRepository connexionRepository;
 
-    private static List<Research> research;
+    private static List<Research> researches;
     private static List<ActivitesDTO> activitesDTO;
     private static List<ContactDTO> contactDTO;
     private static List<EventDTO> eventDTO;
     private static List<HostelDTO> hostelDTO;
-    private static List<PersonDTO> personDTO;
     private static List<RestaurantDTO> restaurantDTO;
 
 
@@ -55,7 +60,6 @@ public class MainController {
         m.addAttribute("contactDTO", contactDTO);
         m.addAttribute("eventDTO", eventDTO);
         m.addAttribute("housingDTO", hostelDTO);
-        m.addAttribute("personDTO", personDTO);
         m.addAttribute("restaurantDTO", restaurantDTO);
 
         return "research.html";
@@ -84,7 +88,7 @@ public class MainController {
 
     @RequestMapping(value = "/wikidataPage")
     public String goToPageWikidata(Model m) {
-        m.addAttribute("rec", research);
+        m.addAttribute("rec", researches);
         m.addAttribute("rech", new Research());
         return "wikidataPage";
     }
@@ -95,58 +99,53 @@ public class MainController {
         m.addAttribute("rech", new Research());
         return "locationForm";
     }
+    
+    @RequestMapping(value = "/event", method = RequestMethod.GET)
+    public String goToEvent(Model m) {
+        m.addAttribute("event", eventDTO);
+        m.addAttribute("rech", new Research());
+        return "event";
+    }
+    
+    @RequestMapping(value = "/contact", method = RequestMethod.GET)
+    public String goToContact(Model m) {
+        m.addAttribute("contact", contactDTO);
+        m.addAttribute("rech", new Research());
+        return "contact";
+    }
+    
+    @RequestMapping(value = "/hostel", method = RequestMethod.GET)
+    public String goToHostel(Model m) {
+        m.addAttribute("hostel", hostelDTO);
+        m.addAttribute("rech", new Research());
+        return "hostel";
+    }
 
     @RequestMapping(value = "/addResearch", method = RequestMethod.POST)
     public String addResearch(Model m, @ModelAttribute("rech") Research rec) throws IOException {
 
-        research = new ArrayList<>();
+        researches = new ArrayList<>();
         restaurantDTO = new ArrayList<>();
         activitesDTO = new ArrayList<>();
         contactDTO = new ArrayList<>();
         eventDTO = new ArrayList<>();
         hostelDTO = new ArrayList<>();
-        personDTO = new ArrayList<>();
 
         String champs = rec.getChamps();
 
-        ObjectDTO object = WikidataFacade.readPage("Q2109");
-        String command = "curl --data \"query=" + champs + "\" http://qanswer-core1.univ-st-etienne.fr/api/gerbil";
-        Process process = Runtime.getRuntime().exec(command);
-
-        try {
-            System.out.println(command);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            StringBuilder builder = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-                builder.append(System.getProperty("line.separator"));
-            }
-            String result = builder.toString();
-
-            JSONArray head = new JSONObject(new JSONObject(result.toString()).getJSONArray("questions").getJSONObject(0).getJSONObject("question").get("answers").toString()).getJSONObject("head").getJSONArray("vars");
-            System.out.println(head.toString());
-            JSONArray bindings = new JSONObject(new JSONObject(result.toString()).getJSONArray("questions").getJSONObject(0).getJSONObject("question").get("answers").toString()).getJSONObject("results").getJSONArray("bindings");
-            System.out.println(bindings.toString());
-            for (int i = 0; i < bindings.length(); i++) {
-                System.out.println(bindings.getJSONObject(i).getJSONObject(head.get(0).toString()).get("value").toString());
-            }
-
-        } catch (Exception e) {
-
-        }
-        Research r = new Research(champs);
+        ObjectDTO object = WikidataFacade.readPage("Q2310");
+       
+        Research research = new Research(champs);
+        List<String> qIds = new ArrayList<>();
+        qIds = research.requestQAnswer();
+        // if la liste qIds.size() == 1 alors l'objetDTO est égale au seul Qid de la liste
+        // if la liste est plus grande qu'un seul résultat alors on appelle l'affichage d'une liste de résultat
 
         if (object instanceof RestaurantDTO) {
             System.out.println("restaurant" + object);
 
             restaurantDTO.add((RestaurantDTO) object);
             return "redirect:/restaurant";
-        } else if (object instanceof PersonDTO) {
-            System.out.println("personne" + object);
-
-            personDTO.add((PersonDTO) object);
-            return "redirect:/person";
         } else if (object instanceof HostelDTO) {
             System.out.println("hotel" + object);
 
@@ -169,7 +168,7 @@ public class MainController {
             return "redirect:/activites";
         }
 
-        research.add(r);
+        researches.add(research);
         return "redirect:/Research";
     }
 
@@ -178,7 +177,7 @@ public class MainController {
         m.addAttribute("location", new RentalFormDTO());
         return "locationForm";
     }
-
+    
     @RequestMapping(method = RequestMethod.POST, path = "/addLocation")
     public String addNewLocation(@ModelAttribute("location") RentalFormDTO rentalForm) {
         ContactDTO contactRent = new ContactDTO();
@@ -208,6 +207,33 @@ public class MainController {
     public String redirectResearch() {
         return null;
 
+    }
+    
+    @RequestMapping(value = "/connect", method = RequestMethod.POST)
+    public String goToConnexion(Model m){
+        m.addAttribute("co", new Connexion());
+        m.addAttribute("rech", new Research());
+        return "connexion";
+    }
+    
+    @RequestMapping(value = "/tryConnexion", method = RequestMethod.POST)
+    public String tryConnexion(@ModelAttribute("co") Connexion co){
+        Connexion tryConnexion = connexionRepository.findConnexionWithLoginAndPassword(co.getLogin(), co.getPassword());
+        if(tryConnexion == null){
+            return "connexionFailed";
+        }
+        return "connexionSuccess";
+    }
+    
+    @RequestMapping(value = "/connexionFailed", method = RequestMethod.GET)
+    public String FailedConnexion(Model m){
+        m.addAttribute("rech", new Research());
+        return "connexionFailed";
+    }
+    
+    @RequestMapping(value = "/connexionSuccess", method = RequestMethod.POST)
+    public void connexionOk(@ModelAttribute("co") Connexion co, Model m){
+        m.addAttribute("rech", new Research());
     }
 
 }

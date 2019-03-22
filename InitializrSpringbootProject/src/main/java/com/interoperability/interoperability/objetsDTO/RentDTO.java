@@ -6,9 +6,10 @@ import lombok.Data;
 
 @Data
 public class RentDTO extends ObjectDTO{
+    private String nameRent;
     private String descriptionRent;
     private String addressRent;
-    private int capacityRent;
+    private Integer capacityRent;
     private String dateStartRent; //Type to define yet
     private String dateEndRent;
     private Float priceRent;

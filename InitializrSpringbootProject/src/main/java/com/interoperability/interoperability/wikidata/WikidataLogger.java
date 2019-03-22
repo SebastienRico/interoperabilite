@@ -1,6 +1,8 @@
 package com.interoperability.interoperability.wikidata;
 
 import com.interoperability.interoperability.utilities.Util;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.wikidata.wdtk.util.WebResourceFetcherImpl;
 import org.wikidata.wdtk.wikibaseapi.ApiConnection;
 import org.wikidata.wdtk.wikibaseapi.LoginFailedException;
@@ -34,7 +36,7 @@ public class WikidataLogger {
             //Put as password what you get when you create the bot account
             WikidataConnexion.login(WIKIDATA_LOGIN, WIKIBASE_PASSWORD);
         } catch (LoginFailedException e) {
-            e.printStackTrace();
+            Logger.getLogger(WikidataLogger.class.getName()).log(Level.SEVERE, "Cannot connect to wikidata");
         }
     }
     
@@ -48,7 +50,7 @@ public class WikidataLogger {
             //Put as password what you get when you create the bot account
             WikibaseConnexion.login(WIKIBASE_LOGIN, WIKIBASE_PASSWORD);
         } catch (LoginFailedException e) {
-            e.printStackTrace();
+            Logger.getLogger(WikidataLogger.class.getName()).log(Level.SEVERE, "Cannot connect to the wikibase");
         }
     }
 }

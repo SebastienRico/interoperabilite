@@ -14,7 +14,7 @@ public class ActivitesDTO extends ObjectDTO{
     private String circuitIDActivity;
     private String rideActivity;
     private String descriptionActivity; //See format
-    private float priceActivity; //See format if multiple prices
+    private Float priceActivity; //See format if multiple prices
 
     public ActivitesDTO() {
     }

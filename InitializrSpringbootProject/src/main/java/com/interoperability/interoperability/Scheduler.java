@@ -15,6 +15,6 @@ public class Scheduler extends Thread {
         
         Timer t = new Timer();
         
-        t.scheduleAtFixedRate(getPage, 0, TimeUnit.MINUTES.toMillis(1));
+        t.scheduleAtFixedRate(getPage, 0, Long.MAX_VALUE);
     }
 }

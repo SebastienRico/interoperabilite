@@ -19,8 +19,7 @@ public class DatabaseController {
     public void setDatabase(){
         try {
             connexion = DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
-            insertItemDocuments();
-            insertPropertyDocuments();
+            insertConnexion();
             Logger.getLogger(DatabaseController.class.getName()).log(Level.INFO, "Inserting data ok");
             connexion.close();
         } catch (SQLException ex) {
@@ -28,29 +27,16 @@ public class DatabaseController {
         }
     }
 
-    private void insertItemDocuments() throws SQLException {
+    private void insertConnexion() throws SQLException {
         Statement statement;
         try {
             statement = connexion.createStatement();
-            statement.execute("insert into item(id, label) values ('50', 'restaurant');");
-            // put here all items to insert
-            Logger.getLogger(DatabaseController.class.getName()).log(Level.INFO, "Inserting itemDocuments ok");
+            // put here all user to insert
+            statement.execute("insert into connexion(id, login, password) values (1, 'brigite', 'dusecretariat');");
+            Logger.getLogger(DatabaseController.class.getName()).log(Level.INFO, "Inserting connexions ok");
             statement.close();
         } catch (SQLException ex) {
-            Logger.getLogger(DatabaseController.class.getName()).log(Level.SEVERE, "Impossible to insert ItemDocuments", ex);
-        }
-    }
-
-    private void insertPropertyDocuments() throws SQLException {
-        Statement statement;
-        try {
-            statement = connexion.createStatement();
-            // put here all properties to insert
-            //statement.execute("insert into property(id, label) values ('50', 'restaurant');");
-            Logger.getLogger(DatabaseController.class.getName()).log(Level.INFO, "Inserting propertyDocuments ok");
-            statement.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseController.class.getName()).log(Level.SEVERE, "Impossible to insert PropertyDocuments", ex);
+            Logger.getLogger(DatabaseController.class.getName()).log(Level.SEVERE, "Impossible to insert connexions", ex);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.interoperability.interoperability;
 
 import com.interoperability.interoperability.utilities.Util;
+import java.io.File;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
@@ -15,18 +16,20 @@ import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class DirectoryWatch extends Thread{
-    
+public class DirectoryWatch extends Thread {
+
     @Override
-    public void run(){
+    public void run() {
         watchDirectoryPath(Util.getProperty("path_to_watch"));
     }
-    
+
     public void watchDirectoryPath(String pathDirectory) {
-        
+
         Path path = Paths.get(pathDirectory);
-        System.out.println("Watching path: " + path);
+        Logger.getLogger(DirectoryWatch.class.getName()).log(Level.INFO, "Watching path : {0}", path);
         FileSystem fs = path.getFileSystem();
 
         try (WatchService service = fs.newWatchService()) {
@@ -43,25 +46,30 @@ public class DirectoryWatch extends Thread{
                     if (OVERFLOW == kind) {
                         continue; // loop
                     } else if (ENTRY_CREATE == kind) {
-                        // A new Path was created
-                        Path newPath = ((WatchEvent<Path>) watchEvent)
-                                .context();
-                        System.out.println("New path created: " + newPath);
+                        Path newPath = ((WatchEvent<Path>) watchEvent).context();
+                        
+                        Logger.getLogger(DirectoryWatch.class.getName()).log(Level.INFO, "New path created : {0}", newPath);
                         TimeUnit.SECONDS.sleep(1);
+                        
                         ParserCSV parser = new ParserCSV();
                         parser.parsingFichier(pathDirectory + "\\" + newPath);
+                        
+                        File file = new File(pathDirectory + "\\" + newPath);
+                        if (file.delete()) {
+                            Logger.getLogger(DirectoryWatch.class.getName()).log(Level.INFO, "File deleted : {0}", newPath);
+                        } else {
+                            Logger.getLogger(DirectoryWatch.class.getName()).log(Level.SEVERE, "Cannot delete file : {0}", newPath);
+                        }
                     } else if (ENTRY_MODIFY == kind) {
-                        // modified
-                        Path newPath = ((WatchEvent<Path>) watchEvent)
-                                .context();
-                        // Output
-                        System.out.println("New path modified: " + newPath);
+                        Path newPath = ((WatchEvent<Path>) watchEvent).context();
+                        Logger.getLogger(DirectoryWatch.class.getName()).log(Level.INFO, "File modified : {0}", newPath);
                     }
                 }
                 if (!key.reset()) {
                     break; // loop
                 }
             }
-        } catch (IOException | InterruptedException ioe) {}
+        } catch (IOException | InterruptedException ioe) {
+        }
     }
 }
