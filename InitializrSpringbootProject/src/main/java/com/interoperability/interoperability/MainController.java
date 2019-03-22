@@ -133,7 +133,7 @@ public class MainController {
 
         String champs = rec.getChamps();
 
-        ObjectDTO object = WikidataFacade.readPage("Q2310");
+        ObjectDTO object = WikidataFacade.readPage("Q1580");
        
         Research research = new Research(champs);
         List<String> qIds = new ArrayList<>();
