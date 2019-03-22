@@ -13,27 +13,34 @@
         </div>
         <div class ="container" style="margin-top:25%;margin-left:25%">
 
-            <form method="POST" th:action="@{/addResearch}" th:object="${rech}">
-                <div class="row" style = "width:70%">
-                    <div class="col-lg-9">
-                        <input type="text" class="form-control" placeholder="Que cherchez vous ?" th:field="*{champs}"/>
 
-                    </div>
-                    <div class="col-lg-2" style="width:100%">
-                        <button type="submit" class="btn btn-primary" style="position: relative">Rechercher</button>
-                    </div>
-                    <div class="col-lg-1">
-                        <form method="POST" th:action="@{/connect}">
-                            <div class="row" style = "width:70%">
-                                <div class="col-lg-2" style="width:100%">
-                                    <button type="submit" class="btn btn-primary" style="position: relative">Connexion</button>
-                                </div>
+            <div class="row" style = "width:70%">
+
+                <div class="col-lg-10">
+                    <form method="POST" th:action="@{/addResearch}" th:object="${rech}">
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" placeholder="Que cherchez vous ?" th:field="*{champs}" />
                             </div>
-                        </form>
-                    </div>
-                    <a th:href="@{/locationForm}" style="margin-left: 15%">Vous louez un local? Remplissez notre formulaire!</a>
+                            <div class="col-lg-2">
+                                <button type="submit" class="btn btn-primary">Rechercher</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+
+                <div class="col-lg-2">
+                    <form method="POST" th:action="@{/connect}">
+                        <div class="row" style = "width:70%">
+                            <div class="col-lg-2" style="width:100%">
+                                <button type="submit" class="btn btn-primary" style="position: relative">Connexion</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <a th:href="@{/locationForm}" style="margin-left: 12%">Vous louez un local? Remplissez notre formulaire!</a>
+            </div>
+
 
 
         </div>

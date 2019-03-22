@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class MainController {
-    
+
     @Autowired
     ConnexionRepository connexionRepository;
 
@@ -46,7 +46,7 @@ public class MainController {
         return "...";
     }*/
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String gotToIndex(Model m) {
+    public String goToIndex(Model m) {
         m.addAttribute("rech", new Research());
         WikidataFacade.readPage("Q1580");
         return "index.html";
@@ -78,7 +78,7 @@ public class MainController {
         m.addAttribute("rech", new Research());
         return "restaurant";
     }
-    
+
     @RequestMapping(value = "/activites", method = RequestMethod.GET)
     public String goToActivites(Model m) {
         m.addAttribute("activites", activitesDTO);
@@ -99,21 +99,21 @@ public class MainController {
         m.addAttribute("rech", new Research());
         return "locationForm";
     }
-    
+
     @RequestMapping(value = "/event", method = RequestMethod.GET)
     public String goToEvent(Model m) {
         m.addAttribute("event", eventDTO);
         m.addAttribute("rech", new Research());
         return "event";
     }
-    
+
     @RequestMapping(value = "/contact", method = RequestMethod.GET)
     public String goToContact(Model m) {
         m.addAttribute("contact", contactDTO);
         m.addAttribute("rech", new Research());
         return "contact";
     }
-    
+
     @RequestMapping(value = "/hostel", method = RequestMethod.GET)
     public String goToHostel(Model m) {
         m.addAttribute("hostel", hostelDTO);
@@ -134,7 +134,7 @@ public class MainController {
         String champs = rec.getChamps();
 
         ObjectDTO object = WikidataFacade.readPage("Q1580");
-       
+
         Research research = new Research(champs);
         List<String> qIds = new ArrayList<>();
         qIds = research.requestQAnswer();
@@ -161,7 +161,7 @@ public class MainController {
 
             contactDTO.add((ContactDTO) object);
             return "redirect:/contact";
-        } else if (object instanceof ActivitesDTO){
+        } else if (object instanceof ActivitesDTO) {
             System.out.println("activité" + object);
 
             activitesDTO.add((ActivitesDTO) object);
@@ -177,7 +177,7 @@ public class MainController {
         m.addAttribute("location", new RentalFormDTO());
         return "locationForm";
     }
-    
+
     @RequestMapping(method = RequestMethod.POST, path = "/addLocation")
     public String addNewLocation(@ModelAttribute("location") RentalFormDTO rentalForm) {
         ContactDTO contactRent = new ContactDTO();
@@ -208,33 +208,33 @@ public class MainController {
         return null;
 
     }
-    
+
     @RequestMapping(value = "/connect", method = RequestMethod.POST)
-    public String goToConnexion(Model m){
+    public String goToConnexion(Model m) {
         m.addAttribute("co", new Connexion());
         m.addAttribute("rech", new Research());
         return "connexion";
     }
-    
+
     @RequestMapping(value = "/tryConnexion", method = RequestMethod.POST)
-    public String tryConnexion(@ModelAttribute("co") Connexion co){
+    public String tryConnexion(@ModelAttribute("co") Connexion co,Model m) {
         Connexion tryConnexion = connexionRepository.findConnexionWithLoginAndPassword(co.getLogin(), co.getPassword());
-        if(tryConnexion == null){
+        m.addAttribute("rech", new Research());
+        if (tryConnexion == null) {
             return "connexionFailed";
         }
         return "connexionSuccess";
     }
-    
+
     @RequestMapping(value = "/connexionFailed", method = RequestMethod.GET)
-    public String FailedConnexion(Model m){
+    public String FailedConnexion(Model m) {
         m.addAttribute("rech", new Research());
         return "connexionFailed";
     }
-    
+
     @RequestMapping(value = "/connexionSuccess", method = RequestMethod.POST)
-    public void connexionOk(@ModelAttribute("co") Connexion co, Model m){
+    public void connexionOk(@ModelAttribute("co") Connexion co, Model m) {
         m.addAttribute("rech", new Research());
     }
 
 }
-

@@ -25,14 +25,15 @@
             <div class="container col-lg-4">
                 <h1>Connexion</h1>
                 <div class="container">
-                    <form method="POST" th:action="@{/downloadFile}">
-                        <div class="form-group" style="width: 100%">
-                            <label for="login">Téléchergez le fichier CSV ici : </label>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Connexion</button>
-                    </form>
-                    
+                        <form method="POST"  th:action="@{/downloadFile}" enctype="multipart/form-data">
+                            <div>
+                                <label for="file">Sélectionner le fichier CSV à envoyer : </label>
+                                <input type="file" id="file" name="file" accept=".csv" multiple>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary">Envoyer</button>
+                            </div>
+                        </form>
                     <!-- Ici insérer le code pour charger le fichier -->
                 </div>
             </div>
