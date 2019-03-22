@@ -15,6 +15,7 @@ public class RentalFormDTO extends ObjectDTO{
     private String dateEndRent;
     private float priceRent;
     private String disponibilityRent;
+    private String nameRent;
   
     private String addressRent;
 

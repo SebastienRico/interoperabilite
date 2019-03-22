@@ -133,7 +133,7 @@ public class MainController {
 
         String champs = rec.getChamps();
 
-        ObjectDTO object = WikidataFacade.readPage("Q2310");
+        ObjectDTO object = WikidataFacade.readPage("Q1580");
        
         Research research = new Research(champs);
         List<String> qIds = new ArrayList<>();
@@ -183,7 +183,6 @@ public class MainController {
         ContactDTO contactRent = new ContactDTO();
         contactRent.setNamePerson(rentalForm.getNamePerson());
         contactRent.setFirstnamePerson(rentalForm.getFirstnamePerson());
-        contactRent.setNamePerson(rentalForm.getNamePerson() + " " + rentalForm.getFirstnamePerson());
         contactRent.setPhoneContact(rentalForm.getPhoneContact());
         contactRent.setMailContact(rentalForm.getMailContact());
         contactRent.setWebsiteContact(rentalForm.getWebsiteContact());
@@ -197,6 +196,7 @@ public class MainController {
         locationDTO.setDisponibilityRent(rentalForm.getDisponibilityRent());
         locationDTO.setPriceRent(rentalForm.getPriceRent());
         locationDTO.setDescriptionRent(rentalForm.getDescriptionRent());
+        locationDTO.setNameRent(rentalForm.getNameRent());
 
         //Envoyer locationDTO au BOT qui écrit dans la WikiBase
         WikidataFacade.writePage(locationDTO);

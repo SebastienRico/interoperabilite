@@ -22,13 +22,19 @@
                     </nav>
                 </div>
             </div>
-            <div class="container">
-                <h1>Ajouter une offre de location</h1>
-                <div class="container">
-                    <form method="POST" th:action="@{/addLocation}" th:object="${location}">
-                        <div class="form-group" style="width: 100%">
+            <h1 style="margin :2%">Ajouter une offre de location</h1>
+            <div class="" style="margin-top : 1%;margin-left:4%;margin-right: 4%">
+                
+
+
+                <form method="POST" th:action="@{/addLocation}" th:object="${location}">
+                    <div class="row">
+                        <div class="col-lg-4">
 
                             <!--Infos sur la location -->
+                            <label for="desc">Nom de la location :  </label>
+                            <input id="desc" class="form-control" type="text" placeholder="Nom de la location" th:field="*{nameRent}"/>
+                            
                             <label for="desc">Description de la location: </label>
                             <input id="desc" class="form-control" type="text" placeholder="Description de la location" th:field="*{descriptionRent}"/>
 
@@ -40,6 +46,8 @@
 
                             <label for="dispo">Période de disponibilité:  </label>
                             <input id="dispo" class="form-control" type="text" th:field="*{disponibilityRent}"/>
+                        </div>
+                        <div class="col-lg-4">
 
                             <label for="capacite">Capacité: </label>
                             <input id="capacite" class="form-control" type="number" th:field="*{capacityRent}"/>
@@ -50,6 +58,9 @@
                             <!--Adresse de la location -->
                             <label for="adresse">Adresse </label>
                             <input id="adresse" class="form-control" type="text" th:field="*{addressRent}"/>
+                        </div>
+
+                        <div class="col-lg-4">
 
                             <!--Infos contact -->
                             <label for="nomOrganisateur">Nom Contact:  </label>
@@ -68,11 +79,13 @@
                             <input id="siteWebOrganisateur" class="form-control" type="text" th:field="*{websiteContact}"/>
 
 
-                        </div>
 
-                        <button type="submit" class="btn btn-primary">Valider</button>
-                    </form>
-                </div>
+
+                            <button type="submit" class="btn btn-primary" style="margin-top: 2%;margin-left: 84%">Valider</button>
+                        </div>
+                    </div>
+                </form>
+
             </div>
         </div>
     </body>

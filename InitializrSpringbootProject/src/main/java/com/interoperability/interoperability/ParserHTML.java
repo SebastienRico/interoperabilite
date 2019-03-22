@@ -36,9 +36,6 @@ public class ParserHTML {
         ContactDTO contact = new ContactDTO();
         contact.setNamePerson("Office du Tourisme");
         contact.setWebsiteContact("http://www.office-tourisme-haut-lignon.com/");
-        contact.setFaxContact(" ");
-        contact.setPhoneContact(" ");
-        contact.setFirstnamePerson(" ");
         try {
             constructor = fabric.newDocumentBuilder();
             Document document = (Document) constructor.parse(file);
@@ -66,8 +63,10 @@ public class ParserHTML {
                     }
                     this.event.setContactEvent(contact);
                     WikidataFacade.writePage(event);
+                    System.out.println("Evenement enregistré");
                 }
             }
+            System.out.println("Fin de l'enregistrement d'evenement");
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(ParserHTML.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -84,16 +83,13 @@ public class ParserHTML {
         contact.setNamePerson("Cinema Scoop");
         contact.setWebsiteContact("https://www.cinema-scoop.fr/");
         contact.setPhoneContact("0471597937");
-        contact.setFaxContact(" ");
-        contact.setFirstnamePerson(" ");
-        contact.setNamePerson(" ");
         this.activity.setContactActivity(contact);
         String address = "";
         address += "18";
         address += "rue de la poste";
         address += "Chambon-sur-Lignon";
         this.activity.setAddressActivity(address);
-        this.activity.setNameActivity("Séance de cinéma");
+        this.activity.setDescriptionActivity("Séance de cinéma");
         this.activity.setCapacityActivity(125);
         Document document;
         try {
@@ -104,7 +100,7 @@ public class ParserHTML {
                 e = (Element) document.getElementsByTagName("td").item(i);
                 if (e.getElementsByTagName("a").getLength() != 0) {
                     this.activity.setScheduleActivity(e.getAttribute("data-day"));
-                    this.activity.setDescriptionActivity(e.getElementsByTagName("a").item(1).getTextContent());
+                    this.activity.setNameActivity(e.getElementsByTagName("a").item(1).getTextContent());
                 }
                 WikidataFacade.writePage(activity);
             }
