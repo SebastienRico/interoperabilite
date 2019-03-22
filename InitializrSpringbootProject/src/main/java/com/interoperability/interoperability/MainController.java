@@ -189,7 +189,7 @@ public class MainController {
         contactRent.setWebsiteContact(rentalForm.getWebsiteContact());
 
         RentDTO locationDTO = new RentDTO();
-        locationDTO.setAddressRent(rentalForm.getAdressRent());
+        locationDTO.setAddressRent(rentalForm.getAddressRent());
         locationDTO.setContactRent(contactRent);
         locationDTO.setDateStartRent(rentalForm.getDateStartRent());
         locationDTO.setDateEndRent(rentalForm.getDateEndRent());
@@ -237,3 +237,4 @@ public class MainController {
     }
 
 }
+
