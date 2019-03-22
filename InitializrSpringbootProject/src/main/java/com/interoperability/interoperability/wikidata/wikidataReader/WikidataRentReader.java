@@ -31,29 +31,41 @@ public class WikidataRentReader {
 
         rental.setDescriptionRent(item.getDescriptions().get("fr").getText());
 
-        String adresse = item.getStatementGroups().get(0).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        rental.setAddressRent(adresse);
-        
-        String dispo = item.getStatementGroups().get(1).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        rental.setDisponibilityRent(dispo);
-        
-        rental.setCapacityRent(Integer.parseInt(item.getStatementGroups().get(2).getStatements().get(0).getValue().toString()));
+        for (int i = 0; i < item.getStatementGroups().size(); i++) {
+            String statement = item.getStatementGroups().get(i).getStatements().get(0).toString();
+            if (statement.contains("P1076")) {
+                String adresse = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                rental.setAddressRent(adresse);
+            }
+            if (statement.contains("P1085")) {
+                String dispo = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                rental.setDisponibilityRent(dispo);
+            }
+            if (statement.contains("P1064")) {
+                rental.setCapacityRent(Integer.parseInt(item.getStatementGroups().get(i).getStatements().get(0).getValue().toString()));
 
-        String startDate = item.getStatementGroups().get(4).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        rental.setDateStartRent(startDate);
-        
-        String endDate = item.getStatementGroups().get(5).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        rental.setDateEndRent(endDate);
-        
-        //rental.setPriceRent(Float.parseFloat(item.getStatementGroups().get(7).getStatements().get(0).getValue().toString()));
+            }
+            if (statement.contains("P1083")) {
+                String startDate = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                rental.setDateStartRent(startDate);
+            }
+            if (statement.contains("P1084")) {
+                String endDate = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                rental.setDateEndRent(endDate);
+            }
+            if (statement.contains("P1087")) {
+                rental.setPriceRent(Float.parseFloat(item.getStatementGroups().get(i).getStatements().get(0).getValue().toString()));
+            }
+            if (statement.contains("P61")) {
+                //Get The contact Qid
+                String contactsplit = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString();
+                array = contactsplit.split("php");
+                array2 = array[1].split(" ");
 
-        //Get The contact Qid
-        String contactsplit = item.getStatementGroups().get(6).getStatements().get(0).getValue().toString();
-        array = contactsplit.split("php");
-        array2 = array[1].split(" ");
-
-        contactRental = WikidataContactReader.readContactPage(array2[0]);
-        rental.setContactRent(contactRental);
+                contactRental = WikidataContactReader.readContactPage(array2[0]);
+                rental.setContactRent(contactRental);
+            }
+        }
         return rental;
     }
 }

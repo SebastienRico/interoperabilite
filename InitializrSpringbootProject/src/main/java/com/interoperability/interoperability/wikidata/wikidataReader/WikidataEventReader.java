@@ -32,24 +32,33 @@ public class WikidataEventReader {
         //System.out.println("Nom event " + item.getLabels().get("fr").getText());
         event.setNameEvent(item.getLabels().get("fr").getText());
 
-        String adresse = item.getStatementGroups().get(0).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        event.setAddressEvent(adresse);
+        for (int i = 0; i < item.getStatementGroups().size(); i++) {
+            String statement = item.getStatementGroups().get(i).getStatements().get(0).toString();
+            if (statement.contains("P1076")) {
+                String adresse = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                event.setAddressEvent(adresse);
+            }
+            if (statement.contains("P1077")) {
+                String type = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                event.setTypeEvent(type);
+            }
+            if (statement.contains("P1083")) {
+                String dateDebut = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                event.setDateStartEvent(dateDebut);
+            }
+            if (statement.contains("P1084")) {
+                String dateFin = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
+                event.setDateEndEvent(dateFin);
+            }
+            if (statement.contains("P61")) {
+                String contactsplit = item.getStatementGroups().get(i).getStatements().get(0).getValue().toString();
+                array = contactsplit.split("php");
+                array2 = array[1].split(" ");
 
-        String speciality = item.getStatementGroups().get(1).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        event.setTypeEvent(speciality);
-
-        String dateDebut = item.getStatementGroups().get(3).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        event.setDateStartEvent(dateDebut);
-
-        String dateFin = item.getStatementGroups().get(4).getStatements().get(0).getValue().toString().replaceAll("^\"|\"$", "");
-        event.setDateEndEvent(dateFin);
-
-        String contactsplit = item.getStatementGroups().get(5).getStatements().get(0).getValue().toString();
-        array = contactsplit.split("php");
-        array2 = array[1].split(" ");
-
-        contactEvent = WikidataContactReader.readContactPage(array2[0]);
-        event.setContactEvent(contactEvent);
+                contactEvent = WikidataContactReader.readContactPage(array2[0]);
+                event.setContactEvent(contactEvent);
+            }
+        }
         return event;
     }
 }
