@@ -14,7 +14,7 @@
                 <div>
                     <nav class="navbar  navbar-dark bg-primary" style="height:55px">
                         <a class="navbar-brand" href="/" style="margin-bottom: 15px">Accueil</a>
-                        <a class="navbar-brand" href="/locationForm" style="font-size: 14px;margin-left: 50%;text-decoration: underline;margin-bottom: 15px" onmouseout="this.style.color='';" onmouseover="this.style.color='#000F42';" >Vous louez une local? Remplissez notre formulaire!</a>
+                        <a class="navbar-brand" href="/locationForm" style="font-size: 14px;margin-left: 50%;text-decoration: underline;margin-bottom: 15px" onmouseout="this.style.color = '';" onmouseover="this.style.color = '#000F42';" >Vous louez une local? Remplissez notre formulaire!</a>
                         <form class="form-inline" method="POST" th:action="@{/addResearch}" th:object="${rech}">
                             <input class="form-control mr-sm-2" type="search" placeholder="Rechercher" aria-label="Rechercher" th:field="*{champs}"/>
                             <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Rechercher</button>
@@ -24,17 +24,17 @@
             </div>
             <div class="container col-lg-4">
                 <h1>Connexion</h1>
+                <div class="container" style="margin-bottom: 10px">
+                    <a href="./../static/restaurantCSV/Restaurant.csv" download>Cliquez ici pour télécharger le fichier à remplir</a>
+                    <div>
+                        Avant de soummettre votre fichier rempli, pensez à le renommer au nom de votre établissement.
+                    </div>
+                </div>
                 <div class="container">
-                        <form method="POST"  th:action="@{/downloadFile}" enctype="multipart/form-data" th:object="${file}">
-                            <div>
-                                <label for="file">Sélectionner le fichier CSV à envoyer : </label>
-                                <input type="file" id="file" name="file" accept=".csv" th:field="*{file}" multiple/>
-                            </div>
-                            <div>
-                                <button type="submit" class="btn btn-primary">Envoyer</button>
-                            </div>
-                        </form>
-                    <!-- Ici insérer le code pour charger le fichier -->
+                    <form method="POST" th:action="@{/downloadFile}" enctype="multipart/form-data" th:object="${file}">
+                        <input type="file" name="file" /><br/><br/>
+                        <input type="submit" value="Envoyer" accept=".csv"/>
+                    </form>
                 </div>
             </div>
         </div>

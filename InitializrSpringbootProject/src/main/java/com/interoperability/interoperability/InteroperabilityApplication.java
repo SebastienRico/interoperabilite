@@ -19,11 +19,9 @@ public class InteroperabilityApplication {
             Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.INFO, "DirectoryWatcher launched");
 
             // We start the scheduler to update datas from HTML pages
-             Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.INFO,
-             "Launch Scheduler"); Scheduler scheduler = new Scheduler();
-             scheduler.start();
-             Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.INFO,
-             "Scheduler launched");
+            Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.INFO, "Launch Scheduler"); Scheduler scheduler = new Scheduler();
+            scheduler.start();
+            Logger.getLogger(InteroperabilityApplication.class.getName()).log(Level.INFO, "Scheduler launched");
              
             // If the database existe, we connect to
             // If the database does not exist, we create it and we instanciate datas
